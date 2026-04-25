@@ -1,0 +1,24 @@
+---
+description: Enforce gated workflow: review first, propose plan, edit one file at a time with user approval.
+alwaysApply: true
+---
+
+# Gated workflow (must follow)
+
+## 1) Review first (no edits)
+- Before changing anything, scan the relevant parts of the app to understand current behavior, conventions, and impacted files.
+- Summarize findings and list the files likely to be touched.
+
+## 2) Propose a todo list and wait for approval (no edits)
+- Produce a clear todo list with small steps.
+- Do not start implementing until the user explicitly approves the todo list (or asks to modify it).
+
+## 3) Implement file-by-file with an approval gate
+- Only modify **one file per iteration**.
+- After updating a file, stop and ask the user to approve that file’s change.
+- Do **not** edit any other file until the user approves (or requests changes) for the current file.
+
+## 4) Proceed sequentially until the todo list is done
+- If approved, move to the next todo item and the next file.
+- If rejected, revise only the same file and request approval again.
+- Repeat until all todo items are completed.
