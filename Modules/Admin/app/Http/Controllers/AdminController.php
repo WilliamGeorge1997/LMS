@@ -4,8 +4,9 @@ namespace Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Admin\DTO\AdminDto;
+use Modules\Admin\Http\Requests\AdminStoreRequest;
 use Modules\Admin\Services\AdminService;
-use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
 {
@@ -17,12 +18,8 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $length = (int) $request->input('length', 10);
-            $request->merge(['length' => max(1, min($length, 50))]);
-            $query = $this->adminService->queryForDataTable();
-            return DataTables::eloquent($query)->toJson();
-        }
+        if ($request->ajax())
+            return $this->adminService->dataTable();
         return view('admin::admins.index');
     }
 
@@ -42,7 +39,12 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(AdminStoreRequest $request)
+    {
+        $data = (new AdminDto($request))->dataFromRequest();
+        $admin = $this->adminService->save($data);
+        return response()->json(['status' => true, 'data' => $admin]);
+    }
 
     /**
      * Show the specified resource.

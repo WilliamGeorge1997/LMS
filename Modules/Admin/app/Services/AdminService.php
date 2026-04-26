@@ -2,8 +2,9 @@
 
 namespace Modules\Admin\Services;
 
-use Illuminate\Database\Eloquent\Builder;
 use Modules\Admin\Models\Admin;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Yajra\DataTables\Facades\DataTables;
 
 class AdminService
 {
@@ -14,16 +15,13 @@ class AdminService
         return getCaseCollection($query, $data);
     }
 
-    public function queryForDataTable(): Builder
+    public function dataTable(): JsonResponse
     {
-        $query = Admin::query()
-            ->select(['id', 'name', 'email', 'image', 'is_active', 'created_at']);
+        $query = Admin::query()->select(['id', 'name', 'email', 'image', 'is_active', 'created_at']);
+        return DataTables::eloquent($query)->toJson();
+    }
 
-        // Keep default order by id desc only when no explicit DataTables sorting is requested.
-        if (blank(request()->input('order'))) {
-            $query->latest('id');
-        }
-
-        return $query;
+    public function save($data){
+        return Admin::create($data);
     }
 }

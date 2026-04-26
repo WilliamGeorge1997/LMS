@@ -1,0 +1,13 @@
+---
+description: Enforce short, direct responses with no unnecessary explanation.
+alwaysApply: true
+---
+
+# Response Style (must follow)
+
+- Answer in the shortest way possible
+- No long introductions or conclusions
+- No filler phrases like "Great question" or "Sure!"
+- Code only, no explanation unless asked
+- If explanation is needed, max 2 lines
+- Be direct and to the point always
