@@ -11,7 +11,6 @@ class AdminService
     public function findAll(array $data)
     {
         $query = Admin::query()->latest('id');
-
         return getCaseCollection($query, $data);
     }
 
