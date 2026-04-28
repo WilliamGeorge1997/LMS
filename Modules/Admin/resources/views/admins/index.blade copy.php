@@ -204,13 +204,13 @@
 <script src="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 
 {{-- Plugin system --}}
-<script src="{{ asset('dashboard/assets/js/custom/plugins/core/ajax.js') }}"></script>
-<script src="{{ asset('dashboard/assets/js/custom/plugins/core/notify.js') }}"></script>
-<script src="{{ asset('dashboard/assets/js/custom/plugins/core/validator.js') }}"></script>
-<script src="{{ asset('dashboard/assets/js/custom/plugins/core/dependent-dropdown.js') }}"></script>
-<script src="{{ asset('dashboard/assets/js/custom/plugins/create-plugin.js') }}"></script>
-<script src="{{ asset('dashboard/assets/js/custom/plugins/toggle-plugin.js') }}"></script>
-<script src="{{ asset('dashboard/assets/js/custom/plugins/delete-plugin.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/plugins/core/ajax.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/plugins/core/notify.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/plugins/core/validator.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/plugins/core/dependent-dropdown.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/plugins/create-plugin.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/plugins/toggle-plugin.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/plugins/delete-plugin.js') }}"></script>
 
 <script>
     "use strict";
@@ -363,6 +363,19 @@
                 create: "+ Create Admin",
                 cancel: "× Cancel"
             }
+        });
+
+        // ── 4. Toggle Plugin ────────────────────────────────────────────────
+        TogglePlugin.init({
+            toggleUrl: "{{ route('admins.toggle', ['admin' => ':id']) }}",
+            selector: ".active-toggle"
+        });
+
+        // ── 5. Delete Plugin ────────────────────────────────────────────────
+        DeletePlugin.init({
+            deleteUrl: "{{ route('admins.destroy', ['admin' => ':id']) }}",
+            datatable: dt,
+            selector: ".delete-btn"
         });
 
     });
