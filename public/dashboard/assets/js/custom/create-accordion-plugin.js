@@ -1,246 +1,241 @@
 "use strict";
 
 window.CreatePlugin = (function () {
-    function pickElement($root, selector) {
-        var $inside = $root.find(selector).first();
-        return $inside.length ? $inside : $(selector).first();
-    }
-
-    function getElements(options) {
-        var $root = $(options.root);
-
-        return {
-            $root: $root,
-            $toggle: pickElement($root, options.selectors.toggle),
-            $toggleLabel: pickElement($root, options.selectors.toggleLabel),
-            $cancel: pickElement($root, options.selectors.cancel),
-            $collapse: pickElement($root, options.selectors.collapse),
-            $form: pickElement($root, options.selectors.form),
-            $submit: pickElement($root, options.selectors.submit)
-        };
-    }
-
-    function setFieldError(elements, field, message) {
-        var $field = elements.$form.find('[name="' + field + '"]');
-        var $error = elements.$form.find('[data-field-error="' + field + '"]');
-        $field.addClass('is-invalid');
-        $error.text(message || "");
-    }
-
-    function clearFieldError(elements, field) {
-        var $field = elements.$form.find('[name="' + field + '"]');
-        var $error = elements.$form.find('[data-field-error="' + field + '"]');
-        $field.removeClass('is-invalid');
-        $error.text("");
-    }
-
-    function clearErrors(elements) {
-        elements.$form.find(".is-invalid").removeClass("is-invalid");
-        elements.$form.find("[data-field-error]").text("");
-    }
-
-    function normalizeErrors(errors) {
-        var result = {};
-        $.each(errors || {}, function (field, value) {
-            result[field] = Array.isArray(value) ? value[0] : value;
-        });
-        return result;
-    }
-
-    function showErrors(elements, errors, onlyField) {
-        var normalized = normalizeErrors(errors);
-        if (!onlyField) {
-            clearErrors(elements);
-        }
-
-        if (onlyField) {
-            if (normalized[onlyField]) {
-                setFieldError(elements, onlyField, normalized[onlyField]);
-            } else {
-                clearFieldError(elements, onlyField);
-            }
-            return;
-        }
-
-        $.each(normalized, function (field, message) {
-            setFieldError(elements, field, message);
-        });
-    }
-
-    function setToggleState(elements, options, isOpen) {
-        elements.$toggleLabel.text(isOpen ? options.labels.cancel : options.labels.create);
-        if (options.toggleClasses) {
-            elements.$toggle.toggleClass(options.toggleClasses.open, isOpen);
-            elements.$toggle.toggleClass(options.toggleClasses.closed, !isOpen);
-        }
-    }
-
-    function getPayload(elements) {
-        return new FormData(elements.$form[0]);
-    }
-
-    function createAjax(options, payload, extraHeaders) {
-        return $.ajax({
-            url: options.storeUrl,
-            method: options.method,
-            data: payload,
-            processData: false,
-            contentType: false,
-            headers: $.extend({
-                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                "X-Requested-With": "XMLHttpRequest"
-            }, extraHeaders || {})
-        });
-    }
-
-    function handleSuccessWithDataTable(options, response) {
-        if (!options.datatable) {
-            return;
-        }
-
-        if (options.onSuccess) {
-            options.onSuccess(response, options.datatable);
-            return;
-        }
-
-        if (options.datatableMode === "reload") {
-            options.datatable.ajax.reload(null, false);
-            return;
-        }
-
-        if (typeof options.mapRow === "function") {
-            options.datatable.row.add(options.mapRow(response)).draw(false);
-        }
-    }
-
     function init(options) {
-        var finalOptions = $.extend(true, {
-            root: "[data-create-plugin]",
+        var config = $.extend({
+            root: "body",
             selectors: {
-                toggle: "[data-create-toggle]",
-                toggleLabel: "[data-create-toggle-label]",
-                cancel: "[data-create-cancel]",
-                collapse: "[data-create-collapse]",
-                form: "[data-create-form]",
-                submit: "[data-create-submit]"
+                toggle: "#create-toggle",
+                toggleLabel: "#create-toggle-label",
+                collapse: "#create-collapse",
+                form: "#create-form",
+                submit: "#create-submit",
+                cancel: "#create-cancel"
             },
-            labels: {
-                create: "Create",
-                cancel: "Cancel"
-            },
-            toggleClasses: {
-                open: "btn-danger",
-                closed: "btn-primary"
-            },
-            method: "POST",
+            labels: { create: "Create", cancel: "Cancel" },
+            toggleClasses: { open: "btn-danger", closed: "btn-primary" },
             storeUrl: null,
-            liveValidate: true,
-            liveValidateDelay: 350,
-            liveValidateEventSelector: "input[name], select[name], textarea[name]",
+            method: "POST",
+            animationDuration: 350,
+            liveValidate: false,
+            frontValidate: true,
+            frontValidateEventSelector: "input[name], select[name], textarea[name]",
             datatable: null,
             datatableMode: "reload",
             mapRow: null,
-            onSuccess: null
+            onSuccess: null,
+            notifications: {
+                enabled: true,
+                successTitle: "Success",
+                successText: "Record created successfully.",
+                errorTitle: "Error",
+                errorText: "Something went wrong. Please try again."
+            }
         }, options || {});
 
-        var elements = getElements(finalOptions);
-        var animationDuration = 500;
-        elements.$collapse.hide().removeClass("show");
-        var liveTimer = null;
-        var liveRequest = null;
+        var $root = $(config.root);
+        var $toggle = $root.find(config.selectors.toggle).first();
+        var $toggleLabel = $root.find(config.selectors.toggleLabel).first();
+        var $collapse = $root.find(config.selectors.collapse).first();
+        var $form = $root.find(config.selectors.form).first();
+        var $submit = $root.find(config.selectors.submit).first();
+        var $cancel = $root.find(config.selectors.cancel).first();
 
-        function closeCreate() {
-            elements.$collapse.stop(true, true).slideUp(animationDuration, function () {
-                elements.$collapse.removeClass("show");
-            });
-            setToggleState(elements, finalOptions, false);
-            elements.$form.trigger("reset");
-            clearErrors(elements);
+        if (!$collapse.length || !$form.length || !config.storeUrl) {
+            return null;
         }
 
-        function openCreate() {
-            elements.$collapse.stop(true, true).slideDown(animationDuration, function () {
-                elements.$collapse.addClass("show");
-            });
-            setToggleState(elements, finalOptions, true);
+        var collapseId = $collapse.attr("id");
+        if (collapseId) {
+            var duration = typeof config.animationDuration === "number"
+                ? config.animationDuration + "ms"
+                : config.animationDuration;
+            var styleId = "create-plugin-duration-" + collapseId;
+            $("#" + styleId).remove();
+            $("head").append('<style id="' + styleId + '">#' + collapseId + '.collapsing{transition:height ' + duration + ' ease !important;}</style>');
         }
 
-        elements.$toggle.on("click", function (event) {
-            event.preventDefault();
-            var isOpen = elements.$collapse.hasClass("show");
-            if (isOpen) {
-                closeCreate();
-                return;
+        var collapse = bootstrap.Collapse.getOrCreateInstance($collapse[0], { toggle: false });
+
+        function buildPayload() {
+            return new FormData($form[0]);
+        }
+
+        function clearErrors() {
+            $form.find(".is-invalid").removeClass("is-invalid");
+            $form.find("[data-field-error]").text("");
+        }
+
+        function showBackendErrors(errors) {
+            var normalized = {};
+            $.each(errors || {}, function (field, value) {
+                normalized[field] = Array.isArray(value) ? value[0] : value;
+            });
+
+            clearErrors();
+
+            $.each(normalized, function (field, message) {
+                $form.find('[name="' + field + '"]').addClass("is-invalid");
+                $form.find('[data-field-error="' + field + '"]').text(message || "");
+            });
+        }
+
+        function clearField(name) {
+            $form.find('[name="' + name + '"]').removeClass("is-invalid");
+            $form.find('[data-field-error="' + name + '"]').text("");
+        }
+
+        function setField(name, message) {
+            $form.find('[name="' + name + '"]').addClass("is-invalid");
+            $form.find('[data-field-error="' + name + '"]').text(message || "");
+        }
+
+        function validateField(el) {
+            if (!el || !el.name) {
+                return true;
             }
-            openCreate();
-        });
 
-        elements.$cancel.on("click", function () {
-            closeCreate();
-        });
+            var $el = $(el);
 
-        if (finalOptions.liveValidate) {
-            elements.$form.on("input change", finalOptions.liveValidateEventSelector, function (event) {
-                var field = event.target.name;
-                if (!field) {
-                    return;
+            var sameSelector = $el.attr("data-rule-same");
+            if (sameSelector) {
+                var $other = $(sameSelector);
+                if ($other.length && $other.val() !== $el.val()) {
+                    setField(el.name, $el.attr("data-msg-same") || "Values do not match.");
+                    return false;
                 }
+            }
 
-                clearTimeout(liveTimer);
-                liveTimer = setTimeout(function () {
-                    if (liveRequest && liveRequest.readyState !== 4) {
-                        liveRequest.abort();
-                    }
+            var minValue = $el.attr("data-rule-min");
+            if (minValue && ($el.val() || "").length < parseInt(minValue, 10)) {
+                setField(el.name, $el.attr("data-msg-min") || ("Minimum " + minValue + " characters."));
+                return false;
+            }
 
-                    liveRequest = createAjax(finalOptions, getPayload(elements), {})
-                        .done(function () {
-                            clearFieldError(elements, field);
-                        })
-                        .fail(function (xhr, status) {
-                            if (status === "abort") {
-                                return;
-                            }
-                            if (xhr.status === 422) {
-                                showErrors(elements, xhr.responseJSON?.errors || {}, field);
-                            }
-                        });
-                }, finalOptions.liveValidateDelay);
+            var maxValue = $el.attr("data-rule-max");
+            if (maxValue && ($el.val() || "").length > parseInt(maxValue, 10)) {
+                setField(el.name, $el.attr("data-msg-max") || ("Maximum " + maxValue + " characters."));
+                return false;
+            }
+
+            if (el.checkValidity()) {
+                clearField(el.name);
+                return true;
+            }
+
+            setField(el.name, el.validationMessage || "Invalid value.");
+            return false;
+        }
+
+        function validateForm() {
+            clearErrors();
+            var ok = true;
+            $form.find(config.frontValidateEventSelector).each(function () {
+                if (!validateField(this)) {
+                    ok = false;
+                }
+            });
+            return ok;
+        }
+
+        function ajax(payload) {
+            return $.ajax({
+                url: config.storeUrl,
+                method: config.method,
+                data: payload,
+                processData: false,
+                contentType: false,
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                    "X-Requested-With": "XMLHttpRequest"
+                }
             });
         }
 
-        elements.$form.on("submit", function (event) {
-            event.preventDefault();
-            if (!finalOptions.storeUrl) {
+        function refreshTable(response) {
+            if (!config.datatable) {
+                return;
+            }
+            if (typeof config.onSuccess === "function") {
+                config.onSuccess(response, config.datatable);
+                return;
+            }
+            if (config.datatableMode === "append" && typeof config.mapRow === "function") {
+                config.datatable.row.add(config.mapRow(response)).draw(false);
+                return;
+            }
+            config.datatable.ajax.reload(null, false);
+        }
+
+        function setToggleState(isOpen) {
+            $toggleLabel.text(isOpen ? config.labels.cancel : config.labels.create);
+            $toggle.toggleClass(config.toggleClasses.open, isOpen);
+            $toggle.toggleClass(config.toggleClasses.closed, !isOpen);
+        }
+
+        function notify(type, title, text) {
+            if (!config.notifications || !config.notifications.enabled) {
                 return;
             }
 
-            elements.$submit.attr("data-kt-indicator", "on");
-            elements.$submit.prop("disabled", true);
+            if (typeof Swal !== "undefined" && Swal.fire) {
+                Swal.fire({
+                    icon: type,
+                    title: title,
+                    text: text,
+                    confirmButtonText: "OK"
+                });
+            }
+        }
 
-            createAjax(finalOptions, getPayload(elements), {})
+        $collapse.on("show.bs.collapse", function () { setToggleState(true); });
+        $collapse.on("hide.bs.collapse", function () { setToggleState(false); });
+        $collapse.on("hidden.bs.collapse", function () {
+            $form.trigger("reset");
+            clearErrors();
+        });
+
+        $cancel.on("click", function () { collapse.hide(); });
+
+        if (config.frontValidate) {
+            $form.on("input change blur", config.frontValidateEventSelector, function (event) {
+                validateField(event.target);
+            });
+        }
+
+        $form.on("submit", function (event) {
+            event.preventDefault();
+
+            if (config.frontValidate && !validateForm()) {
+                return;
+            }
+
+            $submit.attr("data-kt-indicator", "on").prop("disabled", true);
+
+            ajax(buildPayload())
                 .done(function (response) {
-                    clearErrors(elements);
-                    handleSuccessWithDataTable(finalOptions, response);
-                    closeCreate();
+                    clearErrors();
+                    refreshTable(response);
+                    collapse.hide();
+                    notify("success", config.notifications.successTitle, config.notifications.successText);
                 })
                 .fail(function (xhr) {
                     if (xhr.status === 422) {
-                        showErrors(elements, xhr.responseJSON?.errors || {});
+                        showBackendErrors(xhr.responseJSON?.errors || {});
+                        return;
                     }
+                    notify("error", config.notifications.errorTitle, config.notifications.errorText);
                 })
                 .always(function () {
-                    elements.$submit.removeAttr("data-kt-indicator");
-                    elements.$submit.prop("disabled", false);
+                    $submit.removeAttr("data-kt-indicator").prop("disabled", false);
                 });
         });
 
         return {
-            options: finalOptions,
-            elements: elements,
-            clearErrors: function () { clearErrors(elements); },
-            showErrors: function (errors, onlyField) { showErrors(elements, errors, onlyField); },
-            open: openCreate,
-            close: closeCreate
+            open: function () { collapse.show(); },
+            close: function () { collapse.hide(); },
+            clearErrors: clearErrors,
+            showErrors: showBackendErrors
         };
     }
 

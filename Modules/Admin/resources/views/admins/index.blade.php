@@ -21,40 +21,51 @@
 
         </div>
         <div class="d-flex align-items-center gap-2 gap-lg-3">
-            <a href="#" class="btn btn-sm fw-bold btn-primary" data-create-toggle>
-                <span data-create-toggle-label>+ Create Admin</span>
+            <a href="#create-collapse" id="create-toggle" class="btn btn-sm fw-bold btn-primary" data-create-toggle
+                data-bs-toggle="collapse" aria-expanded="false" aria-controls="create-collapse">
+                <span id="create-toggle-label" data-create-toggle-label>+ Create Admin</span>
             </a>
         </div>
     </div>
     <div class="app-container container-fluid mb-7">
         <div class="accordion" data-create-accordion>
             <div class="accordion-item border-0">
-                <div class="accordion-collapse collapse" data-create-collapse>
+                <div id="create-collapse" class="accordion-collapse collapse" data-create-collapse>
                     <div class="accordion-body px-0 pt-0">
                         <div class="card shadow-sm border-0">
                             <div class="card-header border-0 py-4">
                                 <h3 class="card-title fw-bold fs-5 m-0">Create Admin</h3>
                             </div>
                             <div class="card-body pt-0">
-                        <form data-create-form novalidate enctype="multipart/form-data">
+                        <form id="create-form" data-create-form novalidate enctype="multipart/form-data">
                             @csrf
                             <div class="row g-6">
                                 <div class="col-md-6">
                                     <label class="required form-label">{{ __('attributes.name') }}</label>
                                     <input type="text" name="name" class="form-control form-control-solid"
-                                        placeholder="Enter name" autocomplete="off" />
+                                        placeholder="Enter name" autocomplete="off" required maxlength="255" />
                                     <div class="invalid-feedback d-block" data-field-error="name"></div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="required form-label">{{ __('attributes.email') }}</label>
                                     <input type="email" name="email" class="form-control form-control-solid"
-                                        placeholder="Enter email" autocomplete="off" />
+                                        placeholder="Enter email" autocomplete="off" required maxlength="255" />
                                     <div class="invalid-feedback d-block" data-field-error="email"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="required form-label">Role</label>
+                                    <select name="role" class="form-select form-select-solid" required>
+                                        <option value="" selected disabled>Select role</option>
+                                        <option value="{{ \Modules\Admin\Enums\Role::SUPER_ADMIN->value }}">
+                                            {{ \Modules\Admin\Enums\Role::SUPER_ADMIN->value }}
+                                        </option>
+                                    </select>
+                                    <div class="invalid-feedback d-block" data-field-error="role"></div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="required form-label">{{ __('attributes.password') }}</label>
                                     <input type="password" name="password" class="form-control form-control-solid"
-                                        placeholder="Enter password" autocomplete="new-password" />
+                                        placeholder="Enter password" autocomplete="new-password" required minlength="6" />
                                     <div class="invalid-feedback d-block" data-field-error="password"></div>
                                 </div>
                                 <div class="col-md-6">
@@ -63,10 +74,18 @@
                                         accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
                                     <div class="invalid-feedback d-block" data-field-error="image"></div>
                                 </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">{{ __('attributes.is_active') }}</label>
+                                    <div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
+                                        <input class="form-check-input" type="checkbox" name="is_active" value="1"
+                                            checked />
+                                    </div>
+                                    <div class="invalid-feedback d-block" data-field-error="is_active"></div>
+                                </div>
                             </div>
                             <div class="d-flex justify-content-end gap-3 mt-8">
-                                <button type="button" class="btn btn-light" data-create-cancel>Cancel</button>
-                                <button type="submit" class="btn btn-primary" data-create-submit>
+                                <button type="button" id="create-cancel" class="btn btn-light" data-create-cancel>Cancel</button>
+                                <button type="submit" id="create-submit" class="btn btn-primary" data-create-submit>
                                     <span class="indicator-label">Submit</span>
                                     <span class="indicator-progress">
                                         <span class="spinner-border spinner-border-sm align-middle"></span>
@@ -303,12 +322,12 @@
         KTUtil.onDOMContentLoaded(function() {
             KTDatatablesServerSide.init();
             CreatePlugin.init({
-                root: '[data-create-plugin]',
                 storeUrl: "{{ route('admins.store') }}",
                 labels: {
                     create: '+ Create Admin',
                     cancel: '× Cancel'
                 },
+                datatable: $('#kt_datatable').DataTable(),
                 datatableMode: 'reload'
             });
         });

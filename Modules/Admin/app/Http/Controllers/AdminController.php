@@ -41,10 +41,6 @@ class AdminController extends Controller
      */
     public function store(AdminStoreRequest $request)
     {
-        if ($request->isPrecognitive()) {
-            return response()->noContent();
-        }
-
         $data = (new AdminDto($request))->dataFromRequest();
         $admin = $this->adminService->save($data);
         return response()->json(['status' => true, 'data' => $admin]);

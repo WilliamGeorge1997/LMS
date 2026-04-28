@@ -3,6 +3,8 @@
 namespace Modules\Admin\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Modules\Admin\Enums\Role as RoleEnum;
 
 class AdminStoreRequest extends FormRequest
 {
@@ -16,6 +18,8 @@ class AdminStoreRequest extends FormRequest
             'email' => 'required|email|unique:admins,email',
             'password' => 'required|string|min:6',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
+            'is_active' => 'nullable|boolean',
+            'role' => ['required', 'string', Rule::in([RoleEnum::SUPER_ADMIN->value])],
         ];
     }
 

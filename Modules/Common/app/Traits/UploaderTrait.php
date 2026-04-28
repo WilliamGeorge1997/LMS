@@ -2,13 +2,15 @@
 
 namespace Modules\Common\Traits;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
 trait UploaderTrait
 {
-    private string $uploadFolder = 'uploads';
+    private string $disk = 'public';
+    private string $uploadsFolder = 'uploads';
 
     private function imageManager(): ImageManager
     {
@@ -17,10 +19,10 @@ trait UploaderTrait
 
     private function buildPath(string $folder, string $fileName): string
     {
-        return $this->uploadFolder . '/' . $folder . '/' . $fileName;
+        return $this->uploadsFolder . '/' . $folder . '/' . $fileName;
     }
 
-    public function uploadImage($file, string $folder, string $disk = 'public', ?int $width = null, ?int $height = null, int $quality = 80): string
+    public function uploadImage(UploadedFile $file, string $folder, ?int $width = null, ?int $height = null, int $quality = 80): string
     {
         $fileName = $this->generateFileName($file);
         $image = $this->imageManager()->decode($file);
@@ -29,48 +31,51 @@ trait UploaderTrait
             $image->scale(width: $width, height: $height);
         }
 
-        $encoded = $image->encodeUsingFileExtension($file->getClientOriginalExtension(), quality: $quality);
+        $encoded = $image->encodeUsingFileExtension($file->getClientOriginalExtension(), quality: $quality)->toString();
 
-        Storage::disk($disk)->put($this->buildPath($folder, $fileName), (string) $encoded);
+        Storage::disk($this->disk)->put($this->buildPath($folder, $fileName), $encoded);
 
         return $fileName;
     }
 
-    public function uploadMultipleImages(array $files, string $folder, string $disk = 'public', ?int $width = null, ?int $height = null, int $quality = 80): array
+    /**
+     * @param UploadedFile[] $files
+     */
+    public function uploadMultipleImages(array $files, string $folder, ?int $width = null, ?int $height = null, int $quality = 80): array
     {
         $fileNames = [];
 
         foreach ($files as $file) {
-            $fileNames[] = $this->uploadImage($file, $folder, $disk, $width, $height, $quality);
+            $fileNames[] = $this->uploadImage($file, $folder, $width, $height, $quality);
         }
 
         return $fileNames;
     }
 
-    public function uploadFile($file, string $folder, string $disk = 'public'): string
+    public function uploadFile(UploadedFile $file, string $folder): string
     {
         $fileName = $this->generateFileName($file);
 
-        Storage::disk($disk)->putFileAs($this->buildPath($folder, ''), $file, $fileName);
+        Storage::disk($this->disk)->putFileAs($this->buildPath($folder, ''), $file, $fileName);
 
         return $fileName;
     }
 
-    public function deleteFile(string $folder, string $fileName, string $disk = 'public'): void
+    public function deleteFile(string $folder, string $fileName): void
     {
         $path = $this->buildPath($folder, $fileName);
 
-        if (Storage::disk($disk)->exists($path)) {
-            Storage::disk($disk)->delete($path);
+        if (Storage::disk($this->disk)->exists($path)) {
+            Storage::disk($this->disk)->delete($path);
         }
     }
 
-    public function getFileUrl(string $folder, string $fileName, string $disk = 'public'): string
+    public function getFileUrl(string $folder, string $fileName): string
     {
-        return Storage::disk($disk)->url($this->buildPath($folder, $fileName));
+        return Storage::url($this->buildPath($folder, $fileName));
     }
 
-    private function generateFileName($file): string
+    private function generateFileName(UploadedFile $file): string
     {
         return uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
     }

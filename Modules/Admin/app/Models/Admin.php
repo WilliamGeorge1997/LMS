@@ -2,12 +2,15 @@
 
 namespace Modules\Admin\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Model
 {
-    use HasFactory;
+    use HasFactory, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -22,20 +25,18 @@ class Admin extends Model
     }
 
     //Scopes
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
     }
 
     //Accessors
-    public function getImageAttribute($value)
+    public function getImageAttribute(?string $value): ?string
     {
         if (empty($value)) {
-            return $value;
+            return null;
         }
-        if (filter_var($value, FILTER_VALIDATE_URL)) {
-            return $value;
-        }
-        return asset('uploads/admin/' . $value);
+
+        return Storage::url('uploads/admin/' . $value);
     }
 }
