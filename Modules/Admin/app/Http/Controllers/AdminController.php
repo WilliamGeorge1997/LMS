@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Admin\DTO\AdminDto;
 use Modules\Admin\Http\Requests\AdminStoreRequest;
+use Modules\Admin\Http\Requests\AdminUpdateRequest;
+use Modules\Admin\Models\Admin;
 use Modules\Admin\Services\AdminService;
 
 class AdminController extends Controller
@@ -65,10 +67,23 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(AdminUpdateRequest $request, Admin $admin) {
+        $data = (new AdminDto($request))->dataFromRequest();
+        $admin = $this->adminService->update($admin, $data);
+        return response()->json(['status' => true, 'data' => $admin]);
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy(Admin $admin) {
+        $admin = $this->adminService->delete($admin);
+        return response()->json(['status' => true]);
+    }
+
+    public function toggleActivate(Admin $admin)
+    {
+        $admin = $this->adminService->toggleActivate($admin);
+        return response()->json(['status' => true, 'data' => $admin]);
+    }
 }

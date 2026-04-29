@@ -17,7 +17,7 @@ class AdminDto
     {
         $this->name = $request->input('name');
         $this->email = $request->input('email');
-        $this->password = Hash::make($request->input('password'));
+        $this->password = $request->filled('password') ? Hash::make($request->input('password')) : null;
         $this->is_active = $request->has('is_active') ? 1 : 0;
         $this->role = $request->input('role');
     }

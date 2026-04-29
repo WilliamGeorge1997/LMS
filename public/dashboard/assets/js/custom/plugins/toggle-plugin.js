@@ -28,6 +28,7 @@ window.TogglePlugin = (function () {
         method: "PATCH",
 
         notifications: {
+            successTitle: "Success",
             errorTitle: "Error",
             errorText: "Could not update status. Please try again.",
         },
@@ -57,6 +58,16 @@ window.TogglePlugin = (function () {
             PluginAjax.json(url, config.method, {
                 is_active: isChecked ? 1 : 0,
             })
+                .done(function (response) {
+                    var name = response.data.name;
+                    var isActive = response.data.is_active === 1;
+
+                    PluginNotify.show(
+                        "success",
+                        config.notifications.successTitle,
+                        name + " is now " + (isActive ? "Active" : "Inactive"),
+                    );
+                })
                 .fail(function () {
                     // Revert checkbox on failure
                     $checkbox.prop("checked", !isChecked);

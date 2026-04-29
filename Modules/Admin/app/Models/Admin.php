@@ -39,4 +39,5 @@ class Admin extends Model
 
         return Storage::url('uploads/admin/' . $value);
     }
+     
 }
