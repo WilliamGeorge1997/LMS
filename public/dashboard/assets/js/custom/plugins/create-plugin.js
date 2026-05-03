@@ -151,15 +151,27 @@ window.CreatePlugin = (function () {
             config.datatable.ajax.reload(null, false);
         }
 
-        function setSubmitLoading(loading) {
-            $submit
-                .attr("data-kt-indicator", loading ? "on" : null)
-                .prop("disabled", loading);
+        //Old code
+        // function setSubmitLoading(loading) {
+        //     $submit
+        //         .attr("data-kt-indicator", loading ? "on" : null)
+        //         .prop("disabled", loading);
 
-            if (!loading) {
-                $submit.removeAttr("data-kt-indicator");
+        //     if (!loading) {
+        //         $submit.removeAttr("data-kt-indicator");
+        //     }
+        // }
+        //Old code
+
+        //New Code
+        function setSubmitLoading(loading) {
+            if (loading) {
+                $submit.attr("data-kt-indicator", "on").prop("disabled", true);
+            } else {
+                $submit.removeAttr("data-kt-indicator").prop("disabled", false);
             }
         }
+        //New Code
 
         // ─── Collapse events ──────────────────────────────────────────────────
 

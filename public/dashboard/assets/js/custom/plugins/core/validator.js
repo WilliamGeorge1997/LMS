@@ -155,19 +155,38 @@ window.PluginValidator = (function () {
      * Attach live (input/change/blur) validation to form fields
      * Call once during plugin init
      */
-    function bindLive($form) {
-        $form.on(
-            "input change blur",
-            "[data-rule-required], [data-rule-email], [data-rule-min], [data-rule-max], [data-rule-same]",
-            function () {
-                validateField($form, this);
-            },
-        );
-    }
 
-    function unbindLive($form) {
-        $form.off("input change blur");
-    }
+    //Old code
+    // function bindLive($form) {
+    //     $form.on(
+    //         "input change blur",
+    //         "[data-rule-required], [data-rule-email], [data-rule-min], [data-rule-max], [data-rule-same]",
+    //         function () {
+    //             validateField($form, this);
+    //         },
+    //     );
+    // }
+
+    // function unbindLive($form) {
+    //     $form.off("input change blur");
+    // }
+    //Old code
+
+    //New Code
+  function bindLive($form) {
+      $form.on(
+          "input.validator change.validator blur.validator",
+          "[data-rule-required], [data-rule-email], [data-rule-min], [data-rule-max], [data-rule-same]",
+          function () {
+              validateField($form, this);
+          },
+      );
+  }
+
+  function unbindLive($form) {
+      $form.off("input.validator change.validator blur.validator");
+  }
+    //New Code
 
     return {
         validateField,

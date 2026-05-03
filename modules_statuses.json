@@ -1,4 +1,6 @@
 {
     "Admin": true,
-    "Common": true
+    "Common": true,
+    "Publisher": true,
+    "Country": true
 }

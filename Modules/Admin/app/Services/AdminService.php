@@ -3,6 +3,8 @@
 namespace Modules\Admin\Services;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Http\UploadedFile;
+use Modules\Admin\DTOs\AdminDto;
 use Modules\Admin\Models\Admin;
 use Modules\Common\Traits\UploaderTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,37 +31,42 @@ class AdminService
         return DataTables::eloquent($query)->toJson();
     }
 
-    public function save(array $data): Admin
+    public function save(AdminDto $dto, ?UploadedFile $image = null): Admin
     {
-        if (request()->hasFile('image'))
-            $data['image'] = $this->uploadImage(request()->file('image'), $this->uploadFolder);
+        $data = $dto->toArray();
+        if ($image)
+            $data['image'] = $this->uploadImage($image, $this->uploadFolder);
 
         $admin = Admin::create($data);
-        $admin->assignRole($data['role']);
+        $admin->assignRole($dto->role);
+
         return $admin;
     }
 
-    public function update(Admin $admin, array $data)
+    public function update(Admin $admin, AdminDto $dto, ?UploadedFile $image = null): Admin
     {
-        if (request()->hasFile('image')) {
-            $this->deleteFile($this->uploadFolder, $admin->image);
-            $data['image'] = $this->uploadImage(request()->file('image'), $this->uploadFolder);
+        $data = $dto->toArray();
+
+        if ($image) {
+            $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'));
+            $data['image'] = $this->uploadImage($image, $this->uploadFolder);
         }
+
         $admin->update($data);
-        $admin->syncRoles($data['role']);
+        $admin->syncRoles($dto->role);
+
         return $admin->fresh();
     }
 
-    public function delete(Admin $admin)
+    public function delete(Admin $admin): bool
     {
         if ($admin->image)
             $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'));
 
-        $admin->delete();
-        return $admin;
+        return (bool) $admin->delete();
     }
 
-    public function toggleActivate(Admin $admin)
+    public function toggleActivate(Admin $admin): Admin
     {
         $admin->update(['is_active' => !$admin->is_active]);
         return $admin->fresh();

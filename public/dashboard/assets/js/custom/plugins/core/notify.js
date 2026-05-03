@@ -29,8 +29,13 @@ window.PluginNotify = (function () {
      * @returns Promise<boolean>
      */
     function confirm(title, text, confirmText) {
-        if (typeof Swal === "undefined") return Promise.resolve(true);
+        //Old code
+        // if (typeof Swal === "undefined") return Promise.resolve(true);
+        //Old code
 
+        //New code
+       if (typeof Swal === "undefined") return Promise.resolve(false);
+        //New Code
         return Swal.fire({
             icon: "warning",
             title: title,

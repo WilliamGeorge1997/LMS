@@ -16,7 +16,6 @@
  *   });
  */
 window.DeletePlugin = (function () {
-
     var DEFAULTS = {
         // Required — :id is replaced with the row's data-id
         deleteUrl: null,
@@ -33,17 +32,17 @@ window.DeletePlugin = (function () {
         method: "DELETE",
 
         confirm: {
-            title:       "Are you sure?",
-            text:        "This action cannot be undone.",
-            confirmText: "Yes, delete it"
+            title: "Are you sure?",
+            text: "This action cannot be undone.",
+            confirmText: "Yes, delete it",
         },
 
         notifications: {
             successTitle: "Deleted",
-            successText:  "Record deleted successfully.",
-            errorTitle:   "Error",
-            errorText:    "Could not delete record. Please try again."
-        }
+            successText: "Record deleted successfully.",
+            errorTitle: "Error",
+            errorText: "Could not delete record. Please try again.",
+        },
     };
 
     function init(options) {
@@ -54,17 +53,66 @@ window.DeletePlugin = (function () {
             return null;
         }
 
-        var $container = config.container === "document" ? $(document) : $(config.container);
+        var $container =
+            config.container === "document" ? $(document) : $(config.container);
+        //Old code
+        // $container.on("click.delete", config.selector, function () {
+        //     var $btn = $(this);
+        //     var id = $btn.attr("data-id");
+        //     var url = config.deleteUrl.replace(":id", id);
 
+        //     PluginNotify.confirm(
+        //         config.confirm.title,
+        //         config.confirm.text,
+        //         config.confirm.confirmText,
+        //     ).then(function (confirmed) {
+        //         if (!confirmed) return;
+
+        //         $btn.prop("disabled", true);
+
+        //         PluginAjax.json(url, config.method)
+        //             .done(function () {
+        //                 // Remove the row directly if datatable is available
+        //                 if (config.datatable) {
+        //                     var row = config.datatable.row($btn.closest("tr"));
+        //                     if (row.length) {
+        //                         row.remove().draw(false);
+        //                     } else {
+        //                         config.datatable.ajax.reload(null, false);
+        //                     }
+        //                 }
+
+        //                 PluginNotify.show(
+        //                     "success",
+        //                     config.notifications.successTitle,
+        //                     config.notifications.successText,
+        //                 );
+        //             })
+        //             .fail(function () {
+        //                 PluginNotify.show(
+        //                     "error",
+        //                     config.notifications.errorTitle,
+        //                     config.notifications.errorText,
+        //                 );
+        //             })
+        //             .always(function () {
+        //                 $btn.prop("disabled", false);
+        //             });
+        //     });
+        // });
+        //Old code
+
+        //New code
         $container.on("click.delete", config.selector, function () {
             var $btn = $(this);
-            var id   = $btn.attr("data-id");
-            var url  = config.deleteUrl.replace(":id", id);
+            var $tr = $btn.closest("tr");
+            var id = $btn.attr("data-id");
+            var url = config.deleteUrl.replace(":id", id);
 
             PluginNotify.confirm(
                 config.confirm.title,
                 config.confirm.text,
-                config.confirm.confirmText
+                config.confirm.confirmText,
             ).then(function (confirmed) {
                 if (!confirmed) return;
 
@@ -72,9 +120,8 @@ window.DeletePlugin = (function () {
 
                 PluginAjax.json(url, config.method)
                     .done(function () {
-                        // Remove the row directly if datatable is available
                         if (config.datatable) {
-                            var row = config.datatable.row($btn.closest("tr"));
+                            var row = config.datatable.row($tr);
                             if (row.length) {
                                 row.remove().draw(false);
                             } else {
@@ -85,14 +132,14 @@ window.DeletePlugin = (function () {
                         PluginNotify.show(
                             "success",
                             config.notifications.successTitle,
-                            config.notifications.successText
+                            config.notifications.successText,
                         );
                     })
                     .fail(function () {
                         PluginNotify.show(
                             "error",
                             config.notifications.errorTitle,
-                            config.notifications.errorText
+                            config.notifications.errorText,
                         );
                     })
                     .always(function () {
@@ -101,13 +148,14 @@ window.DeletePlugin = (function () {
             });
         });
 
+        //New code
+
         return {
             destroy: function () {
                 $container.off("click.delete", config.selector);
-            }
+            },
         };
     }
 
     return { init };
-
 })();

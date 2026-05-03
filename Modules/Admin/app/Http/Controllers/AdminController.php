@@ -3,16 +3,18 @@
 namespace Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Modules\Admin\DTO\AdminDto;
+use Modules\Admin\DTOs\AdminDto;
 use Modules\Admin\Http\Requests\AdminStoreRequest;
 use Modules\Admin\Http\Requests\AdminUpdateRequest;
 use Modules\Admin\Models\Admin;
 use Modules\Admin\Services\AdminService;
+use Modules\Common\Helpers\ApiResponse;
 
 class AdminController extends Controller
 {
-    public function __construct(private AdminService $adminService) {}
+    public function __construct(private readonly AdminService $adminService) {}
 
     /**
      * Display a listing of the resource.
@@ -41,11 +43,11 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AdminStoreRequest $request)
+    public function store(AdminStoreRequest $request): JsonResponse
     {
-        $data = (new AdminDto($request))->dataFromRequest();
-        $admin = $this->adminService->save($data);
-        return response()->json(['status' => true, 'data' => $admin]);
+        $dto   = AdminDto::fromRequest($request);
+        $admin = $this->adminService->save($dto, $request->file('image'));
+        return ApiResponse::success($admin);
     }
 
     /**
@@ -67,23 +69,24 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AdminUpdateRequest $request, Admin $admin) {
-        $data = (new AdminDto($request))->dataFromRequest();
-        $admin = $this->adminService->update($admin, $data);
-        return response()->json(['status' => true, 'data' => $admin]);
+    public function update(AdminUpdateRequest $request, Admin $admin): JsonResponse
+    {
+        $dto   = AdminDto::fromRequest($request);
+        $admin = $this->adminService->update($admin, $dto, $request->file('image'));
+        return ApiResponse::success($admin);
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Admin $admin) {
-        $admin = $this->adminService->delete($admin);
-        return response()->json(['status' => true]);
+    public function destroy(Admin $admin): JsonResponse
+    {
+        $status = $this->adminService->delete($admin);
+        return $status ? ApiResponse::success() : ApiResponse::error();
     }
 
-    public function toggleActivate(Admin $admin)
+    public function toggleActivate(Admin $admin): JsonResponse
     {
         $admin = $this->adminService->toggleActivate($admin);
-        return response()->json(['status' => true, 'data' => $admin]);
+        return ApiResponse::success($admin);
     }
 }

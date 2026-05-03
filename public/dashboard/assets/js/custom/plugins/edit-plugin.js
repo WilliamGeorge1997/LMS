@@ -306,17 +306,41 @@ window.EditPlugin = (function () {
      * Collect all inputs from a row and its child row into a jQuery wrapper
      * so PluginValidator can work on them as a pseudo-form
      */
+
+    //Old code
+    // function buildPseudoForm($tr, $childTr) {
+    //     var $inputs = $tr.find(".edit-input");
+    //     if ($childTr && $childTr.length) {
+    //         $inputs = $inputs.add($childTr.find(".edit-input"));
+    //     }
+    //     // PluginValidator expects a jQuery object with .find() — wrap in a div
+    //     var $wrapper = $("<div>").append($inputs.clone(true, true));
+    //     // Return a proxy: find works on both $tr and $childTr
+    //     return {
+    //         _$tr: $tr,
+    //         _$childTr: $childTr,
+    //         find: function (selector) {
+    //             var $result = $tr.find(selector);
+    //             if ($childTr && $childTr.length) {
+    //                 $result = $result.add($childTr.find(selector));
+    //             }
+    //             return $result;
+    //         },
+    //         on: function () {},
+    //         off: function () {},
+    //     };
+    // }
+    //Old code
+
+    //New Code
     function buildPseudoForm($tr, $childTr) {
-        var $inputs = $tr.find(".edit-input");
+        var $container = $("<div>");
+        $container.append($tr.find(".edit-input").clone(true, true));
         if ($childTr && $childTr.length) {
-            $inputs = $inputs.add($childTr.find(".edit-input"));
+            $container.append($childTr.find(".edit-input").clone(true, true));
         }
-        // PluginValidator expects a jQuery object with .find() — wrap in a div
-        var $wrapper = $("<div>").append($inputs.clone(true, true));
-        // Return a proxy: find works on both $tr and $childTr
+
         return {
-            _$tr: $tr,
-            _$childTr: $childTr,
             find: function (selector) {
                 var $result = $tr.find(selector);
                 if ($childTr && $childTr.length) {
@@ -324,10 +348,21 @@ window.EditPlugin = (function () {
                 }
                 return $result;
             },
-            on: function () {},
-            off: function () {},
+            on: function (events, selector, handler) {
+                $tr.on(events, selector, handler);
+                if ($childTr && $childTr.length) {
+                    $childTr.on(events, selector, handler);
+                }
+            },
+            off: function (events, selector) {
+                $tr.off(events, selector);
+                if ($childTr && $childTr.length) {
+                    $childTr.off(events, selector);
+                }
+            },
         };
     }
+    //New Code
 
     /**
      * Bind dependent dropdown behavior inside a row after inputs are injected
@@ -493,6 +528,21 @@ window.EditPlugin = (function () {
                 ? config.actionsTarget
                 : detectActionsTarget(dt);
 
+        //Old code
+        // Separate columns into visible (inline) and hidden (child row)
+        // var visibleCols = $.grep(config.columns, function (c) {
+        //     return !c.hidden;
+        // });
+        // var hiddenCols = $.grep(config.columns, function (c) {
+        //     return c.hidden;
+        // });
+
+        // // Track which row is currently being edited
+        // var $editingTr = null;
+        // var $editingChild = null;
+        //Old code
+
+        //New code
         // Separate columns into visible (inline) and hidden (child row)
         var visibleCols = $.grep(config.columns, function (c) {
             return !c.hidden;
@@ -501,14 +551,27 @@ window.EditPlugin = (function () {
             return c.hidden;
         });
 
+        // Build column lookup map for O(1) access
+        var columnMap = {};
+        $.each(config.columns, function (i, col) {
+            columnMap[col.field] = col;
+        });
+
         // Track which row is currently being edited
         var $editingTr = null;
         var $editingChild = null;
+        //New code
 
         // ─── Enter edit mode ──────────────────────────────────────────────────
 
         function enterEditMode($tr, rowData) {
-            var allCols = visibleCols.concat(hiddenCols);
+            //Old Code
+            // var allCols = visibleCols.concat(hiddenCols);
+            //Old Code
+
+            //New Code
+            var allCols = $.extend(true, [], visibleCols.concat(hiddenCols));
+            //New Code
 
             // Mark row
             $tr.addClass("editing-row");
@@ -590,9 +653,18 @@ window.EditPlugin = (function () {
             });
 
             // Remove child row
+            //Old code
+            // if ($editingChild && $editingChild.length) {
+            //     $editingChild.remove();
+            // }
+            //Old code
+
+            //New Code
             if ($editingChild && $editingChild.length) {
+                $editingChild.find("select").off("change.editDepends");
                 $editingChild.remove();
             }
+            //New Code
 
             // Unbind dependent dropdown listeners
             $tr.find("select").off("change.editDepends");
@@ -784,16 +856,24 @@ window.EditPlugin = (function () {
             formData.append(name, $el.val() || "");
         }
 
+        //Old code
+        // function getColumnByField(field) {
+        //     var found = null;
+        //     $.each(config.columns, function (i, col) {
+        //         if (col.field === field) {
+        //             found = col;
+        //             return false;
+        //         }
+        //     });
+        //     return found;
+        // }
+        //Old code
+
+        //New code
         function getColumnByField(field) {
-            var found = null;
-            $.each(config.columns, function (i, col) {
-                if (col.field === field) {
-                    found = col;
-                    return false;
-                }
-            });
-            return found;
+            return columnMap[field] || null;
         }
+        //New code
 
         // ─── DataTable utility ────────────────────────────────────────────────
 

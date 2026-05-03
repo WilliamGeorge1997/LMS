@@ -24,7 +24,30 @@ window.PluginDependentDropdown = (function () {
      * Bind all dependent dropdowns inside a form
      * @param {jQuery} $form
      */
+    //Old code
+    // function bind($form) {
+    //     $form.find("[data-depends-on]").each(function () {
+    //         var $child = $(this);
+    //         var parentName = $child.attr("data-depends-on");
+    //         var $parent = $form.find('[name="' + parentName + '"]');
+
+    //         if (!$parent.length) return;
+
+    //         // When parent changes → reload child options
+    //         $parent.on("change.depends", function () {
+    //             reload($child, $parent.val());
+    //         });
+
+    //         // Reset child on init
+    //         reset($child);
+    //     });
+    // }
+    //Old code
+
+    //New code
     function bind($form) {
+        unbind($form); // prevent duplicate listeners
+
         $form.find("[data-depends-on]").each(function () {
             var $child = $(this);
             var parentName = $child.attr("data-depends-on");
@@ -32,15 +55,14 @@ window.PluginDependentDropdown = (function () {
 
             if (!$parent.length) return;
 
-            // When parent changes → reload child options
             $parent.on("change.depends", function () {
                 reload($child, $parent.val());
             });
 
-            // Reset child on init
             reset($child);
         });
     }
+    //New code
 
     /**
      * Unbind all dependent dropdown listeners inside a form
