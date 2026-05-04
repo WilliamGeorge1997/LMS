@@ -67,21 +67,16 @@ window.PluginAjax = (function () {
     //New Code
     function json(url, method, data) {
         var isBodyless = method === "DELETE" || method === "GET";
-        var options = {
+        return $.ajax({
             url: url,
             method: method,
+            data: isBodyless ? undefined : JSON.stringify(data || {}),
+            contentType: isBodyless ? false : "application/json",
             headers: {
                 "X-CSRF-TOKEN": csrfToken(),
                 "X-Requested-With": "XMLHttpRequest",
             },
-        };
-
-        if (!isBodyless) {
-            options.data = JSON.stringify(data || {});
-            options.contentType = "application/json";
-        }
-
-        return $.ajax(options);
+        });
     }
     //New Code
 

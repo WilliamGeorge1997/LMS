@@ -1,5 +1,5 @@
 @extends('common::layouts.master')
-@section('title', @config('app.name') . ' - Admins List')
+@section('title', config('app.name') . ' - Admins List')
 
 @section('css')
 <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />

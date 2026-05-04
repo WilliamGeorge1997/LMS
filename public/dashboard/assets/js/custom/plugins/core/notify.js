@@ -34,7 +34,7 @@ window.PluginNotify = (function () {
         //Old code
 
         //New code
-       if (typeof Swal === "undefined") return Promise.resolve(false);
+        if (typeof Swal === "undefined") return Promise.resolve(false);
         //New Code
         return Swal.fire({
             icon: "warning",

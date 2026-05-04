@@ -63,21 +63,6 @@ window.EditPlugin = (function () {
 
     // ─── Helpers ──────────────────────────────────────────────────────────────
 
-    //New Code
-    /**
-     * Escape HTML special characters to prevent XSS
-     * @param {string} str
-     * @returns {string}
-     */
-    function escapeHtml(str) {
-        return String(str)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
-    }
-    //New Code
-
     /**
      * Build data-rule-* and data-msg-* attribute string from rules/messages config
      */
@@ -135,28 +120,14 @@ window.EditPlugin = (function () {
             $.each(col.options || [], function (i, opt) {
                 var selected =
                     String(opt.value) === String(value) ? "selected" : "";
-
-                //Old code
-                // optionsHtml +=
-                //     '<option value="' +
-                //     opt.value +
-                //     '" ' +
-                //     selected +
-                //     ">" +
-                //     opt.label +
-                //     "</option>";
-                //Old code
-
-                //New Code
                 optionsHtml +=
                     '<option value="' +
-                    escapeHtml(opt.value) +
+                    opt.value +
                     '" ' +
                     selected +
                     ">" +
-                    escapeHtml(opt.label) +
+                    opt.label +
                     "</option>";
-                //New Code
             });
 
             var dependsAttrs = "";
@@ -458,11 +429,11 @@ window.EditPlugin = (function () {
                             : "";
                     html +=
                         '<option value="' +
-                        escapeHtml(item.value) +
+                        item.value +
                         '" ' +
                         selected +
                         ">" +
-                        escapeHtml(item.label) +
+                        item.label +
                         "</option>";
                 });
                 $child.html(html).prop("disabled", false);
@@ -599,9 +570,7 @@ window.EditPlugin = (function () {
             //Old Code
 
             //New Code
-            var allCols = visibleCols.concat(hiddenCols).map(function (col) {
-                return $.extend(true, {}, col);
-            });
+            var allCols = $.extend(true, [], visibleCols.concat(hiddenCols));
             //New Code
 
             // Mark row
@@ -766,52 +735,25 @@ window.EditPlugin = (function () {
                             $childTr,
                             xhr.responseJSON?.errors || {},
                         );
-
-                        //Old code
-                        // $saveBtn
-                        //     .prop("disabled", false)
-                        //     .html(
-                        //         '<i class="ki-duotone ki-check fs-4"><span class="path1"></span><span class="path2"></span></i>',
-                        //     );
-                        // return;
-                        //Old code
-
-                        //New Code
-                        restoreSaveBtn($saveBtn);
+                        $saveBtn
+                            .prop("disabled", false)
+                            .html(
+                                '<i class="ki-duotone ki-check fs-4"><span class="path1"></span><span class="path2"></span></i>',
+                            );
                         return;
-                        //New Code
                     }
                     PluginNotify.show(
                         "error",
                         config.notifications.errorTitle,
                         config.notifications.errorText,
                     );
-
-                    //Old code
-                    // $saveBtn
-                    //     .prop("disabled", false)
-                    //     .html(
-                    //         '<i class="ki-duotone ki-check fs-4"><span class="path1"></span><span class="path2"></span></i>',
-                    //     );
-                    //Old code
-
-                    //New Code
-                    restoreSaveBtn($saveBtn);
-                    //New Code
+                    $saveBtn
+                        .prop("disabled", false)
+                        .html(
+                            '<i class="ki-duotone ki-check fs-4"><span class="path1"></span><span class="path2"></span></i>',
+                        );
                 });
         }
-
-        //New Code
-        /**
-         * Restore save button to its default state after a failed save attempt
-         * @param {jQuery} $btn
-         */
-        function restoreSaveBtn($btn) {
-            $btn.prop("disabled", false).html(
-                '<i class="ki-duotone ki-check fs-4"><span class="path1"></span><span class="path2"></span></i>',
-            );
-        }
-        //New Code
 
         // ─── Validation helpers ───────────────────────────────────────────────
 
