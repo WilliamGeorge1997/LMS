@@ -1,36 +1,36 @@
 "use strict";
 
 /**
- * Validator
- * Single responsibility: validate form fields using data-rule-* HTML attributes
+ * PluginValidator
+ * Single responsibility: validate form fields using data-rule-* HTML attributes.
  *
  * Supported rules (set as HTML attributes on the input):
- *
  *   data-rule-required        → field must not be empty
- *   data-rule-email           → must be valid email
+ *   data-rule-email           → must be a valid email
  *   data-rule-min="6"         → minimum character length
  *   data-rule-max="255"       → maximum character length
- *   data-rule-same="#other"   → must match value of another field (selector)
+ *   data-rule-same="#other"   → must match value of another field (CSS selector)
  *
  * Custom messages (optional):
- *   data-msg-required="..."
- *   data-msg-email="..."
- *   data-msg-min="..."
- *   data-msg-max="..."
- *   data-msg-same="..."
+ *   data-msg-required | data-msg-email | data-msg-min | data-msg-max | data-msg-same
+ *
+ * Dependencies: jQuery
  */
 window.PluginValidator = (function () {
     var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    /** Selector that matches every field that has at least one validation rule. */
+    var RULE_SELECTOR = "[data-rule-required], [data-rule-email], [data-rule-min], [data-rule-max], [data-rule-same]";
+
     // ─── Error display ────────────────────────────────────────────────────────
 
-    function setError($form, name, message) {
-        $form.find('[name="' + name + '"]').addClass("is-invalid");
+    function setError($form, name, message, $el) {
+        ($el || $form.find('[name="' + name + '"]')).addClass("is-invalid");
         $form.find('[data-field-error="' + name + '"]').text(message || "");
     }
 
-    function clearError($form, name) {
-        $form.find('[name="' + name + '"]').removeClass("is-invalid");
+    function clearError($form, name, $el) {
+        ($el || $form.find('[name="' + name + '"]')).removeClass("is-invalid");
         $form.find('[data-field-error="' + name + '"]').text("");
     }
 
@@ -42,109 +42,79 @@ window.PluginValidator = (function () {
     function showBackendErrors($form, errors) {
         clearAll($form);
         $.each(errors || {}, function (field, messages) {
-            var message = Array.isArray(messages) ? messages[0] : messages;
-            setError($form, field, message);
+            setError($form, field, Array.isArray(messages) ? messages[0] : messages);
         });
     }
 
     // ─── Single field validation ──────────────────────────────────────────────
 
     /**
-     * Validate a single field element against its data-rule-* attributes
-     * Returns true if valid, false if invalid
+     * Validate one field against its data-rule-* attributes.
+     * @returns {boolean} true if valid
      */
     function validateField($form, el) {
         if (!el || !el.name) return true;
 
-        var $el = $(el);
-        var name = el.name;
+        var $el   = $(el);
+        var name  = el.name;
         var value = ($el.val() || "").trim();
 
-        // required
         if ($el.is("[data-rule-required]") && value === "") {
-            setError(
-                $form,
-                name,
-                $el.attr("data-msg-required") || "This field is required.",
-            );
+            setError($form, name, $el.attr("data-msg-required") || "This field is required.", $el);
             return false;
         }
 
-        // skip remaining rules if empty and not required
+        // Skip remaining rules when the field is empty and not required
         if (value === "") {
-            clearError($form, name);
+            clearError($form, name, $el);
             return true;
         }
 
-        // email
         if ($el.is("[data-rule-email]") && !EMAIL_REGEX.test(value)) {
-            setError(
-                $form,
-                name,
-                $el.attr("data-msg-email") || "Please enter a valid email.",
-            );
+            setError($form, name, $el.attr("data-msg-email") || "Please enter a valid email.", $el);
             return false;
         }
 
-        // min length
         var min = $el.attr("data-rule-min");
         if (min && value.length < parseInt(min, 10)) {
-            setError(
-                $form,
-                name,
-                $el.attr("data-msg-min") || "Minimum " + min + " characters.",
-            );
+            setError($form, name, $el.attr("data-msg-min") || "Minimum " + min + " characters.", $el);
             return false;
         }
 
-        // max length
         var max = $el.attr("data-rule-max");
         if (max && value.length > parseInt(max, 10)) {
-            setError(
-                $form,
-                name,
-                $el.attr("data-msg-max") || "Maximum " + max + " characters.",
-            );
+            setError($form, name, $el.attr("data-msg-max") || "Maximum " + max + " characters.", $el);
             return false;
         }
 
-        // same as another field
         var sameSelector = $el.attr("data-rule-same");
         if (sameSelector) {
             var $other = $(sameSelector);
             if ($other.length && $other.val() !== $el.val()) {
-                setError(
-                    $form,
-                    name,
-                    $el.attr("data-msg-same") || "Values do not match.",
-                );
+                setError($form, name, $el.attr("data-msg-same") || "Values do not match.", $el);
                 return false;
             }
         }
 
-        clearError($form, name);
+        clearError($form, name, $el);
         return true;
     }
 
     // ─── Full form validation ─────────────────────────────────────────────────
 
     /**
-     * Validate all fields in the form that have at least one data-rule-* attr
-     * Returns true if all valid
+     * Validate all rule-bearing fields in a form.
+     * @returns {boolean} true if all fields are valid
      */
     function validateForm($form) {
         clearAll($form);
         var valid = true;
 
-        $form
-            .find(
-                "[data-rule-required], [data-rule-email], [data-rule-min], [data-rule-max], [data-rule-same]",
-            )
-            .each(function () {
-                if (!validateField($form, this)) {
-                    valid = false;
-                }
-            });
+        $form.find(RULE_SELECTOR).each(function () {
+            if (!validateField($form, this)) {
+                valid = false;
+            }
+        });
 
         return valid;
     }
@@ -152,50 +122,23 @@ window.PluginValidator = (function () {
     // ─── Live validation binding ──────────────────────────────────────────────
 
     /**
-     * Attach live (input/change/blur) validation to form fields
-     * Call once during plugin init
+     * Attach live input/change/blur validation to a form.
+     * Uses namespaced events so unbindLive() only removes our listeners.
+     * @param {jQuery} $form
      */
-
-    //Old code
-    // function bindLive($form) {
-    //     $form.on(
-    //         "input change blur",
-    //         "[data-rule-required], [data-rule-email], [data-rule-min], [data-rule-max], [data-rule-same]",
-    //         function () {
-    //             validateField($form, this);
-    //         },
-    //     );
-    // }
-
-    // function unbindLive($form) {
-    //     $form.off("input change blur");
-    // }
-    //Old code
-
-    //New Code
     function bindLive($form) {
         $form.on(
             "input.validator change.validator blur.validator",
-            "[data-rule-required], [data-rule-email], [data-rule-min], [data-rule-max], [data-rule-same]",
+            RULE_SELECTOR,
             function () {
                 validateField($form, this);
-            },
+            }
         );
     }
 
     function unbindLive($form) {
         $form.off("input.validator change.validator blur.validator");
     }
-    //New Code
 
-    return {
-        validateField,
-        validateForm,
-        clearAll,
-        clearError,
-        setError,
-        showBackendErrors,
-        bindLive,
-        unbindLive,
-    };
+    return { validateField, validateForm, clearAll, clearError, setError, showBackendErrors, bindLive, unbindLive };
 })();

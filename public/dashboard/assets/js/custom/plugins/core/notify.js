@@ -1,11 +1,14 @@
 "use strict";
 
 /**
- * Notify Helper
- * Single responsibility: show notifications via SweetAlert2
+ * PluginNotify
+ * Single responsibility: show notifications via SweetAlert2.
+ *
+ * Dependencies: SweetAlert2 (Swal)
  */
 window.PluginNotify = (function () {
     /**
+     * Show a toast notification.
      * @param {"success"|"error"|"warning"} type
      * @param {string} title
      * @param {string} text
@@ -22,20 +25,16 @@ window.PluginNotify = (function () {
     }
 
     /**
-     * Show a confirmation dialog, returns a Promise
+     * Show a confirmation dialog.
+     * Resolves to true if the user confirms, false otherwise.
      * @param {string} title
      * @param {string} text
-     * @param {string} confirmText
-     * @returns Promise<boolean>
+     * @param {string} [confirmText]
+     * @returns {Promise<boolean>}
      */
     function confirm(title, text, confirmText) {
-        //Old code
-        // if (typeof Swal === "undefined") return Promise.resolve(true);
-        //Old code
-
-        //New code
         if (typeof Swal === "undefined") return Promise.resolve(false);
-        //New Code
+
         return Swal.fire({
             icon: "warning",
             title: title,

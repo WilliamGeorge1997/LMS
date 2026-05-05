@@ -1,57 +1,33 @@
 "use strict";
 
 /**
- * DependentDropdown Helper
- * Single responsibility: handle dropdowns that reload options based on another dropdown
+ * PluginDependentDropdown
+ * Single responsibility: manage select elements that reload options based on a parent select.
  *
- * Usage in HTML (on the child dropdown):
- *
+ * Usage (HTML — on the child select):
  *   <select name="city_id"
  *       data-depends-on="country_id"
  *       data-depends-url="/ajax/cities?country_id=:value"
  *       data-depends-placeholder="Select city">
  *   </select>
  *
- *   data-depends-on          → name of the parent field
- *   data-depends-url         → URL to call; :value is replaced with the parent's value
- *   data-depends-placeholder → placeholder option text (optional)
+ * API response shape: [{ value: 1, label: "Cairo" }, ...]
  *
- * The AJAX response must return a JSON array:
- *   [ { "value": 1, "label": "Cairo" }, ... ]
+ * Dependencies: jQuery, PluginAjax, PluginInputBuilder
  */
 window.PluginDependentDropdown = (function () {
     /**
-     * Bind all dependent dropdowns inside a form
+     * Bind all dependent dropdowns inside a form.
+     * Calls unbind() first to prevent duplicate listeners.
      * @param {jQuery} $form
      */
-    //Old code
-    // function bind($form) {
-    //     $form.find("[data-depends-on]").each(function () {
-    //         var $child = $(this);
-    //         var parentName = $child.attr("data-depends-on");
-    //         var $parent = $form.find('[name="' + parentName + '"]');
-
-    //         if (!$parent.length) return;
-
-    //         // When parent changes → reload child options
-    //         $parent.on("change.depends", function () {
-    //             reload($child, $parent.val());
-    //         });
-
-    //         // Reset child on init
-    //         reset($child);
-    //     });
-    // }
-    //Old code
-
-    //New code
     function bind($form) {
-        unbind($form); // prevent duplicate listeners
+        unbind($form);
 
         $form.find("[data-depends-on]").each(function () {
-            var $child = $(this);
-            var parentName = $child.attr("data-depends-on");
-            var $parent = $form.find('[name="' + parentName + '"]');
+            var $child      = $(this);
+            var parentName  = $child.attr("data-depends-on");
+            var $parent     = $form.find('[name="' + parentName + '"]');
 
             if (!$parent.length) return;
 
@@ -62,10 +38,9 @@ window.PluginDependentDropdown = (function () {
             reset($child);
         });
     }
-    //New code
 
     /**
-     * Unbind all dependent dropdown listeners inside a form
+     * Remove all dependent dropdown listeners inside a form.
      * @param {jQuery} $form
      */
     function unbind($form) {
@@ -76,63 +51,60 @@ window.PluginDependentDropdown = (function () {
     }
 
     /**
-     * Reset child dropdown to placeholder only
+     * Reset a child dropdown to its placeholder (disabled).
      * @param {jQuery} $child
      */
     function reset($child) {
-        var placeholder =
-            $child.attr("data-depends-placeholder") || "Select option";
-        $child.html(
-            '<option value="" disabled selected>' + placeholder + "</option>",
-        );
-        $child.prop("disabled", true);
+        var placeholder = $child.attr("data-depends-placeholder") || "Select option";
+        $child.html('<option value="" disabled selected>' + placeholder + "</option>").prop("disabled", true);
     }
 
     /**
-     * Reload child options based on parent value
-     * @param {jQuery} $child
-     * @param {string} parentValue
+     * Reload a child dropdown based on the parent's current value.
+     * Used internally by bind() and publicly by EditPlugin.
+     *
+     * @param {jQuery} $child      - child select element
+     * @param {string} url         - URL with :value placeholder
+     * @param {string} parentVal   - current parent value
+     * @param {*}      [currentVal] - value to pre-select after load (null = none, undefined = none)
+     * @returns jQuery deferred
      */
-    function reload($child, parentValue) {
-        if (!parentValue) {
+    function reloadSelect($child, url, parentVal, currentVal) {
+        if (!parentVal) {
             reset($child);
-            return;
+            return $.when();
         }
 
-        var url = $child.attr("data-depends-url");
-        if (!url) return;
+        var resolvedUrl = url.replace(":value", encodeURIComponent(parentVal));
+        var placeholder = $child.attr("data-depends-placeholder") || "Select option";
 
-        url = url.replace(":value", encodeURIComponent(parentValue));
+        $child.html('<option value="" disabled selected>Loading...</option>').prop("disabled", true);
 
-        // Show loading state
-        $child.html('<option value="" disabled selected>Loading...</option>');
-        $child.prop("disabled", true);
-
-        PluginAjax.loadOptions(url)
+        return PluginAjax.loadOptions(resolvedUrl)
             .done(function (response) {
-                var placeholder =
-                    $child.attr("data-depends-placeholder") || "Select option";
-                var html =
-                    '<option value="" disabled selected>' +
-                    placeholder +
-                    "</option>";
-
+                var parts = ['<option value="" disabled selected>' + placeholder + "</option>"];
                 $.each(response || [], function (i, item) {
-                    html +=
-                        '<option value="' +
-                        item.value +
-                        '">' +
-                        item.label +
-                        "</option>";
+                    var selected = currentVal != null && String(item.value) === String(currentVal) ? "selected" : "";
+                    parts.push('<option value="' + PluginInputBuilder.escapeHtml(item.value) + '" ' + selected + ">" +
+                        PluginInputBuilder.escapeHtml(item.label) + "</option>");
                 });
-
-                $child.html(html);
-                $child.prop("disabled", false);
+                $child.html(parts.join("")).prop("disabled", false);
             })
             .fail(function () {
                 reset($child);
             });
     }
 
-    return { bind, unbind, reset };
+    /**
+     * Internal reload triggered by the parent change event (no pre-select needed).
+     * @param {jQuery} $child
+     * @param {string} parentVal
+     */
+    function reload($child, parentVal) {
+        var url = $child.attr("data-depends-url");
+        if (!url) return;
+        reloadSelect($child, url, parentVal, null);
+    }
+
+    return { bind, unbind, reset, reloadSelect };
 })();

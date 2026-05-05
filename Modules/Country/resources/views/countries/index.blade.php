@@ -119,6 +119,7 @@
     <script src="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/ajax.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/notify.js') }}"></script>
+    <script src="{{ asset('dashboard/assets/js/custom/plugins/core/input-builder.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/validator.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/dependent-dropdown.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/create-plugin.js') }}"></script>

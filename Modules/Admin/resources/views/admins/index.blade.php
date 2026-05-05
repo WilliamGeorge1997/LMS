@@ -186,6 +186,7 @@
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/ajax.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/notify.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/validator.js') }}"></script>
+    <script src="{{ asset('dashboard/assets/js/custom/plugins/core/input-builder.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/dependent-dropdown.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/create-plugin.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/edit-plugin.js') }}"></script>
@@ -262,7 +263,7 @@
                         searchable: true,
                         render: function(data, type, row) {
                             var fullName = (data || "").trim();
-                            var parts = fullName.split(/\s+/).filter(Boolean);
+                            var parts = fullName ? fullName.split(/\s+/) : [];
                             var initials = parts.length > 1 ?
                                 (parts[0][0] + parts[1][0]).toUpperCase() :
                                 (fullName[0] || "A").toUpperCase();
@@ -326,15 +327,16 @@
                         searchable: false,
                         className: "text-end",
                         render: function(data, type, row) {
+                            var id = PluginInputBuilder.escapeHtml(row.id);
                             return `<a class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 edit-btn"
                                         title="Edit"
-                                        data-id="${row.id}">
+                                        data-id="${id}">
                                         <i class="ki-duotone ki-pencil fs-5"></i>
                                     </a>
                                 <button type="button"
                                     class="btn btn-icon btn-bg-light btn-active-color-danger btn-sm delete-btn"
                                     title="Delete"
-                                    data-id="${row.id}">
+                                    data-id="${id}">
                                     <i class="ki-duotone ki-trash fs-5"></i>
                                 </button>`;
                         }
@@ -344,8 +346,13 @@
 
             // ── 2. Search ───────────────────────────────────────────────────────
             var $search = $('[data-kt-docs-table-filter="search"]');
-            $search.on("keyup", function() {
-                dt.search(this.value).draw();
+            var searchTimer;
+            $search.on("input", function() {
+                var value = this.value;
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(function() {
+                    dt.search(value).draw();
+                }, 400);
             });
 
             // ── 3. Create Plugin ────────────────────────────────────────────────

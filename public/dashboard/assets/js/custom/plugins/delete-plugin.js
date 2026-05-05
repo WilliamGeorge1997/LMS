@@ -2,46 +2,38 @@
 
 /**
  * DeletePlugin
- * Handles: confirm dialog → AJAX delete → remove row from datatable
+ * Handles: confirm dialog → AJAX delete → remove row from datatable.
  *
- * Dependencies: jQuery, PluginAjax, PluginNotify
- *
- * Usage in HTML (on the delete button inside datatable rows):
+ * Usage (HTML — on the delete button inside a datatable row):
  *   <button class="delete-btn" data-id="{{ $row->id }}">Delete</button>
  *
- * Usage in JS:
+ * Usage (JS):
  *   DeletePlugin.init({
- *       deleteUrl: "/admins/:id",
- *       datatable: dt,
+ *       deleteUrl : "/admins/:id",
+ *       datatable : dt,
  *   });
+ *
+ * Dependencies: jQuery, PluginAjax, PluginNotify
  */
 window.DeletePlugin = (function () {
     var DEFAULTS = {
-        // Required — :id is replaced with the row's data-id
-        deleteUrl: null,
-
-        // Datatable instance — if provided, the row is removed instead of full reload
-        datatable: null,
-
-        // Selector for delete buttons
-        selector: ".delete-btn",
-
-        // Container to delegate events from
-        container: "document",
-
-        method: "DELETE",
+        deleteUrl : null,             // required — :id replaced with the button's data-id
+        datatable : null,             // DataTables instance
+        selector  : ".delete-btn",
+        container : "document",       // delegate from document for datatable-rendered rows
+        method    : "DELETE",
 
         confirm: {
-            title: "Are you sure?",
-            text: "This action cannot be undone.",
+            title      : "Are you sure?",
+            text       : "This action cannot be undone.",
             confirmText: "Yes, delete it",
         },
 
         notifications: {
             successTitle: "Deleted",
-            successText: "Record deleted successfully.",
-            errorTitle: "Error",
-            errorText: "Could not delete record. Please try again.",
+            successText : "Record deleted successfully.",
+            errorTitle  : "Error",
+            errorText   : "Could not delete record. Please try again.",
         },
     };
 
@@ -53,66 +45,17 @@ window.DeletePlugin = (function () {
             return null;
         }
 
-        var $container =
-            config.container === "document" ? $(document) : $(config.container);
-        //Old code
-        // $container.on("click.delete", config.selector, function () {
-        //     var $btn = $(this);
-        //     var id = $btn.attr("data-id");
-        //     var url = config.deleteUrl.replace(":id", id);
+        var $container = config.container === "document" ? $(document) : $(config.container);
 
-        //     PluginNotify.confirm(
-        //         config.confirm.title,
-        //         config.confirm.text,
-        //         config.confirm.confirmText,
-        //     ).then(function (confirmed) {
-        //         if (!confirmed) return;
-
-        //         $btn.prop("disabled", true);
-
-        //         PluginAjax.json(url, config.method)
-        //             .done(function () {
-        //                 // Remove the row directly if datatable is available
-        //                 if (config.datatable) {
-        //                     var row = config.datatable.row($btn.closest("tr"));
-        //                     if (row.length) {
-        //                         row.remove().draw(false);
-        //                     } else {
-        //                         config.datatable.ajax.reload(null, false);
-        //                     }
-        //                 }
-
-        //                 PluginNotify.show(
-        //                     "success",
-        //                     config.notifications.successTitle,
-        //                     config.notifications.successText,
-        //                 );
-        //             })
-        //             .fail(function () {
-        //                 PluginNotify.show(
-        //                     "error",
-        //                     config.notifications.errorTitle,
-        //                     config.notifications.errorText,
-        //                 );
-        //             })
-        //             .always(function () {
-        //                 $btn.prop("disabled", false);
-        //             });
-        //     });
-        // });
-        //Old code
-
-        //New code
         $container.on("click.delete", config.selector, function () {
             var $btn = $(this);
-            var $tr = $btn.closest("tr");
-            var id = $btn.attr("data-id");
-            var url = config.deleteUrl.replace(":id", id);
+            var $tr  = $btn.closest("tr");
+            var url  = config.deleteUrl.replace(":id", $btn.attr("data-id"));
 
             PluginNotify.confirm(
                 config.confirm.title,
                 config.confirm.text,
-                config.confirm.confirmText,
+                config.confirm.confirmText
             ).then(function (confirmed) {
                 if (!confirmed) return;
 
@@ -128,27 +71,16 @@ window.DeletePlugin = (function () {
                                 config.datatable.ajax.reload(null, false);
                             }
                         }
-
-                        PluginNotify.show(
-                            "success",
-                            config.notifications.successTitle,
-                            config.notifications.successText,
-                        );
+                        PluginNotify.show("success", config.notifications.successTitle, config.notifications.successText);
                     })
                     .fail(function () {
-                        PluginNotify.show(
-                            "error",
-                            config.notifications.errorTitle,
-                            config.notifications.errorText,
-                        );
+                        PluginNotify.show("error", config.notifications.errorTitle, config.notifications.errorText);
                     })
                     .always(function () {
                         $btn.prop("disabled", false);
                     });
             });
         });
-
-        //New code
 
         return {
             destroy: function () {
