@@ -17,7 +17,7 @@
  * Dependencies: jQuery
  */
 window.PluginValidator = (function () {
-    var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
     /** Selector that matches every field that has at least one validation rule. */
     var RULE_SELECTOR = "[data-rule-required], [data-rule-email], [data-rule-min], [data-rule-max], [data-rule-same]";
@@ -89,7 +89,7 @@ window.PluginValidator = (function () {
 
         var sameSelector = $el.attr("data-rule-same");
         if (sameSelector) {
-            var $other = $(sameSelector);
+            var $other = $form.find(sameSelector);
             if ($other.length && $other.val() !== $el.val()) {
                 setError($form, name, $el.attr("data-msg-same") || "Values do not match.", $el);
                 return false;

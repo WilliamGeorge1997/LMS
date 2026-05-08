@@ -50,6 +50,12 @@ window.DeletePlugin = (function () {
         $container.on("click.delete", config.selector, function () {
             var $btn = $(this);
             var $tr  = $btn.closest("tr");
+
+            if ($tr.hasClass("editing-row")) {
+                PluginNotify.show("warning", "Warning", "Please save or cancel the current edit first.");
+                return;
+            }
+
             var url  = config.deleteUrl.replace(":id", $btn.attr("data-id"));
 
             PluginNotify.confirm(

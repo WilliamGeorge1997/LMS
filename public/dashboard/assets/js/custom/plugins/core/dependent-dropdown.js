@@ -44,8 +44,11 @@ window.PluginDependentDropdown = (function () {
      * @param {jQuery} $form
      */
     function unbind($form) {
+        var seen = {};
         $form.find("[data-depends-on]").each(function () {
             var parentName = $(this).attr("data-depends-on");
+            if (seen[parentName]) return;
+            seen[parentName] = true;
             $form.find('[name="' + parentName + '"]').off("change.depends");
         });
     }

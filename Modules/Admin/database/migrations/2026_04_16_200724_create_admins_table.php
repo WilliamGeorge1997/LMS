@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('image')->nullable();
             $table->rememberToken();
+            $table->enum('language', ['en','ar'])->default('en');
             $table->boolean('is_active')->default(false);
             $table->timestamps();
         });

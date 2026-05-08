@@ -121,7 +121,9 @@ window.CreatePlugin = (function () {
         $collapse.on("hidden.bs.collapse.create", function () {
             $form[0].reset();
             PluginValidator.clearAll($form);
-            PluginDependentDropdown.bind($form); // re-bind after reset
+            if ($form.find("[data-depends-on]").length) {
+                PluginDependentDropdown.bind($form);
+            }
         });
 
         // ─── Cancel button ────────────────────────────────────────────────────
@@ -146,7 +148,8 @@ window.CreatePlugin = (function () {
                 })
                 .fail(function (xhr) {
                     if (xhr.status === 422) {
-                        PluginValidator.showBackendErrors($form, xhr.responseJSON?.errors || {});
+                        var errors = xhr.responseJSON && xhr.responseJSON.errors ? xhr.responseJSON.errors : {};
+                        PluginValidator.showBackendErrors($form, errors);
                         return;
                     }
                     PluginNotify.show("error", config.notifications.errorTitle, config.notifications.errorText);

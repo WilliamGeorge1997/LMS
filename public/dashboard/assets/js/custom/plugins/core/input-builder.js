@@ -48,7 +48,7 @@ window.PluginInputBuilder = (function () {
      * @returns {string}
      */
     function errorDiv(fieldName) {
-        return ERROR_DIV.replace("{name}", fieldName);
+        return ERROR_DIV.replace(/{name}/g, fieldName);
     }
 
     /**
@@ -82,7 +82,7 @@ window.PluginInputBuilder = (function () {
 
         if (col.type === "image") {
             var preview = value
-                ? '<img src="' + value + '" class="edit-img-preview rounded" style="width:36px;height:36px;object-fit:cover;flex-shrink:0;" />'
+                ? '<img src="' + escapeHtml(String(value)) + '" class="edit-img-preview rounded" style="width:36px;height:36px;object-fit:cover;flex-shrink:0;" />'
                 : '<span class="edit-img-placeholder rounded d-flex align-items-center justify-content-center bg-light-primary text-primary fw-bold fs-8" style="width:36px;height:36px;flex-shrink:0;">IMG</span>';
 
             return '<div class="d-flex align-items-center gap-2">' + preview +

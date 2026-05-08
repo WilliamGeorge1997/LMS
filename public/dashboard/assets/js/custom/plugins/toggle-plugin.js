@@ -53,8 +53,9 @@ window.TogglePlugin = (function () {
                         return;
                     }
 
-                    var name     = response?.data?.name    || "Record";
-                    var isActive = response?.data?.is_active === 1;
+                    var respData = response && response.data ? response.data : {};
+                    var name     = respData.name || "Record";
+                    var isActive = respData.is_active === 1;
 
                     PluginNotify.show(
                         "success",

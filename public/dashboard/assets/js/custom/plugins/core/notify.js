@@ -18,7 +18,7 @@ window.PluginNotify = (function () {
 
         Swal.fire({
             icon: type,
-            title: title,
+            titleText: title,
             text: text,
             confirmButtonText: "OK",
         });
@@ -37,7 +37,7 @@ window.PluginNotify = (function () {
 
         return Swal.fire({
             icon: "warning",
-            title: title,
+            titleText: title,
             text: text,
             showCancelButton: true,
             confirmButtonText: confirmText || "Yes",

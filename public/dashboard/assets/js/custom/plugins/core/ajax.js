@@ -39,14 +39,13 @@ window.PluginAjax = (function () {
 
     /**
      * Send a JSON request (used by toggle / delete).
-     * GET and DELETE requests have no body.
+     * Body is included when data is provided (any method except GET).
      * @param {string} url
      * @param {string} method
      * @param {object} [data]
      * @returns jQuery deferred
      */
     function json(url, method, data) {
-        var isBodyless = method === "GET" || method === "DELETE";
         var options = {
             url: url,
             method: method,
@@ -56,8 +55,8 @@ window.PluginAjax = (function () {
             },
         };
 
-        if (!isBodyless) {
-            options.data = JSON.stringify(data || {});
+        if (method !== "GET" && data != null) {
+            options.data = JSON.stringify(data);
             options.contentType = "application/json";
         }
 
@@ -73,7 +72,6 @@ window.PluginAjax = (function () {
         return $.ajax({
             url: url,
             method: "GET",
-            timeout: 10000,
             headers: {
                 "X-Requested-With": "XMLHttpRequest",
             },

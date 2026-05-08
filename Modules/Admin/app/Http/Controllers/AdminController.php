@@ -5,6 +5,7 @@ namespace Modules\Admin\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Admin\DTOs\AdminDto;
 use Modules\Admin\Http\Requests\AdminStoreRequest;
 use Modules\Admin\Http\Requests\AdminUpdateRequest;
@@ -12,8 +13,13 @@ use Modules\Admin\Models\Admin;
 use Modules\Admin\Services\AdminService;
 use Modules\Common\Helpers\ApiResponse;
 
-class AdminController extends Controller
+class AdminController extends Controller implements HasMiddleware
 {
+
+public static function middleware(): array
+    {
+        return ['set.locale'];
+    }
     public function __construct(private readonly AdminService $adminService) {}
 
     /**

@@ -222,10 +222,9 @@ window.EditPlugin = (function () {
         var $editingTr    = null;
         var $editingChild = null;
 
-        // Reset state when DataTables redraws (e.g. search, pagination) to prevent dangling references
+        // Clean up edit state when DataTables redraws (e.g. search, pagination)
         dt.on("draw.dt", function () {
-            $editingTr    = null;
-            $editingChild = null;
+            exitEditMode();
         });
 
         // ─── Enter edit mode ──────────────────────────────────────────────────
@@ -237,9 +236,9 @@ window.EditPlugin = (function () {
             function getVisibleCellIndex(dtIndex) {
                 return cellMap[dtIndex] !== undefined ? cellMap[dtIndex] : dtIndex;
             }
-            // Deep-clone columns so pre-fetched data doesn't pollute the shared config
+            // Deep-clone ALL columns so pre-fetched data doesn't pollute the shared config
             var allCols = visibleCols.concat(hiddenCols).map(function (col) {
-                return col.dependsOn ? $.extend(true, {}, col) : col;
+                return $.extend(true, {}, col);
             });
 
             $tr.addClass("editing-row");
@@ -294,6 +293,7 @@ window.EditPlugin = (function () {
             });
 
             if ($editingChild && $editingChild.length) {
+                $editingChild.find("select").off("change.editDepends");
                 $editingChild.remove();
             }
 
@@ -424,7 +424,8 @@ window.EditPlugin = (function () {
                 })
                 .fail(function (xhr) {
                     if (xhr.status === 422) {
-                        showRowErrors($tr, $childTr, xhr.responseJSON?.errors || {});
+                        var errors = xhr.responseJSON && xhr.responseJSON.errors ? xhr.responseJSON.errors : {};
+                        showRowErrors($tr, $childTr, errors);
                     } else {
                         PluginNotify.show("error", config.notifications.errorTitle, config.notifications.errorText);
                     }

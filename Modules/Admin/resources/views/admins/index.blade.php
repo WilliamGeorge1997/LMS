@@ -2,8 +2,18 @@
 @section('title', config('app.name') . ' - Admins List')
 
 @section('css')
-    <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
+@if(app()->getLocale() === 'ar')
+  <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet"
         type="text/css" />
+@else
+      <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
+        type="text/css" />
+@endif
+
+
+
+@yield('css')
+
 @endsection
 
 {{-- ============================================================
@@ -199,6 +209,7 @@
         KTUtil.onDOMContentLoaded(function() {
 
             // ── 1. Datatable ────────────────────────────────────────────────────
+            var esc = PluginInputBuilder.escapeHtml;
             var dt = $("#kt_datatable").DataTable({
                 searchDelay: 500,
                 processing: true,
@@ -252,7 +263,7 @@
                         searchable: false,
                         render: function(data) {
                             return `<div class="form-check form-check-sm form-check-custom form-check-solid">
-                                    <input class="form-check-input" type="checkbox" value="${data}" />
+                                    <input class="form-check-input" type="checkbox" value="${esc(data)}" />
                                 </div>`;
                         }
                     },
@@ -262,20 +273,20 @@
                         orderable: true,
                         searchable: true,
                         render: function(data, type, row) {
-                            var fullName = (data || "").trim();
+                            var fullName = esc((data || "").trim());
                             var parts = fullName ? fullName.split(/\s+/) : [];
                             var initials = parts.length > 1 ?
                                 (parts[0][0] + parts[1][0]).toUpperCase() :
                                 (fullName[0] || "A").toUpperCase();
                             var avatar = row.image ?
-                                `<div class="symbol-label"><img src="${row.image}" alt="${fullName}" class="w-100 h-100 object-fit-cover" /></div>` :
+                                `<div class="symbol-label"><img src="${esc(row.image)}" alt="${fullName}" class="w-100 h-100 object-fit-cover" /></div>` :
                                 `<div class="symbol-label fs-5 fw-bold bg-light-primary text-primary">${initials}</div>`;
 
                             return `<div class="d-flex align-items-center">
                                     <div class="symbol symbol-circle symbol-40px overflow-hidden me-3">${avatar}</div>
                                     <div class="d-flex flex-column">
                                         <span class="text-gray-800 fw-bold fs-6 mb-1">${fullName}</span>
-                                        <span class="text-muted fw-semibold fs-7">${row.email ?? ""}</span>
+                                        <span class="text-muted fw-semibold fs-7">${esc(row.email || "")}</span>
                                     </div>
                                 </div>`;
                         }
@@ -286,7 +297,7 @@
                         orderable: true,
                         searchable: true,
                         render: function(data) {
-                            return `<span class="fw-bold text-gray-800">${data ?? ""}</span>`;
+                            return `<span class="fw-bold text-gray-800">${esc(data || "")}</span>`;
                         }
                     },
                     // 4 — Role
@@ -295,7 +306,7 @@
                         orderable: false,
                         searchable: false,
                         render: function(data) {
-                            return `<span class="badge badge-light-primary fw-bold">${data ?? ""}</span>`;
+                            return `<span class="badge badge-light-primary fw-bold">${esc(data || "")}</span>`;
 
                         }
                     },
@@ -307,7 +318,7 @@
                         render: function(data, type, row) {
                             var checked = data ? "checked" : "";
                             return `<label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                    <input class="form-check-input active-toggle" type="checkbox" ${checked} data-id="${row.id}" />
+                                    <input class="form-check-input active-toggle" type="checkbox" ${checked} data-id="${esc(row.id)}" />
                                 </label>`;
                         }
                     },
@@ -317,7 +328,7 @@
                         orderable: true,
                         searchable: false,
                         render: function(data) {
-                            return `<span class="text-gray-700 fw-semibold">${data ?? ""}</span>`;
+                            return `<span class="text-gray-700 fw-semibold">${esc(data || "")}</span>`;
                         }
                     },
                     // 7 — actions
