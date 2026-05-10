@@ -46,7 +46,7 @@
                                      <span class="path2"></span>
                                  </i>
                              </span>
-                             <span class="menu-title">User Management</span>
+                             <span class="menu-title">{{ __('common::sidebar.user_management') }}</span>
                              <span class="menu-arrow"></span>
                          </span>
                          <!--end:Menu link-->
@@ -59,7 +59,7 @@
                                      <span class="menu-bullet">
                                          <span class="bullet bullet-dot"></span>
                                      </span>
-                                     <span class="menu-title">Admins</span>
+                                     <span class="menu-title">{{ __('common::sidebar.admins') }}</span>
                                  </a>
                                  <!--end:Menu link-->
                              </div>
@@ -77,7 +77,7 @@
                                      <span class="path2"></span>
                                  </i>
                              </span>
-                             <span class="menu-title">Locations</span>
+                             <span class="menu-title">{{ __('common::sidebar.locations') }}</span>
                              <span class="menu-arrow"></span>
                          </span>
                          <div class="menu-sub menu-sub-accordion">
@@ -86,7 +86,7 @@
                                      <span class="menu-bullet">
                                          <span class="bullet bullet-dot"></span>
                                      </span>
-                                     <span class="menu-title">Countries</span>
+                                     <span class="menu-title">{{ __('common::sidebar.countries') }}</span>
                                  </a>
                              </div>
                              <div class="menu-item">
@@ -94,7 +94,7 @@
                                      <span class="menu-bullet">
                                          <span class="bullet bullet-dot"></span>
                                      </span>
-                                     <span class="menu-title">Cities</span>
+                                     <span class="menu-title">{{ __('common::sidebar.cities') }}</span>
                                  </a>
                              </div>
                              <div class="menu-item">
@@ -102,7 +102,7 @@
                                      <span class="menu-bullet">
                                          <span class="bullet bullet-dot"></span>
                                      </span>
-                                     <span class="menu-title">Regions</span>
+                                     <span class="menu-title">{{ __('common::sidebar.regions') }}</span>
                                  </a>
                              </div>
                          </div>

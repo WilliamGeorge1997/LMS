@@ -16,10 +16,14 @@ use Modules\Common\Helpers\ApiResponse;
 class AdminController extends Controller implements HasMiddleware
 {
 
-public static function middleware(): array
+    public static function middleware(): array
     {
-        return ['set.locale'];
+        return [
+            'set.locale',
+            // 'role:Super Admin'
+        ];
     }
+
     public function __construct(private readonly AdminService $adminService) {}
 
     /**
@@ -53,7 +57,7 @@ public static function middleware(): array
     {
         $dto   = AdminDto::fromRequest($request);
         $admin = $this->adminService->save($dto, $request->file('image'));
-        return ApiResponse::success($admin);
+        return ApiResponse::success(__('admin::attributes.admin_created_sucessfully'), $admin);
     }
 
     /**
@@ -79,7 +83,7 @@ public static function middleware(): array
     {
         $dto   = AdminDto::fromRequest($request);
         $admin = $this->adminService->update($admin, $dto, $request->file('image'));
-        return ApiResponse::success($admin);
+        return ApiResponse::success(__('admin::attributes.admin_updated_sucessfully'), $admin);
     }
     /**
      * Remove the specified resource from storage.
@@ -87,12 +91,12 @@ public static function middleware(): array
     public function destroy(Admin $admin): JsonResponse
     {
         $status = $this->adminService->delete($admin);
-        return $status ? ApiResponse::success() : ApiResponse::error();
+        return $status ? ApiResponse::success('test') : ApiResponse::error();
     }
 
     public function toggleActivate(Admin $admin): JsonResponse
     {
         $admin = $this->adminService->toggleActivate($admin);
-        return ApiResponse::success($admin);
+        return ApiResponse::success('test', $admin);
     }
 }

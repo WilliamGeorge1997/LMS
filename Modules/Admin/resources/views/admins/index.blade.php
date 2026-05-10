@@ -1,18 +1,18 @@
 @extends('common::layouts.master')
-@section('title', config('app.name') . ' - Admins List')
+@section('title', config('app.name') . ' - ' . __('admin::attributes.admins_list'))
 
 @section('css')
-@if(app()->getLocale() === 'ar')
-  <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet"
-        type="text/css" />
-@else
-      <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
-        type="text/css" />
-@endif
+    @if (app()->getLocale() === 'ar')
+        <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet"
+            type="text/css" />
+    @else
+        <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
+            type="text/css" />
+    @endif
 
 
 
-@yield('css')
+    @yield('css')
 
 @endsection
 
@@ -25,16 +25,17 @@
         {{-- Page title & breadcrumb --}}
         <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
             <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                Admins
+                {{ __('admin::attributes.admins') }}
             </h1>
             <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                 <li class="breadcrumb-item text-muted">
-                    <a href="index.html" class="text-muted text-hover-primary">User Management</a>
+                    <a href="index.html"
+                        class="text-muted text-hover-primary">{{ __('admin::attributes.user_management') }}</a>
                 </li>
                 <li class="breadcrumb-item">
                     <span class="bullet bg-gray-500 w-5px h-2px"></span>
                 </li>
-                <li class="breadcrumb-item text-muted">Admins</li>
+                <li class="breadcrumb-item text-muted">{{ __('admin::attributes.admins') }}</li>
             </ul>
         </div>
 
@@ -42,7 +43,7 @@
         <div class="d-flex align-items-center gap-2 gap-lg-3">
             <a href="#create-collapse" id="create-toggle" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="collapse"
                 aria-expanded="false" aria-controls="create-collapse">
-                <span id="create-toggle-label">+ Create Admin</span>
+                <span id="create-toggle-label">+ {{ __('admin::attributes.create_admin') }}</span>
             </a>
         </div>
 
@@ -53,7 +54,7 @@
         <div id="create-collapse" class="accordion-collapse collapse">
             <div class="card shadow-sm border-0">
                 <div class="card-header border-0 py-4">
-                    <h3 class="card-title fw-bold fs-5 m-0">Create Admin</h3>
+                    <h3 class="card-title fw-bold fs-5 m-0">{{ __('admin::attributes.create_admin') }}</h3>
                 </div>
                 <div class="card-body pt-0">
 
@@ -63,31 +64,32 @@
 
                             {{-- Name --}}
                             <div class="col-md-6">
-                                <label class="required form-label">{{ __('attributes.name') }}</label>
+                                <label class="required form-label">{{ __('admin::attributes.name') }}</label>
                                 <input type="text" name="name" class="form-control form-control-solid"
-                                    placeholder="Enter name" autocomplete="off" data-rule-required data-rule-max="255"
-                                    data-msg-required="Name is required."
+                                    placeholder="{{ __('admin::attributes.enter_name') }}" autocomplete="off"
+                                    data-rule-required data-rule-max="255" data-msg-required="Name is required."
                                     data-msg-max="Name must not exceed 255 characters." />
                                 <div class="invalid-feedback d-block" data-field-error="name"></div>
                             </div>
 
                             {{-- Email --}}
                             <div class="col-md-6">
-                                <label class="required form-label">{{ __('attributes.email') }}</label>
+                                <label class="required form-label">{{ __('admin::attributes.email') }}</label>
                                 <input type="text" name="email" class="form-control form-control-solid"
-                                    placeholder="Enter email" autocomplete="off" data-rule-required data-rule-email
-                                    data-rule-max="255" data-msg-required="Email is required."
-                                    data-msg-email="Please enter a valid email."
+                                    placeholder="{{ __('admin::attributes.enter_email') }}" autocomplete="off"
+                                    data-rule-required data-rule-email data-rule-max="255"
+                                    data-msg-required="Email is required." data-msg-email="Please enter a valid email."
                                     data-msg-max="Email must not exceed 255 characters." />
                                 <div class="invalid-feedback d-block" data-field-error="email"></div>
                             </div>
 
                             {{-- Role --}}
                             <div class="col-md-6">
-                                <label class="required form-label">Role</label>
+                                <label class="required form-label">{{ __('admin::attributes.role') }}</label>
                                 <select name="role" class="form-select form-select-solid" data-rule-required
                                     data-msg-required="Please select a role.">
-                                    <option value="" disabled selected>Select role</option>
+                                    <option value="" disabled selected>{{ __('admin::attributes.select_role') }}
+                                    </option>
                                     <option value="{{ \Modules\Admin\Enums\Role::SUPER_ADMIN->value }}">
                                         {{ \Modules\Admin\Enums\Role::SUPER_ADMIN->value }}
                                     </option>
@@ -97,18 +99,18 @@
 
                             {{-- Password --}}
                             <div class="col-md-6">
-                                <label class="required form-label">{{ __('attributes.password') }}</label>
+                                <label class="required form-label">{{ __('admin::attributes.password') }}</label>
                                 <input type="password" name="password" id="create-password"
-                                    class="form-control form-control-solid" placeholder="Enter password"
-                                    autocomplete="new-password" data-rule-required data-rule-min="6"
-                                    data-msg-required="Password is required."
+                                    class="form-control form-control-solid"
+                                    placeholder="{{ __('admin::attributes.enter_password') }}" autocomplete="new-password"
+                                    data-rule-required data-rule-min="6" data-msg-required="Password is required."
                                     data-msg-min="Password must be at least 6 characters." />
                                 <div class="invalid-feedback d-block" data-field-error="password"></div>
                             </div>
 
                             {{-- Image (optional) --}}
                             <div class="col-md-6">
-                                <label class="form-label">{{ __('attributes.image') }}</label>
+                                <label class="form-label">{{ __('admin::attributes.image') }}</label>
                                 <input type="file" name="image" class="form-control form-control-solid"
                                     accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
                                 <div class="invalid-feedback d-block" data-field-error="image"></div>
@@ -116,7 +118,7 @@
 
                             {{-- Is Active (optional, no validation needed) --}}
                             <div class="col-md-6">
-                                <label class="form-label">{{ __('attributes.is_active') }}</label>
+                                <label class="form-label">{{ __('admin::attributes.is_active') }}</label>
                                 <div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
                                     <input class="form-check-input" type="checkbox" name="is_active" value="1" />
                                 </div>
@@ -127,9 +129,10 @@
 
                         {{-- Form actions --}}
                         <div class="d-flex justify-content-end gap-3 mt-8">
-                            <button type="button" id="create-cancel" class="btn btn-light">Cancel</button>
+                            <button type="button" id="create-cancel"
+                                class="btn btn-light">{{ __('admin::attributes.cancel') }}</button>
                             <button type="submit" id="create-submit" class="btn btn-primary">
-                                <span class="indicator-label">Submit</span>
+                                <span class="indicator-label">{{ __('admin::attributes.submit') }}</span>
                                 <span class="indicator-progress">
                                     <span class="spinner-border spinner-border-sm align-middle"></span>
                                 </span>
@@ -156,7 +159,8 @@
                         <span class="path1"></span><span class="path2"></span>
                     </i>
                     <input type="text" data-kt-docs-table-filter="search"
-                        class="form-control form-control-solid w-250px ps-13" placeholder="Search Admins" />
+                        class="form-control form-control-solid w-250px ps-13"
+                        placeholder="{{ __('admin::attributes.search_admins') }}" />
                 </div>
             </div>
         </div>
@@ -172,12 +176,12 @@
                                     data-kt-check-target="#kt_datatable .form-check-input" value="1" />
                             </div>
                         </th>
-                        <th class="min-w-125px">{{ __('attributes.name') }}</th>
-                        <th class="min-w-125px">{{ __('attributes.email') }}</th>
-                        <th class="min-w-125px">{{ __('attributes.role') }}</th>
-                        <th class="min-w-125px">{{ __('attributes.is_active') }}</th>
-                        <th class="min-w-125px">{{ __('attributes.created_at') }}</th>
-                        <th class="text-end min-w-100px">Actions</th>
+                        <th class="min-w-125px">{{ __('admin::attributes.name') }}</th>
+                        <th class="min-w-125px">{{ __('admin::attributes.email') }}</th>
+                        <th class="min-w-125px">{{ __('admin::attributes.role') }}</th>
+                        <th class="min-w-125px">{{ __('admin::attributes.is_active') }}</th>
+                        <th class="min-w-125px">{{ __('admin::attributes.created_at') }}</th>
+                        <th class="text-end min-w-100px">{{ __('admin::attributes.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 fw-semibold"></tbody>
@@ -371,8 +375,8 @@
                 storeUrl: "{{ route('admins.store') }}",
                 datatable: dt,
                 labels: {
-                    create: "+ Create Admin",
-                    cancel: "× Cancel"
+                    create: "+ {{ __('admin::attributes.create_admin') }}",
+                    cancel: "× {{ __('admin::attributes.cancel') }}"
                 }
             });
 
@@ -388,7 +392,7 @@
                         field: "name",
                         type: "text",
                         target: 2, // datatable column index
-                        placeholder: "Enter name",
+                        placeholder: "{{ __('admin::attributes.enter_name') }}",
                         rules: {
                             required: true,
                             max: 255
@@ -402,7 +406,7 @@
                         field: "email",
                         type: "text",
                         target: 3,
-                        placeholder: "Enter email",
+                        placeholder: "{{ __('admin::attributes.enter_email') }}",
                         rules: {
                             required: true,
                             email: true,

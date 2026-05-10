@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 class ApiResponse
 {
     public static function success(
-        null|array|Collection|JsonResource|Model $data = null,
         ?string $message = null,
+        null|array|Collection|JsonResource|Model $data = null,
         string $statusString = 'ok'
     ): JsonResponse {
         return response()->json([

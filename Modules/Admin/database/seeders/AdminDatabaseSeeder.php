@@ -15,12 +15,13 @@ class AdminDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $superAdmin = $this->createSuperAdmin();
-        $superAdminRole = $this->createSuperAdminRole();
-        $superAdmin->assignRole($superAdminRole);
+        $super_admin = $this->storeSuperAdmin();
+        $super_admin_role = $this->storeSuperAdminRole();
+        $super_admin->assignRole($super_admin_role);
+        $this->storeManagerRole();
     }
 
-    private function createSuperAdmin(): Admin
+    private function storeSuperAdmin(): Admin
     {
         return Admin::create([
             'name' => 'Super Admin',
@@ -31,10 +32,18 @@ class AdminDatabaseSeeder extends Seeder
         ]);
     }
 
-    private function createSuperAdminRole(): Role
+    private function storeSuperAdminRole(): Role
     {
         return Role::create([
             'name' => RoleEnum::SUPER_ADMIN->value,
+            'guard_name' => 'admin',
+        ]);
+    }
+
+    private function storeManagerRole(): Role
+    {
+        return Role::create([
+            'name' => RoleEnum::MANAGER->value,
             'guard_name' => 'admin',
         ]);
     }

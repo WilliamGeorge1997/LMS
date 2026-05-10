@@ -64,15 +64,13 @@
                             <div class="col-md-6">
                                 <label class="required form-label">Title (EN)</label>
                                 <input type="text" name="title_en" class="form-control form-control-solid"
-                                    data-rule-required data-rule-max="255"
-                                    data-msg-required="English title is required." />
+                                    data-rule-required data-rule-max="255" data-msg-required="English title is required." />
                                 <div class="invalid-feedback d-block" data-field-error="title_en"></div>
                             </div>
                             <div class="col-md-6">
                                 <label class="required form-label">Title (AR)</label>
                                 <input type="text" name="title_ar" class="form-control form-control-solid"
-                                    data-rule-required data-rule-max="255"
-                                    data-msg-required="Arabic title is required." />
+                                    data-rule-required data-rule-max="255" data-msg-required="Arabic title is required." />
                                 <div class="invalid-feedback d-block" data-field-error="title_ar"></div>
                             </div>
                             <div class="col-md-6">
