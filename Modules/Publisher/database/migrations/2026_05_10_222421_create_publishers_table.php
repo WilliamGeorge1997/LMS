@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Admin\Models\Admin;
 
 return new class extends Migration
 {
@@ -14,6 +15,7 @@ return new class extends Migration
         Schema::create('publishers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignIdFor(Admin::class, 'manager_id')->index()->constrained()->cascadeOnDelete();
             $table->boolean('is_active');
             $table->timestamps();
         });

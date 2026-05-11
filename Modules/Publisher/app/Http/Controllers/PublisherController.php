@@ -1,20 +1,19 @@
 <?php
 
-namespace Modules\Admin\Http\Controllers;
+namespace Modules\Publisher\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Modules\Common\Helpers\ApiResponse;
 use Modules\Publisher\DTOs\PublisherDto;
-use Modules\Admin\Http\Requests\PublisherRequest;
+use Modules\Publisher\Http\Requests\PublisherRequest;
 use Modules\Publisher\Models\Publisher;
 use Modules\Publisher\Services\PublisherService;
-use Modules\Common\Helpers\ApiResponse;
 
 class PublisherController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
@@ -23,22 +22,18 @@ class PublisherController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(private readonly AdminService $adminService) {}
+    public function __construct(private readonly PublisherService $publisherService) {}
 
     /**
      * Display a listing of the resource.
      */
-
     public function index(Request $request)
     {
-        if ($request->ajax())
-            return $this->adminService->dataTable();
-        return view('admin::admins.index');
-    }
+        if ($request->ajax()) {
+            return $this->publisherService->dataTable();
+        }
 
-    public function dashboard(Request $request)
-    {
-        return view('admin::dashboard');
+        return view('publisher::publishers.index');
     }
 
     /**
@@ -46,17 +41,18 @@ class PublisherController extends Controller implements HasMiddleware
      */
     public function create()
     {
-        return view('admin::create');
+        return view('publisher::create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AdminStoreRequest $request): JsonResponse
+    public function store(PublisherRequest $request): JsonResponse
     {
-        $dto   = AdminDto::fromRequest($request);
-        $admin = $this->adminService->save($dto, $request->file('image'));
-        return ApiResponse::success(__('admin::attributes.admin_created_sucessfully'), $admin);
+        $dto = PublisherDto::fromRequest($request);
+        $admin = $this->publisherService->save($dto);
+
+        return ApiResponse::success(__('publisher::messages.created_sucessfully'), $admin);
     }
 
     /**
@@ -78,24 +74,33 @@ class PublisherController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(AdminUpdateRequest $request, Admin $admin): JsonResponse
+    public function update(PublisherRequest $request, Publisher $publisher): JsonResponse
     {
-        $dto   = AdminDto::fromRequest($request);
-        $admin = $this->adminService->update($admin, $dto, $request->file('image'));
-        return ApiResponse::success(__('admin::attributes.admin_updated_sucessfully'), $admin);
+        $dto = PublisherDto::fromRequest($request);
+        $publisher = $this->publisherService->update($publisher, $dto);
+
+        return ApiResponse::success(__('publisher::messages.updated_sucessfully'), $publisher);
     }
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Admin $admin): JsonResponse
+    public function destroy(Publisher $publisher): JsonResponse
     {
-        $status = $this->adminService->delete($admin);
-        return $status ? ApiResponse::success('test') : ApiResponse::error();
+        $status = $this->publisherService->delete($publisher);
+
+        return $status
+            ? ApiResponse::success(__('publisher::messages.deleted_sucessfully'))
+            : ApiResponse::error();
     }
 
-    public function toggleActivate(Admin $admin): JsonResponse
+    public function toggleActivate(Publisher $publisher): JsonResponse
     {
-        $admin = $this->adminService->toggleActivate($admin);
-        return ApiResponse::success('test', $admin);
+        $publisher = $this->publisherService->toggleActivate($publisher);
+        $message = $publisher->is_active
+            ? __('publisher::messages.activated_sucessfully')
+            : __('publisher::messages.deactivated_sucessfully');
+
+        return ApiResponse::success($message, $publisher);
     }
 }

@@ -1,9 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Admin\Http\Controllers\AdminAuthController;
 use Modules\Admin\Http\Controllers\AdminController;
 
 Route::group(['prefix' => 'admin'], function () {
+    //Authentication
+    Route::get('login', [AdminAuthController::class, 'loginForm'])->name('admin.login.form');
+    Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login');
+
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     //Admins

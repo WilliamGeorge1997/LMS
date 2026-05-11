@@ -1,72 +1,60 @@
 <?php
 
-namespace Modules\Admin\Services;
+namespace Modules\Publisher\Services;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Http\UploadedFile;
 use Modules\Publisher\DTOs\PublisherDto;
-use Modules\Admin\Models\Admin;
+use Modules\Publisher\Models\Publisher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Yajra\DataTables\Facades\DataTables;
 
 class PublisherService
 {
-    private string $uploadFolder = 'publisher';
     public function findAll(array $data)
     {
-        $query = Admin::query()->latest('id');
+        $query = Publisher::query()->available()->latest('id');
+
         return getCaseCollection($query, $data);
     }
 
     public function dataTable(): JsonResponse
     {
-        $query = Admin::query()
+        $query = Publisher::query()
+            ->available()
             ->select(['id', 'name', 'is_active', 'created_at'])
-            ->with(['roles' => function (MorphToMany $q) {
+            ->with(['manager' => function (MorphToMany $q) {
                 $q->select(['id', 'name']);
             }]);
 
         return DataTables::eloquent($query)->toJson();
     }
 
-    public function save(AdminDto $dto, ?UploadedFile $image = null): Admin
+    public function save(PublisherDto $dto): Publisher
     {
         $data = $dto->toArray();
-        if ($image)
-            $data['image'] = $this->uploadImage($image, $this->uploadFolder);
-
-        $admin = Admin::create($data);
-        $admin->assignRole($dto->role);
+        $admin = Publisher::create($data);
 
         return $admin;
     }
 
-    public function update(Admin $admin, AdminDto $dto, ?UploadedFile $image = null): Admin
+    public function update(Publisher $publisher, PublisherDto $dto): Publisher
     {
         $data = $dto->toArray();
 
-        if ($image) {
-            $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'));
-            $data['image'] = $this->uploadImage($image, $this->uploadFolder);
-        }
+        $publisher->update($data);
 
-        $admin->update($data);
-        $admin->syncRoles($dto->role);
-
-        return $admin->fresh();
+        return $publisher->fresh();
     }
 
-    public function delete(Admin $admin): bool
+    public function delete(Publisher $publisher): bool
     {
-        if ($admin->image)
-            $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'));
-
-        return (bool) $admin->delete();
+        return (bool) $publisher->delete();
     }
 
-    public function toggleActivate(Admin $admin): Admin
+    public function toggleActivate(Publisher $publisher): Publisher
     {
-        $admin->update(['is_active' => !$admin->is_active]);
-        return $admin->fresh();
+        $publisher->update(['is_active' => ! $publisher->is_active]);
+
+        return $publisher->fresh();
     }
 }

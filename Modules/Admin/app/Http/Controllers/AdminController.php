@@ -19,8 +19,9 @@ class AdminController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
+            'auth:admin',
+            'role:Super Admin|Manager',
             'set.locale',
-            // 'role:Super Admin'
         ];
     }
 
