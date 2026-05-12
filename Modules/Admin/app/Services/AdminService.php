@@ -5,6 +5,7 @@ namespace Modules\Admin\Services;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
 use Modules\Admin\DTOs\AdminDto;
+use Modules\Admin\Enums\Role;
 use Modules\Admin\Models\Admin;
 use Modules\Common\Traits\UploaderTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,9 +15,16 @@ class AdminService
 {
     use UploaderTrait;
     private string $uploadFolder = 'admin';
+
     public function findAll(array $data)
     {
         $query = Admin::query()->latest('id');
+        return getCaseCollection($query, $data);
+    }
+
+    public function findActiveManagers(array $data = [])
+    {
+        $query = Admin::query()->active()->role(Role::MANAGER);
         return getCaseCollection($query, $data);
     }
 

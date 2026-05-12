@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Modules\Admin\Http\Requests\AdminLoginRequest;
 use Modules\Admin\Models\Admin;
+use Modules\Common\Helpers\ApiResponse;
 
 class AdminAuthController extends Controller implements HasMiddleware
 {
@@ -31,20 +32,18 @@ class AdminAuthController extends Controller implements HasMiddleware
 
     public function login(AdminLoginRequest $request)
     {
-        $admin = Admin::where('email', $request->email)->first();
+        $admin = Admin::where('email', $request->string('email'))->first();
 
-        if (!$admin || !Hash::check($request->string('password'), $admin->password)) {
-            return back()->withErrors(['email' => __('admin::messages.invalid_credenetials')])->withInput($request->only('email', 'remember_me'));
-        }
+        if (! $admin || !Hash::check($request->string('password'), $admin->password))
+            return ApiResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
 
-        if (!$admin->is_active) {
-            return back()->withErrors(['email' => __('admin::messages.unactive_account')])->withInput($request->only('email', 'remember_me'));
-        }
+        if (! $admin->is_active)
+            return ApiResponse::validationError(['email' => __('admin::messages.unactive_account')]);
 
         Auth::guard('admin')->attempt($request->only(['email', 'password']), $request->boolean('remember_me'));
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.dashboard'));
+        return ApiResponse::success('Logged in successfully.');
     }
 
     public function logout()

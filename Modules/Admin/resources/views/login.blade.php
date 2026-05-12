@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>{{ config('app.name') }} - Login</title>
     <meta charset="utf-8" />
     <meta name="description"
         content="LMS Admin Panel - Sign in to manage courses, users, and platform settings for the Learning Management System." />
     <meta name="keywords"
-        content="LMS, Learning Management System, admin, login, education, courses, user management, e-learning, dashboard, Laravel" />   
+        content="LMS, Learning Management System, admin, login, education, courses, user management, e-learning, dashboard, Laravel" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
     <link href="{{ asset('dashboard/assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -39,31 +40,29 @@
     <div class="d-flex flex-column flex-root" id="kt_app_root">
         <div class="d-flex flex-column flex-lg-row flex-column-fluid">
             <a href="index.html" class="d-block d-lg-none mx-auto py-20">
-                {{-- <img alt="Logo" src="{{ asset('dashboard/assets/media/logos/default.svg') }}" class="theme-light-show h-25px" /> --}}
-                <img alt="Logo" src="{{ asset('dashboard/assets/media/logos/default-dark.svg') }}" class="theme-dark-show h-25px" />
+                <img alt="Logo" src="{{ asset('dashboard/assets/media/logos/default-dark.svg') }}"
+                    class="theme-dark-show h-25px" />
             </a>
             <div class="d-flex flex-column flex-column-fluid flex-center w-lg-50 p-10">
                 <div class="d-flex justify-content-between flex-column-fluid flex-column w-100 mw-450px">
                     <div class="py-20">
                         <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form"
                             data-kt-redirect-url="{{ route('admin.dashboard') }}" action="{{ route('admin.login') }}">
+                            @csrf
                             <div class="card-body">
                                 <div class="text-start mb-10">
                                     <h1 class="text-gray-900 mb-3 fs-3x" data-kt-translate="sign-in-title">Sign In</h1>
-                                    <div class="text-gray-500 fw-semibold fs-6" data-kt-translate="general-desc">Get
-                                        unlimited access & earn money</div>
                                 </div>
                                 <div class="fv-row mb-8">
                                     <input type="text" placeholder="Email" name="email" autocomplete="off"
-                                        data-kt-translate="sign-in-input-email"
-                                        class="form-control form-control-solid"
+                                        data-kt-translate="sign-in-input-email" class="form-control form-control-solid"
                                         value="admin@admin.com" />
                                 </div>
+                                <div><p class="text-danger" data-email-error></p></div>
                                 <div class="fv-row mb-7">
                                     <input type="password" placeholder="Password" name="password" autocomplete="off"
                                         data-kt-translate="sign-in-input-password"
-                                        class="form-control form-control-solid" 
-                                        value="123456"/>
+                                        class="form-control form-control-solid" value="123456" />
                                 </div>
                                 <div class="d-flex flex-stack">
                                     <button id="kt_sign_in_submit" class="btn btn-primary me-2 flex-shrink-0">

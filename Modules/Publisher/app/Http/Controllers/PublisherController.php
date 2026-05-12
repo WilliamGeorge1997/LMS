@@ -11,14 +11,16 @@ use Modules\Publisher\DTOs\PublisherDto;
 use Modules\Publisher\Http\Requests\PublisherRequest;
 use Modules\Publisher\Models\Publisher;
 use Modules\Publisher\Services\PublisherService;
+use Modules\Publisher\ViewModel\PublisherViewModel;
 
 class PublisherController extends Controller implements HasMiddleware
 {
     public static function middleware(): array
     {
         return [
+            'auth:admin',
+            'role:Super Admin|Manager',
             'set.locale',
-            // 'role:Super Admin|Manager'
         ];
     }
 
@@ -32,8 +34,9 @@ class PublisherController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             return $this->publisherService->dataTable();
         }
+        $viewModel = new PublisherViewModel();
 
-        return view('publisher::publishers.index');
+        return view('publisher::publishers.index', compact('viewModel'));
     }
 
     /**

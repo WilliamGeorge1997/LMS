@@ -20,7 +20,7 @@ class AdminController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:Super Admin|Manager',
+            'role:Super Admin',
             'set.locale',
         ];
     }

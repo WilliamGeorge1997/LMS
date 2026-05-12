@@ -8,6 +8,7 @@ Route::group(['prefix' => 'admin'], function () {
     //Authentication
     Route::get('login', [AdminAuthController::class, 'loginForm'])->name('admin.login.form');
     Route::post('login', [AdminAuthController::class, 'login'])->name('admin.login');
+    Route::post('logut', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 

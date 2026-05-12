@@ -2,7 +2,7 @@
 
 return [
     //Buttons
-    'create' => 'إنشاء ناشر',
-    'submit' => 'إرسال',
-    'cancel' => 'إلغاء',
+    'create' => 'Create Publisher',
+    'submit' => 'Submit',
+    'cancel' => 'Cancel',
 ];

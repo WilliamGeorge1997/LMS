@@ -2,9 +2,9 @@
 
 return [
     //Placholders
-    'enter_name' => 'ادخل الاسم',
-    'select_manager' => 'اختر مدير',
+    'enter_name' => 'Enter name',
+    'select_manager' => 'Select manager',
 
-    'search_publishers' => 'بحث في الناشرين',
-    'leave_blank_to_keep_current' => 'اتركه فارغ لحفظ الحالي',
+    'search_publishers' => 'Search publishers',
+    'leave_blank_to_keep_current' => 'Leave blank to keep current',
 ];
