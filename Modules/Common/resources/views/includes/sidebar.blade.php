@@ -1,4 +1,7 @@
-@php($request = request())
+@php
+    $request = request();
+    $is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN->value);
+@endphp
 <!--begin::Sidebar-->
 <div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar"
     data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="225px"
@@ -55,7 +58,7 @@
                                     <span class="path4"></span>
                                 </i>
                             </span>
-                            <span class="menu-title">Dashboards</span>
+                            <span class="menu-title">Dashboard</span>
                         </a>
                         <!--end:Menu link-->
                     </div>
@@ -74,43 +77,42 @@
                     <!--end:Menu item-->
 
 
-
-                    <!--begin:Menu item-->
-                    <div data-kt-menu-trigger="click"
-                        class="menu-item menu-accordion @if ($request->routeIs('admins.index')) here show @endif">
-                        <!--begin:Menu link-->
-                        <span class="menu-link">
-                            <span class="menu-icon">
-                                <i class="ki-duotone ki-user fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
+                    @if ($is_super_admin)
+                        <!--begin:Menu item-->
+                        <div data-kt-menu-trigger="click"
+                            class="menu-item menu-accordion @if ($request->routeIs('admins.index')) here show @endif">
+                            <!--begin:Menu link-->
+                            <span class="menu-link">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-user fs-2">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">{{ __('common::sidebar.user_management') }}</span>
+                                <span class="menu-arrow"></span>
                             </span>
-                            <span class="menu-title">{{ __('common::sidebar.user_management') }}</span>
-                            <span class="menu-arrow"></span>
-                        </span>
-                        <!--end:Menu link-->
-                        <!--begin:Menu sub-->
-                        <div class="menu-sub menu-sub-accordion">
-                            <!--begin:Menu item-->
-                            <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link @if ($request->routeIs('admins.index')) active @endif"
-                                    href="{{ route('admins.index') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title">{{ __('common::sidebar.admins') }}</span>
-                                </a>
-                                <!--end:Menu link-->
+                            <!--end:Menu link-->
+                            <!--begin:Menu sub-->
+                            <div class="menu-sub menu-sub-accordion">
+                                <!--begin:Menu item-->
+                                <div class="menu-item">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link @if ($request->routeIs('admins.index')) active @endif"
+                                        href="{{ route('admins.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">{{ __('common::sidebar.admins') }}</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+                                <!--end:Menu item-->
                             </div>
-                            <!--end:Menu item-->
+                            <!--end:Menu sub-->
                         </div>
-                        <!--end:Menu sub-->
-                    </div>
-                    <!--end:Menu item-->
-
-
+                        <!--end:Menu item-->
+                    @endif
 
 
 

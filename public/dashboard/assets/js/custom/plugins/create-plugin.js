@@ -18,12 +18,12 @@ window.CreatePlugin = (function () {
         storeUrl: null,
 
         selectors: {
-            toggle      : "#create-toggle",
-            toggleLabel : "#create-toggle-label",
-            collapse    : "#create-collapse",
-            form        : "#create-form",
-            submit      : "#create-submit",
-            cancel      : "#create-cancel",
+            toggle: "#create-toggle",
+            toggleLabel: "#create-toggle-label",
+            collapse: "#create-collapse",
+            form: "#create-form",
+            submit: "#create-submit",
+            cancel: "#create-cancel",
         },
 
         labels: {
@@ -32,22 +32,22 @@ window.CreatePlugin = (function () {
         },
 
         toggleClasses: {
-            open  : "btn-danger",
+            open: "btn-danger",
             closed: "btn-primary",
         },
 
-        method       : "POST",
-        datatable    : null,
-        datatableMode: "reload",   // "reload" | "append"
-        mapRow       : null,       // function(response) → row array (used when datatableMode = "append")
-        onSuccess    : null,       // function(response, datatable) — overrides default table refresh
-        beforeSubmit : null,       // function(formData) → formData — mutate payload before send
+        method: "POST",
+        datatable: null,
+        datatableMode: "reload", // "reload" | "append"
+        mapRow: null, // function(response) → row array (used when datatableMode = "append")
+        onSuccess: null, // function(response, datatable) — overrides default table refresh
+        beforeSubmit: null, // function(formData) → formData — mutate payload before send
 
         notifications: {
             successTitle: "Success",
-            successText : "Record created successfully.",
-            errorTitle  : "Error",
-            errorText   : "Something went wrong. Please try again.",
+            successText: "Record created successfully.",
+            errorTitle: "Error",
+            errorText: "Something went wrong. Please try again.",
         },
     };
 
@@ -59,35 +59,43 @@ window.CreatePlugin = (function () {
             return null;
         }
 
-        var $toggle      = $(config.selectors.toggle).first();
+        var $toggle = $(config.selectors.toggle).first();
         var $toggleLabel = $(config.selectors.toggleLabel).first();
-        var $collapse    = $(config.selectors.collapse).first();
-        var $form        = $(config.selectors.form).first();
-        var $submit      = $(config.selectors.submit).first();
-        var $cancel      = $(config.selectors.cancel).first();
+        var $collapse = $(config.selectors.collapse).first();
+        var $form = $(config.selectors.form).first();
+        var $submit = $(config.selectors.submit).first();
+        var $cancel = $(config.selectors.cancel).first();
 
         if (!$collapse.length || !$form.length) {
             console.error("CreatePlugin: collapse or form element not found.");
             return null;
         }
 
-        var collapse = bootstrap.Collapse.getOrCreateInstance($collapse[0], { toggle: false });
+        var collapse = bootstrap.Collapse.getOrCreateInstance($collapse[0], {
+            toggle: false,
+        });
 
-        PluginValidator.bindLive($form);
-        PluginDependentDropdown.bind($form);
+  PluginValidator.bindLive($form);
+  if (typeof PluginDependentDropdown !== "undefined") {
+      PluginDependentDropdown.bind($form);
+  }
 
         // ─── Helpers ──────────────────────────────────────────────────────────
 
         function setToggleState(isOpen) {
-            $toggleLabel.text(isOpen ? config.labels.cancel : config.labels.create);
+            $toggleLabel.text(
+                isOpen ? config.labels.cancel : config.labels.create,
+            );
             $toggle
-                .toggleClass(config.toggleClasses.open,   isOpen)
+                .toggleClass(config.toggleClasses.open, isOpen)
                 .toggleClass(config.toggleClasses.closed, !isOpen);
         }
 
         function buildPayload() {
             var formData = new FormData($form[0]);
-            return (typeof config.beforeSubmit === "function") ? (config.beforeSubmit(formData) || formData) : formData;
+            return typeof config.beforeSubmit === "function"
+                ? config.beforeSubmit(formData) || formData
+                : formData;
         }
 
         function refreshTable(response) {
@@ -98,7 +106,10 @@ window.CreatePlugin = (function () {
                 return;
             }
 
-            if (config.datatableMode === "append" && typeof config.mapRow === "function") {
+            if (
+                config.datatableMode === "append" &&
+                typeof config.mapRow === "function"
+            ) {
                 config.datatable.row.add(config.mapRow(response)).draw(false);
                 return;
             }
@@ -116,19 +127,28 @@ window.CreatePlugin = (function () {
 
         // ─── Collapse events ──────────────────────────────────────────────────
 
-        $collapse.on("show.bs.collapse.create",   function () { setToggleState(true); });
-        $collapse.on("hide.bs.collapse.create",   function () { setToggleState(false); });
+        $collapse.on("show.bs.collapse.create", function () {
+            setToggleState(true);
+        });
+        $collapse.on("hide.bs.collapse.create", function () {
+            setToggleState(false);
+        });
         $collapse.on("hidden.bs.collapse.create", function () {
             $form[0].reset();
             PluginValidator.clearAll($form);
-            if ($form.find("[data-depends-on]").length) {
+            if (
+                typeof PluginDependentDropdown !== "undefined" &&
+                $form.find("[data-depends-on]").length
+            ) {
                 PluginDependentDropdown.bind($form);
             }
         });
 
         // ─── Cancel button ────────────────────────────────────────────────────
 
-        $cancel.on("click.create", function () { collapse.hide(); });
+        $cancel.on("click.create", function () {
+            collapse.hide();
+        });
 
         // ─── Form submit ──────────────────────────────────────────────────────
 
@@ -144,15 +164,26 @@ window.CreatePlugin = (function () {
                     PluginValidator.clearAll($form);
                     refreshTable(response);
                     collapse.hide();
-                    PluginNotify.show("success", config.notifications.successTitle, config.notifications.successText);
+                    PluginNotify.show(
+                        "success",
+                        config.notifications.successTitle,
+                        config.notifications.successText,
+                    );
                 })
                 .fail(function (xhr) {
                     if (xhr.status === 422) {
-                        var errors = xhr.responseJSON && xhr.responseJSON.errors ? xhr.responseJSON.errors : {};
+                        var errors =
+                            xhr.responseJSON && xhr.responseJSON.errors
+                                ? xhr.responseJSON.errors
+                                : {};
                         PluginValidator.showBackendErrors($form, errors);
                         return;
                     }
-                    PluginNotify.show("error", config.notifications.errorTitle, config.notifications.errorText);
+                    PluginNotify.show(
+                        "error",
+                        config.notifications.errorTitle,
+                        config.notifications.errorText,
+                    );
                 })
                 .always(function () {
                     setSubmitLoading(false);
@@ -162,16 +193,26 @@ window.CreatePlugin = (function () {
         // ─── Public API ───────────────────────────────────────────────────────
 
         return {
-            open       : function ()        { collapse.show(); },
-            close      : function ()        { collapse.hide(); },
-            clearErrors: function ()        { PluginValidator.clearAll($form); },
-            showErrors : function (errors)  { PluginValidator.showBackendErrors($form, errors); },
-            destroy    : function () {
+            open: function () {
+                collapse.show();
+            },
+            close: function () {
+                collapse.hide();
+            },
+            clearErrors: function () {
+                PluginValidator.clearAll($form);
+            },
+            showErrors: function (errors) {
+                PluginValidator.showBackendErrors($form, errors);
+            },
+            destroy: function () {
                 $form.off(".create");
                 $cancel.off(".create");
                 $collapse.off(".create");
                 PluginValidator.unbindLive($form);
-                PluginDependentDropdown.unbind($form);
+                if (typeof PluginDependentDropdown !== "undefined") {
+                    PluginDependentDropdown.unbind($form);
+                }
             },
         };
     }

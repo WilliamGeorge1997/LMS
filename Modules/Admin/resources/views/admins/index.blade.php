@@ -86,15 +86,15 @@
                             {{-- Role --}}
                             <div class="col-md-6">
                                 <label class="required form-label">{{ __('admin::attributes.role') }}</label>
-                                <select name="role" class="form-select form-select-solid" data-rule-required
+                                <select name="role_id" class="form-select form-select-solid" data-rule-required
                                     data-msg-required="Please select a role.">
                                     <option value="" disabled selected>{{ __('admin::attributes.select_role') }}
                                     </option>
-                                    <option value="{{ \Modules\Admin\Enums\Role::SUPER_ADMIN->value }}">
-                                        {{ \Modules\Admin\Enums\Role::SUPER_ADMIN->value }}
-                                    </option>
+                                    @foreach (\Spatie\Permission\Models\Role::all() as $role)
+                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                    @endforeach
                                 </select>
-                                <div class="invalid-feedback d-block" data-field-error="role"></div>
+                                <div class="invalid-feedback d-block" data-field-error="role_id"></div>
                             </div>
 
                             {{-- Password --}}
@@ -173,7 +173,7 @@
                         <th class="w-10px pe-2"> {{-- index 1: checkbox --}}
                             <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
                                 <input class="form-check-input" type="checkbox" data-kt-check="true"
-                                    data-kt-check-target="#kt_datatable .form-check-input" value="1" />
+                                    data-kt-check-target="#kt_datatable .row-checkbox" value="1" />
                             </div>
                         </th>
                         <th class="min-w-125px">{{ __('admin::attributes.name') }}</th>
@@ -201,7 +201,6 @@
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/notify.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/validator.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/input-builder.js') }}"></script>
-    <script src="{{ asset('dashboard/assets/js/custom/plugins/core/dependent-dropdown.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/create-plugin.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/edit-plugin.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/toggle-plugin.js') }}"></script>
@@ -267,7 +266,7 @@
                         searchable: false,
                         render: function(data) {
                             return `<div class="form-check form-check-sm form-check-custom form-check-solid">
-                                    <input class="form-check-input" type="checkbox" value="${esc(data)}" />
+                                    <input class="form-check-input row-checkbox" type="checkbox" value="${esc(data)}" />
                                 </div>`;
                         }
                     },
@@ -418,13 +417,18 @@
                         },
                     },
                     {
-                        field: "role",
+                        field: "role_id",
                         type: "select",
                         target: 4,
-                        options: [{
-                            value: "Super Admin",
-                            label: "Super Admin"
-                        }, ],
+                        valueKey: "roles.[0].id",
+                        options: [
+                            @foreach (\Spatie\Permission\Models\Role::all() as $role)
+                                {
+                                    value: {{ $role->id }},
+                                    label: "{{ $role->name }}"
+                                },
+                            @endforeach
+                        ],
                         rules: {
                             required: true
                         },

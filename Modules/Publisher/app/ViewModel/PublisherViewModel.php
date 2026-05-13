@@ -4,9 +4,11 @@ namespace Modules\Publisher\ViewModel;
 
 use Modules\Admin\Services\AdminService;
 
-class PublisherViewModel{
+class PublisherViewModel
+{
 
-    public function activeManagers(AdminService $adminService){
-        return $adminService->findActiveManagers();
+    public function activeManagers()
+    {
+        return (new AdminService())->findActiveManagers();
     }
 }

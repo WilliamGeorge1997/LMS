@@ -46,7 +46,7 @@ class AdminService
             $data['image'] = $this->uploadImage($image, $this->uploadFolder);
 
         $admin = Admin::create($data);
-        $admin->assignRole($dto->role);
+        $admin->assignRole($dto->role_id);
 
         return $admin;
     }
@@ -61,7 +61,7 @@ class AdminService
         }
 
         $admin->update($data);
-        $admin->syncRoles($dto->role);
+        $admin->syncRoles($dto->role_id);
 
         return $admin->fresh();
     }

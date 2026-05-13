@@ -7,6 +7,7 @@ return [
 
     //Attributes
     'name' => 'الاسم',
+    'manager' => 'المدير',
     'is_active' => 'الحالة',
     'created_at' => 'تاريخ الإنشاء',
     'actions' => 'الإجراءات',

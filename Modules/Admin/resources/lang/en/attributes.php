@@ -4,6 +4,7 @@ return [
     //Title
     'admins' => 'Admins',
     'user_management' => 'User Management',
+    'admins_list' => 'Admins List',
 
     //Attributes
     'name' => 'Name',

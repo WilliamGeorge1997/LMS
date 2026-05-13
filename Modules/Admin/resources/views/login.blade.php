@@ -56,13 +56,13 @@
                                 <div class="fv-row mb-8">
                                     <input type="text" placeholder="Email" name="email" autocomplete="off"
                                         data-kt-translate="sign-in-input-email" class="form-control form-control-solid"
-                                        value="admin@admin.com" />
+                                         />
                                 </div>
                                 <div><p class="text-danger" data-email-error></p></div>
                                 <div class="fv-row mb-7">
                                     <input type="password" placeholder="Password" name="password" autocomplete="off"
                                         data-kt-translate="sign-in-input-password"
-                                        class="form-control form-control-solid" value="123456" />
+                                        class="form-control form-control-solid" />
                                 </div>
                                 <div class="d-flex flex-stack">
                                     <button id="kt_sign_in_submit" class="btn btn-primary me-2 flex-shrink-0">

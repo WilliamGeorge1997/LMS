@@ -2,6 +2,9 @@
 
 return [
     //Title
+    'updated' => 'Updated',
+    'error' => 'Error',
+    'something_went_wrong' => 'Something went wrong. Please try again.',
     'created_successfully' => 'Publisher created successfully',
     'updated_successfully' => 'Publisher details updated successfully',
     'deleted_succesffully' => 'Publisher deleted successfully',

@@ -7,6 +7,7 @@ return [
 
     //Attributes
     'name' => 'Name',
+    'manager_id' => 'Manager',
     'is_active' => 'Active',
     'created_at' => 'Created At',
     'actions' => 'Actions',

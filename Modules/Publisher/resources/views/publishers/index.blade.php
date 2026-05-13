@@ -81,7 +81,7 @@
                                     <select name="manager_id" class="form-select form-select-solid" data-rule-required
                                         data-msg-required="Please select a manager.">
                                         <option value="" disabled selected>
-                                            {{ __('publisher::attributes.select_manager') }}
+                                            {{ __('publisher::placeholders.select_manager') }}
                                         </option>
                                         @foreach ($viewModel->activeManagers() as $manager)
                                             <option value="{{ $manager->id }}">
@@ -140,7 +140,7 @@
                     </i>
                     <input type="text" data-kt-docs-table-filter="search"
                         class="form-control form-control-solid w-250px ps-13"
-                        placeholder="{{ __('admin::attributes.search_admins') }}" />
+                        placeholder="{{ __('publisher::placeholders.search_publishers') }}" />
                 </div>
             </div>
         </div>
@@ -153,15 +153,15 @@
                         <th class="w-10px pe-2"> {{-- index 1: checkbox --}}
                             <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
                                 <input class="form-check-input" type="checkbox" data-kt-check="true"
-                                    data-kt-check-target="#kt_datatable .form-check-input" value="1" />
+                                    data-kt-check-target="#kt_datatable .row-checkbox" value="1" />
                             </div>
                         </th>
-                        <th class="min-w-125px">{{ __('admin::attributes.name') }}</th>
-                        <th class="min-w-125px">{{ __('admin::attributes.email') }}</th>
-                        <th class="min-w-125px">{{ __('admin::attributes.role') }}</th>
-                        <th class="min-w-125px">{{ __('admin::attributes.is_active') }}</th>
-                        <th class="min-w-125px">{{ __('admin::attributes.created_at') }}</th>
-                        <th class="text-end min-w-100px">{{ __('admin::attributes.actions') }}</th>
+                        <th class="min-w-125px">{{ __('publisher::attributes.name') }}</th>
+                        @if ($is_super_admin)
+                            <th class="min-w-125px">{{ __('publisher::attributes.manager_id') }}</th>
+                        @endif
+                        <th class="min-w-125px">{{ __('publisher::attributes.created_at') }}</th>
+                        <th class="text-end min-w-100px">{{ __('publisher::attributes.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 fw-semibold"></tbody>
@@ -181,7 +181,6 @@
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/notify.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/validator.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/core/input-builder.js') }}"></script>
-    <script src="{{ asset('dashboard/assets/js/custom/plugins/core/dependent-dropdown.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/create-plugin.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/edit-plugin.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/toggle-plugin.js') }}"></script>
@@ -205,7 +204,7 @@
                     [0, "desc"]
                 ], // order by hidden id DESC
                 ajax: {
-                    url: "{{ route('admins.index') }}"
+                    url: "{{ route('publishers.index') }}"
                 },
                 columns: [{
                         data: "id"
@@ -216,21 +215,19 @@
                     {
                         data: "name"
                     }, // 2
-                    {
-                        data: "email"
-                    }, // 3
-                    {
-                        data: "roles.[0].name"
-                    }, // 4
-                    {
+                    @if ($is_super_admin)
+                        {
+                            data: "manager.name"
+                        }, // 3
+                    @endif {
                         data: "is_active"
-                    }, // 5
+                    }, // -3
                     {
                         data: "created_at"
-                    }, // 6
+                    }, // -2
                     {
                         data: null
-                    }, // 7 — actions
+                    }, // -1 — actions
                 ],
                 columnDefs: [
                     // 0 — hidden id
@@ -247,7 +244,7 @@
                         searchable: false,
                         render: function(data) {
                             return `<div class="form-check form-check-sm form-check-custom form-check-solid">
-                                    <input class="form-check-input" type="checkbox" value="${esc(data)}" />
+                                    <input class="form-check-input row-checkbox" type="checkbox" value="${esc(data)}" />
                                 </div>`;
                         }
                     },
@@ -275,28 +272,20 @@
                                 </div>`;
                         }
                     },
-                    // 3 — email
+                    @if ($is_super_admin)
+                        // 3 — manager
+                        {
+                            targets: 3,
+                            orderable: false,
+                            searchable: true,
+                            render: function(data) {
+                                return `<span class="fw-bold text-gray-800">${esc(data || "")}</span>`;
+                            }
+                        },
+                    @endif
+                    // -3 — is_active toggle
                     {
-                        targets: 3,
-                        orderable: true,
-                        searchable: true,
-                        render: function(data) {
-                            return `<span class="fw-bold text-gray-800">${esc(data || "")}</span>`;
-                        }
-                    },
-                    // 4 — Role
-                    {
-                        targets: 4,
-                        orderable: false,
-                        searchable: false,
-                        render: function(data) {
-                            return `<span class="badge badge-light-primary fw-bold">${esc(data || "")}</span>`;
-
-                        }
-                    },
-                    // 5 — is_active toggle
-                    {
-                        targets: 5,
+                        targets: -3,
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
@@ -306,18 +295,18 @@
                                 </label>`;
                         }
                     },
-                    // 6 — created_at
+                    // -2 — created_at
                     {
-                        targets: 6,
+                        targets: -2,
                         orderable: true,
                         searchable: false,
                         render: function(data) {
                             return `<span class="text-gray-700 fw-semibold">${esc(data || "")}</span>`;
                         }
                     },
-                    // 7 — actions
+                    // -1 — actions
                     {
-                        targets: 7,
+                        targets: -1,
                         orderable: false,
                         searchable: false,
                         className: "text-end",
@@ -352,140 +341,82 @@
 
             // ── 3. Create Plugin ────────────────────────────────────────────────
             CreatePlugin.init({
-                storeUrl: "{{ route('admins.store') }}",
+                storeUrl: "{{ route('publishers.store') }}",
                 datatable: dt,
                 labels: {
-                    create: "+ {{ __('admin::attributes.create_admin') }}",
-                    cancel: "× {{ __('admin::attributes.cancel') }}"
+                    create: "+ {{ __('publisher::buttons.create') }}",
+                    cancel: "× {{ __('publisher::buttons.cancel') }}"
                 }
             });
 
             // ── EditPlugin ────────────────────────────────────────────────────────────
             EditPlugin.init({
-                updateUrl: "{{ route('admins.update', ['admin' => ':id']) }}",
+                updateUrl: "{{ route('publishers.update', ['publisher' => ':id']) }}",
                 datatable: dt,
                 selector: ".edit-btn",
-
-                // actionsTarget: 7, // optional — auto-detected from last visible column
 
                 columns: [{
                         field: "name",
                         type: "text",
-                        target: 2, // datatable column index
-                        placeholder: "{{ __('admin::attributes.enter_name') }}",
+                        target: 2,
+                        placeholder: "{{ __('publisher::placeholders.enter_name') }}",
                         rules: {
                             required: true,
                             max: 255
                         },
                         messages: {
-                            required: "Name is required.",
-                            max: "Max 255 characters."
+                            required: "{{ __('publisher::validations.name_required') }}",
+                            max: "{{ __('publisher::validations.name_max') }}."
                         },
                     },
-                    {
-                        field: "email",
-                        type: "text",
-                        target: 3,
-                        placeholder: "{{ __('admin::attributes.enter_email') }}",
-                        rules: {
-                            required: true,
-                            email: true,
-                            max: 255
+                    @if ($is_super_admin)
+                        {
+                            field: "manager_id",
+                            type: "select",
+                            target: 3,
+                            valueKey: "manager.id",
+                            options: [
+                                @foreach ($viewModel->activeManagers() as $manager)
+                                    {
+                                        value: {{ $manager->id }},
+                                        label: "{{ $manager->name }}"
+                                    },
+                                @endforeach
+                            ],
+                            rules: {
+                                required: true,
+                            },
+                            messages: {
+                                required: "{{ __('publisher::validations.manager_required') }}",
+                            },
                         },
-                        messages: {
-                            required: "Email is required.",
-                            email: "Invalid email."
-                        },
-                    },
-                    {
-                        field: "role",
-                        type: "select",
-                        target: 4,
-                        options: [{
-                            value: "Super Admin",
-                            label: "Super Admin"
-                        }, ],
-                        rules: {
-                            required: true
-                        },
-                        messages: {
-                            required: "Please select a role."
-                        },
-                    },
-                    {
+                    @endif {
                         field: "is_active",
                         type: "toggle",
-                        target: 5,
-                    },
-
-                    // ── Example: dependent dropdowns ──────────────────────────────────
-                    // {
-                    //     field   : "country_id",
-                    //     type    : "select",
-                    //     target  : 5,
-                    //     options : [{ value: 1, label: "Egypt" }, { value: 2, label: "USA" }],
-                    //     rules   : { required: true },
-                    // },
-                    // {
-                    //     field      : "city_id",
-                    //     type       : "select",
-                    //     target     : 6,
-                    //     options    : [],                                   // starts empty
-                    //     dependsOn  : "country_id",                        // parent field name
-                    //     dependsUrl : "/ajax/cities?country_id=:value",    // :value is replaced
-                    //     rules      : { required: true },
-                    // },
-
-                    // ── Hidden fields → rendered in child row below the main row ───────
-                    {
-                        field: "password",
-                        type: "password",
-                        hidden: true,
-                        optional: true,
-                        label: "Password",
-                        colClass: "col-md-6",
-                        rules: {
-                            min: 6
-                        },
-                        messages: {
-                            min: "Password must be at least 6 characters."
-                        },
-                    },
-                    {
-                        field: "image",
-                        type: "image",
-                        hidden: true,
-                        optional: true,
-                        label: "Image",
-                        colClass: "col-md-6",
+                        target: -3,
                     },
                 ],
-
-                /**
-                 * Map the server response back to the datatable row data object.
-                 * Must return the same shape as your datatable ajax response row.
-                 */
                 mapRow: function(response) {
                     return response.data;
                 },
 
                 notifications: {
-                    successTitle: "Updated",
-                    successText: "Admin updated successfully.",
-                    errorTitle: "Error",
-                    errorText: "Something went wrong. Please try again.",
+                    successTitle: "{{ __('publisher::messages.updated') }}",
+                    successText: "{{ __('publisher::messages.updated_successfully') }}",
+                    errorTitle: "{{ __('publisher::messages.error') }}",
+                    errorText: "{{ __('publisher::messages.something_went_wrong') }}",
                 },
             });
 
             // ── 5. Toggle Plugin ────────────────────────────────────────────────
             TogglePlugin.init({
-                toggleUrl: "{{ route('admins.toggle-activate', ['admin' => ':id']) }}",
+                toggleUrl: "{{ route('publishers.toggle-activate', ['publisher' => ':id']) }}",
                 selector: ".active-toggle"
             });
 
             // ── 6. Delete Plugin ────────────────────────────────────────────────
             DeletePlugin.init({
-                deleteUrl: "{{ route('admins.destroy', ['admin' => ':id']) }}",
+                deleteUrl: "{{ route('publishers.destroy', ['publisher' => ':id']) }}",
                 datatable: dt,
                 selector: ".delete-btn"
             });

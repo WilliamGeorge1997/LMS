@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Modules\Admin\DTOs\AdminDto;
+use Modules\Admin\Enums\Role;
 use Modules\Admin\Http\Requests\AdminStoreRequest;
 use Modules\Admin\Http\Requests\AdminUpdateRequest;
 use Modules\Admin\Models\Admin;
@@ -20,12 +22,15 @@ class AdminController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:Super Admin',
+            new Middleware('role:' . Role::SUPER_ADMIN->value, except: ['dashboard']),
+            new Middleware('role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value, only: ['dashboard']),
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly AdminService $adminService) {}
+    public function __construct(private readonly AdminService $adminService)
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -44,37 +49,13 @@ class AdminController extends Controller implements HasMiddleware
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('admin::create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(AdminStoreRequest $request): JsonResponse
     {
-        $dto   = AdminDto::fromRequest($request);
+        $dto = AdminDto::fromRequest($request);
         $admin = $this->adminService->save($dto, $request->file('image'));
         return ApiResponse::success(__('admin::attributes.admin_created_sucessfully'), $admin);
-    }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('admin::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('admin::edit');
     }
 
     /**
@@ -82,7 +63,7 @@ class AdminController extends Controller implements HasMiddleware
      */
     public function update(AdminUpdateRequest $request, Admin $admin): JsonResponse
     {
-        $dto   = AdminDto::fromRequest($request);
+        $dto = AdminDto::fromRequest($request);
         $admin = $this->adminService->update($admin, $dto, $request->file('image'));
         return ApiResponse::success(__('admin::attributes.admin_updated_sucessfully'), $admin);
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Modules\Admin\Enums\Role;
 use Modules\Common\Helpers\ApiResponse;
 use Modules\Publisher\DTOs\PublisherDto;
 use Modules\Publisher\Http\Requests\PublisherRequest;
@@ -19,7 +20,7 @@ class PublisherController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:Super Admin|Manager',
+            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
             'set.locale',
         ];
     }
@@ -40,14 +41,6 @@ class PublisherController extends Controller implements HasMiddleware
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('publisher::create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(PublisherRequest $request): JsonResponse
@@ -56,22 +49,6 @@ class PublisherController extends Controller implements HasMiddleware
         $admin = $this->publisherService->save($dto);
 
         return ApiResponse::success(__('publisher::messages.created_sucessfully'), $admin);
-    }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('admin::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('admin::edit');
     }
 
     /**

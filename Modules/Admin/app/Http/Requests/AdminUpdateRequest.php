@@ -19,7 +19,7 @@ class AdminUpdateRequest extends FormRequest
             'password' => 'nullable|string|min:6',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
             'is_active' => 'nullable|boolean',
-            'role' => ['required', 'string', Rule::in([RoleEnum::SUPER_ADMIN->value])],
+            'role_id' => ['required', 'integer', 'exists:roles,id'],
         ];
     }
 
