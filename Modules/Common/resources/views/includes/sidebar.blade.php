@@ -138,6 +138,31 @@
 
 
 
+
+
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link @if ($request->routeIs('categories.index')) active @endif"
+                            href="{{ route('categories.index') }}">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-user-edit fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">Categories</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+
+
+
+
+
+
+
+
                     <!--begin:Menu item-->
                     <div data-kt-menu-trigger="click"
                         class="menu-item menu-accordion @if ($request->routeIs('countries.index', 'cities.index', 'regions.index')) here show @endif">

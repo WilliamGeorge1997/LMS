@@ -25,7 +25,9 @@ class PublisherController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(private readonly PublisherService $publisherService) {}
+    public function __construct(private readonly PublisherService $publisherService)
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -82,5 +84,11 @@ class PublisherController extends Controller implements HasMiddleware
             : __('publisher::messages.deactivated_sucessfully');
 
         return ApiResponse::success($message, $publisher);
+    }
+
+    public function byManager(int $manager_id)
+    {
+        $publishers = $this->publisherService->findBy('manager_id', $manager_id, ['id', 'name']);
+        return ApiResponse::success(data: $publishers);
     }
 }

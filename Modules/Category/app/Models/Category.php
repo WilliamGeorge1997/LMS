@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Publisher\Models;
+namespace Modules\Category\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,16 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Admin\Enums\Role;
 use Modules\Admin\Models\Admin;
+use Spatie\Translatable\HasTranslations;
 
-class Publisher extends Model
+class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
 
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['name', 'manager_id', 'is_active'];
+    protected $fillable = ['name','publisher_id', 'manager_id', 'is_active'];
 
+    protected $translatable = ['name'];
     // Date Serialization
     protected function serializeDate(\DateTimeInterface $date): string
     {

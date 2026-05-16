@@ -11,7 +11,7 @@ class AdminDto
         public readonly string  $name,
         public readonly string  $email,
         public readonly int     $is_active,
-        public readonly int  $role_id,
+        public readonly int     $role_id,
         public readonly ?string $password = null,
     ) {}
 

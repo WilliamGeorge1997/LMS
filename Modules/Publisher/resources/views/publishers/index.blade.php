@@ -15,7 +15,7 @@
     @yield('css')
 
 @endsection
-@php($is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN));
+@php($is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN))
 
 {{-- ============================================================
      TOOLBAR — page title + create button + create form

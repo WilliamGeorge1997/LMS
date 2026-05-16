@@ -2,5 +2,6 @@
     "Admin": true,
     "Common": true,
     "Publisher": true,
-    "Country": true
+    "Country": true,
+    "Category": true
 }

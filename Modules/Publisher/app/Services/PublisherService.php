@@ -31,6 +31,17 @@ class PublisherService
         return DataTables::eloquent($query)->toJson();
     }
 
+
+    public function findBy(string $key, string $value, array $columns = ['*'])
+    {
+        return Publisher::query()->available()->active()->where($key, $value)->get($columns);
+    }
+
+    public function findActive()
+    {
+        return Publisher::query()->available()->active()->orderBy('name')->get(['id', 'name']);
+    }
+    
     public function save(PublisherDto $dto): Publisher
     {
         $data = $dto->toArray();
