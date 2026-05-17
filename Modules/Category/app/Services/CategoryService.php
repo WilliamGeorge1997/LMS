@@ -24,15 +24,7 @@ class CategoryService
                 },
             ]);
 
-        return DataTables::eloquent($query)
-            ->addColumn('name_display', function (Category $category) {
-                return ($category->getTranslation('name', 'ar') ?: '') .
-                    ' - ' .
-                    ($category->getTranslation('name', 'en') ?: '');
-            })
-            ->addColumn('name_ar', fn(Category $c) => $c->getTranslation('name', 'ar'))
-            ->addColumn('name_en', fn(Category $c) => $c->getTranslation('name', 'en'))
-            ->toJson();
+        return DataTables::eloquent($query)->toJson();
     }
 
     public function save(CategoryDto $dto): Category

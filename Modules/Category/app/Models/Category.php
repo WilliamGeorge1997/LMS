@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Admin\Enums\Role;
 use Modules\Admin\Models\Admin;
+use Modules\Publisher\Models\Publisher;
 use Spatie\Translatable\HasTranslations;
 
 class Category extends Model
@@ -36,6 +37,11 @@ class Category extends Model
     public function manager(): BelongsTo
     {
         return $this->belongsTo(Admin::class, 'manager_id');
+    }
+
+    public function publisher(): BelongsTo
+    {
+        return $this->belongsTo(Publisher::class);
     }
 
     public function scopeAvailable(Builder $query): Builder

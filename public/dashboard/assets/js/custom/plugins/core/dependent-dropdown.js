@@ -16,6 +16,24 @@
  * Dependencies: jQuery, PluginAjax, PluginInputBuilder
  */
 window.PluginDependentDropdown = (function () {
+    function currentLocale() {
+        return document.documentElement.lang || "en";
+    }
+
+    function resolveLabel(val) {
+        if (val === null || val === undefined) return "";
+        if (typeof val === "object") {
+            var locale = currentLocale();
+            return val[locale] || val["ar"] || val["en"] || "";
+        }
+        return String(val);
+    }
+
+    function resolveValue(val) {
+        if (val === null || val === undefined) return "";
+        return String(val);
+    }
+
     /**
      * Bind all dependent dropdowns inside a form.
      * Calls unbind() first to prevent duplicate listeners.
@@ -25,9 +43,9 @@ window.PluginDependentDropdown = (function () {
         unbind($form);
 
         $form.find("[data-depends-on]").each(function () {
-            var $child      = $(this);
-            var parentName  = $child.attr("data-depends-on");
-            var $parent     = $form.find('[name="' + parentName + '"]');
+            var $child = $(this);
+            var parentName = $child.attr("data-depends-on");
+            var $parent = $form.find('[name="' + parentName + '"]');
 
             if (!$parent.length) return;
 
@@ -58,8 +76,15 @@ window.PluginDependentDropdown = (function () {
      * @param {jQuery} $child
      */
     function reset($child) {
-        var placeholder = $child.attr("data-depends-placeholder") || "Select option";
-        $child.html('<option value="" disabled selected>' + placeholder + "</option>").prop("disabled", true);
+        var placeholder =
+            $child.attr("data-depends-placeholder") || "Select option";
+        $child
+            .html(
+                '<option value="" disabled selected>' +
+                    placeholder +
+                    "</option>",
+            )
+            .prop("disabled", true);
     }
 
     /**
@@ -78,19 +103,45 @@ window.PluginDependentDropdown = (function () {
             return $.when();
         }
 
+        var valueKey = $child.attr("data-value-key") || "value";
+        var labelKey = $child.attr("data-label-key") || "label";
+        var placeholder =
+            $child.attr("data-depends-placeholder") || "Select option";
         var resolvedUrl = url.replace(":value", encodeURIComponent(parentVal));
-        var placeholder = $child.attr("data-depends-placeholder") || "Select option";
 
-        $child.html('<option value="" disabled selected>Loading...</option>').prop("disabled", true);
+        $child
+            .html('<option value="" disabled selected>Loading...</option>')
+            .prop("disabled", true);
 
         return PluginAjax.loadOptions(resolvedUrl)
             .done(function (response) {
-                var parts = ['<option value="" disabled selected>' + placeholder + "</option>"];
-                $.each(response || [], function (i, item) {
-                    var selected = currentVal != null && String(item.value) === String(currentVal) ? "selected" : "";
-                    parts.push('<option value="' + PluginInputBuilder.escapeHtml(item.value) + '" ' + selected + ">" +
-                        PluginInputBuilder.escapeHtml(item.label) + "</option>");
+                var parts = [
+                    '<option value="" disabled selected>' +
+                        placeholder +
+                        "</option>",
+                ];
+
+                var items = Array.isArray(response)
+                    ? response
+                    : response.data || [];
+                $.each(items, function (i, item) {
+                    var val = resolveValue(item[valueKey]);
+                    var lab = resolveLabel(item[labelKey]);
+                    var selected =
+                        currentVal != null && val === String(currentVal)
+                            ? "selected"
+                            : "";
+                    parts.push(
+                        '<option value="' +
+                            PluginInputBuilder.escapeHtml(val) +
+                            '" ' +
+                            selected +
+                            ">" +
+                            PluginInputBuilder.escapeHtml(lab) +
+                            "</option>",
+                    );
                 });
+
                 $child.html(parts.join("")).prop("disabled", false);
             })
             .fail(function () {

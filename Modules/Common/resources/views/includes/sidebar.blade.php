@@ -51,11 +51,7 @@
                         <a class="menu-link @if ($request->routeIs('admin.dashboard')) active @endif"
                             href="{{ route('admin.dashboard') }}">
                             <span class="menu-icon">
-                                <i class="ki-duotone ki-element-11 fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                    <span class="path3"></span>
-                                    <span class="path4"></span>
+                                <i class="ki-duotone ki-home fs-2">
                                 </i>
                             </span>
                             <span class="menu-title">Dashboard</span>
@@ -145,10 +141,11 @@
                         <a class="menu-link @if ($request->routeIs('categories.index')) active @endif"
                             href="{{ route('categories.index') }}">
                             <span class="menu-icon">
-                                <i class="ki-duotone ki-user-edit fs-2">
+                                <i class="ki-duotone ki-category fs-2">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
+                                    <span class="path4"></span>
                                 </i>
                             </span>
                             <span class="menu-title">Categories</span>

@@ -50,17 +50,6 @@
 
                             {{-- Name AR --}}
                             <div class="col-md-6">
-                                <label class="required form-label">{{ __('category::attributes.name_ar') }}</label>
-                                <input type="text" name="name_ar" class="form-control form-control-solid"
-                                    placeholder="{{ __('category::placeholders.enter_name_ar') }}" autocomplete="off"
-                                    data-rule-required data-rule-max="255"
-                                    data-msg-required="{{ __('category::validations.name_ar_required') }}"
-                                    data-msg-max="{{ __('category::validations.name_max') }}" />
-                                <div class="invalid-feedback d-block" data-field-error="name_ar"></div>
-                            </div>
-
-                            {{-- Name EN --}}
-                            <div class="col-md-6">
                                 <label class="required form-label">{{ __('category::attributes.name_en') }}</label>
                                 <input type="text" name="name_en" class="form-control form-control-solid"
                                     placeholder="{{ __('category::placeholders.enter_name_en') }}" autocomplete="off"
@@ -68,6 +57,17 @@
                                     data-msg-required="{{ __('category::validations.name_en_required') }}"
                                     data-msg-max="{{ __('category::validations.name_max') }}" />
                                 <div class="invalid-feedback d-block" data-field-error="name_en"></div>
+                            </div>
+
+                            {{-- Name EN --}}
+                            <div class="col-md-6">
+                                <label class="required form-label">{{ __('category::attributes.name_ar') }}</label>
+                                <input dir="rtl" type="text" name="name_ar" class="form-control form-control-solid"
+                                    placeholder="{{ __('category::placeholders.enter_name_ar') }}" autocomplete="off"
+                                    data-rule-required data-rule-max="255"
+                                    data-msg-required="{{ __('category::validations.name_ar_required') }}"
+                                    data-msg-max="{{ __('category::validations.name_max') }}" />
+                                <div class="invalid-feedback d-block" data-field-error="name_ar"></div>
                             </div>
 
                             @if ($is_super_admin)
@@ -91,6 +91,7 @@
                                         class="required form-label">{{ __('category::attributes.publisher_id') }}</label>
                                     <select name="publisher_id" class="form-select form-select-solid"
                                         data-depends-on="manager_id" data-depends-url="/admin/managers/:value/publishers"
+                                        data-value-key="id" data-label-key="name"
                                         data-depends-placeholder="{{ __('category::placeholders.select_publisher') }}"
                                         data-rule-required
                                         data-msg-required="{{ __('category::validations.publisher_required') }}">
@@ -347,7 +348,6 @@
             });
 
             @if ($is_super_admin)
-                // Bind dependent dropdown for create form (super admin only)
                 PluginDependentDropdown.bind($("#create-form"));
             @endif
 
@@ -412,11 +412,12 @@
                         target: 3,
                         valueKey: "publisher.id",
                         @if ($is_super_admin)
-                            // loaded dynamically — no static options
                             options: [],
                             attrs: {
                                 "data-depends-on": "manager_id",
-                                "data-depends-url": '/admin/managers/:value/publishers',
+                                "data-depends-url": "/admin/managers/:value/publishers",
+                                "data-value-key": "id",
+                                "data-label-key": "name",
                                 "data-depends-placeholder": "{{ __('category::placeholders.select_publisher') }}",
                             },
                         @else
@@ -446,20 +447,6 @@
                 mapRow: function(response) {
                     return response.data;
                 },
-
-                @if ($is_super_admin)
-                    onOpen: function($form, row) {
-                        var $publisherSelect = $form.find('[name="publisher_id"]');
-                        var managerId = row.manager ? row.manager.id : null;
-                        var publisherId = row.publisher ? row.publisher.id : null;
-
-                        PluginDependentDropdown.reloadSelect($publisherSelect, publisherByManagerUrl,
-                                managerId, publisherId)
-                            .done(function() {
-                                PluginDependentDropdown.bind($form);
-                            });
-                    },
-                @endif
 
                 notifications: {
                     successTitle: "{{ __('category::messages.updated') }}",

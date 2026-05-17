@@ -12,7 +12,7 @@ class CategoryViewModel
         return (new AdminService())->findActiveManagers();
     }
 
-    public function active()
+    public function activePublishers()
     {
         return (new PublisherService())->findActive();
     }
