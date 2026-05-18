@@ -3,5 +3,6 @@
     "Common": true,
     "Publisher": true,
     "Country": true,
-    "Category": true
+    "Category": true,
+    "Tenant": true
 }

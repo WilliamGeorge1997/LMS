@@ -76,7 +76,7 @@
                     @if ($is_super_admin)
                         <!--begin:Menu item-->
                         <div data-kt-menu-trigger="click"
-                            class="menu-item menu-accordion @if ($request->routeIs('admins.index')) here show @endif">
+                            class="menu-item menu-accordion @if ($request->routeIs('admins.*', 'tenants.*')) here show @endif">
                             <!--begin:Menu link-->
                             <span class="menu-link">
                                 <span class="menu-icon">
@@ -91,10 +91,19 @@
                             <!--end:Menu link-->
                             <!--begin:Menu sub-->
                             <div class="menu-sub menu-sub-accordion">
+                                         <div class="menu-item">
+                                    <a class="menu-link @if ($request->routeIs('tenants.*')) active @endif"
+                                        href="{{ route('tenants.index') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">{{ __('common::sidebar.tenants') }}</span>
+                                    </a>
+                                </div>
                                 <!--begin:Menu item-->
                                 <div class="menu-item">
                                     <!--begin:Menu link-->
-                                    <a class="menu-link @if ($request->routeIs('admins.index')) active @endif"
+                                    <a class="menu-link @if ($request->routeIs('admins.*')) active @endif"
                                         href="{{ route('admins.index') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
