@@ -34,10 +34,10 @@ class AdminAuthController extends Controller implements HasMiddleware
     {
         $admin = Admin::where('email', $request->string('email'))->first();
 
-        if (! $admin || !Hash::check($request->string('password'), $admin->password))
+        if (!$admin || !Hash::check($request->string('password'), $admin->password))
             return ApiResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
 
-        if (! $admin->is_active)
+        if (!$admin->is_active)
             return ApiResponse::validationError(['email' => __('admin::messages.unactive_account')]);
 
         Auth::guard('admin')->attempt($request->only(['email', 'password']), $request->boolean('remember_me'));

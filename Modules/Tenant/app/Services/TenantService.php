@@ -49,4 +49,11 @@ class TenantService
 
         return $tenant->fresh(['domains']);
     }
+
+    public function editRowPartial(Tenant $tenant): string
+    {
+        return view('tenant::tenants._edit_row', [
+            'tenant' => $tenant->load('domains'),
+        ])->render();
+    }
 }

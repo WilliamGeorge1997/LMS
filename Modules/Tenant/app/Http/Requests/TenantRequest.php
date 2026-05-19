@@ -36,6 +36,13 @@ class TenantRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'domain' => __('tenant::attributes.domain'),
+        ];
+    }
+
     public function authorize(): bool
     {
         return true;

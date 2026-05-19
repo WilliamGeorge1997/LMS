@@ -1,6 +1,7 @@
 <?php
 
 return [
-    'create' => 'Create',
+    'create' => '+ Create Tenant',
+    'submit' => 'Submit',
     'cancel' => 'Cancel',
 ];

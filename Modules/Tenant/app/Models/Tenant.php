@@ -15,8 +15,12 @@ class Tenant extends BaseTenant
 
     protected $translatable = ['name'];
 
-    protected $appends = ['name_ar', 'name_en', 'domain'];
-
+    //Date Serialization
+    protected function serializeDate(\DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d H:i A');
+    }
+    
     protected function casts(): array
     {
         return [
@@ -26,20 +30,5 @@ class Tenant extends BaseTenant
     public static function getCustomColumns(): array
     {
         return ['id', 'name', 'is_active'];
-    }
-
-    public function getNameArAttribute(): string
-    {
-        return $this->getTranslation('name', 'ar');
-    }
-
-    public function getNameEnAttribute(): string
-    {
-        return $this->getTranslation('name', 'en');
-    }
-
-    public function getDomainAttribute(): string
-    {
-        return $this->domains->first()?->domain ?? '';
     }
 }

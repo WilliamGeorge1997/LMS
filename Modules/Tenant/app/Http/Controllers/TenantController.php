@@ -19,12 +19,14 @@ class TenantController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:'.Role::SUPER_ADMIN->value,
+            'role:' . Role::SUPER_ADMIN->value,
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly TenantService $tenantService) {}
+    public function __construct(private readonly TenantService $tenantService)
+    {
+    }
 
     public function index(Request $request)
     {
@@ -43,6 +45,11 @@ class TenantController extends Controller implements HasMiddleware
         return ApiResponse::success(__('tenant::messages.created_successfully'), $tenant);
     }
 
+    public function edit(Tenant $tenant): string
+    {
+        return view('tenant::tenants.partials.edit', ['tenant' => $tenant->load('domains')])->render();
+    }
+    
     public function update(TenantRequest $request, Tenant $tenant): JsonResponse
     {
         $dto = TenantDto::fromRequest($request);
