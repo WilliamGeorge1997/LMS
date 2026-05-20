@@ -9,8 +9,8 @@
 
 @section('toolbar')
     <div id="create-toolbar-area">
-        <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack my-3">
 
+        <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack my-3">
             {{-- Page title & breadcrumb --}}
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
@@ -115,13 +115,13 @@
                     data: "id"
                 }, // 1 — checkbox
                 {
-                    data: 'name.en'
+                    data: 'name_en'
                 },
                 {
-                    data: 'name.ar'
+                    data: 'name_ar'
                 },
                 {
-                    data: 'domains.[0].domain'
+                    data: 'domain'
                 },
                 {
                     data: 'is_active'
@@ -145,8 +145,8 @@
                     searchable: false,
                     render: function(data) {
                         return `<div class="form-check form-check-sm form-check-custom form-check-solid">
-                                    <input class="form-check-input row-checkbox" type="checkbox" value="${data}" />
-                                </div>`;
+                                <input class="form-check-input row-checkbox" type="checkbox" value="${data}" />
+                            </div>`;
                     }
                 },
                 {

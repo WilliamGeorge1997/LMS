@@ -64,7 +64,6 @@ var KTSigninGeneral = (function () {
                             new FormData(form),
                         )
                         .then(function (response) {
-                            console.log("success", response);
 
                             if (response) {
                                 form.reset();

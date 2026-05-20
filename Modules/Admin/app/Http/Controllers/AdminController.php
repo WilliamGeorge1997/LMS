@@ -17,29 +17,27 @@ use Modules\Common\Helpers\ApiResponse;
 
 class AdminController extends Controller implements HasMiddleware
 {
-
     public static function middleware(): array
     {
         return [
             'auth:admin',
-            new Middleware('role:' . Role::SUPER_ADMIN->value, except: ['dashboard']),
-            new Middleware('role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value, only: ['dashboard']),
+            new Middleware('role:'.Role::SUPER_ADMIN->value, except: ['dashboard']),
+            new Middleware('role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value, only: ['dashboard']),
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly AdminService $adminService)
-    {
-    }
+    public function __construct(private readonly AdminService $adminService) {}
 
     /**
      * Display a listing of the resource.
      */
-
     public function index(Request $request)
     {
-        if ($request->ajax())
+        if ($request->ajax()) {
             return $this->adminService->dataTable();
+        }
+
         return view('admin::admins.index');
     }
 
@@ -55,6 +53,7 @@ class AdminController extends Controller implements HasMiddleware
     {
         $dto = AdminDto::fromRequest($request);
         $admin = $this->adminService->save($dto, $request->file('image'));
+
         return ApiResponse::success(__('admin::attributes.admin_created_sucessfully'), $admin);
     }
 
@@ -65,20 +64,24 @@ class AdminController extends Controller implements HasMiddleware
     {
         $dto = AdminDto::fromRequest($request);
         $admin = $this->adminService->update($admin, $dto, $request->file('image'));
+
         return ApiResponse::success(__('admin::attributes.admin_updated_sucessfully'), $admin);
     }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Admin $admin): JsonResponse
     {
         $status = $this->adminService->delete($admin);
+
         return $status ? ApiResponse::success('test') : ApiResponse::error();
     }
 
     public function toggleActivate(Admin $admin): JsonResponse
     {
         $admin = $this->adminService->toggleActivate($admin);
+
         return ApiResponse::success('test', $admin);
     }
 }

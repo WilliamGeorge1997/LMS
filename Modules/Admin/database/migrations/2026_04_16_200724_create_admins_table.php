@@ -17,10 +17,13 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('image')->nullable();
+            $table->string('tenant_id')->nullable();
             $table->rememberToken();
-            $table->enum('language', ['en','ar'])->default('en');
+            $table->enum('language', ['en', 'ar'])->default('en');
             $table->boolean('is_active')->default(false);
             $table->timestamps();
+
+            $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
         });
     }
 

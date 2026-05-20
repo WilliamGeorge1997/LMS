@@ -4,9 +4,11 @@ namespace Modules\Admin\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticable;
+use Illuminate\Support\Facades\Storage;
+use Modules\Tenant\Models\Tenant;
+use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticable
 {
@@ -15,28 +17,35 @@ class Admin extends Authenticable
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['name', 'email', 'password', 'image', 'is_active'];
+    protected $fillable = ['name', 'email', 'password', 'image', 'tenant_id', 'is_active'];
+
     protected $hidden = ['password', 'remember_token'];
 
-    //Date Serialization
+    // Date Serialization
     protected function serializeDate(\DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i A');
     }
 
-    //Scopes
+    // Scopes
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
     }
 
-    //Accessors
+    // Accessors
     public function getImageAttribute(?string $value): ?string
     {
         if (empty($value)) {
             return null;
         }
 
-        return Storage::url('uploads/admin/' . $value);
+        return Storage::url('uploads/admin/'.$value);
+    }
+
+    // Relations
+    public function tenants(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 }

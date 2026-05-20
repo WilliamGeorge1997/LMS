@@ -15,7 +15,28 @@ class TenantService
             ->select(['id', 'name', 'is_active', 'created_at'])
             ->with(['domains:id,domain,tenant_id']);
 
-        return DataTables::eloquent($query)->toJson();
+        return DataTables::eloquent($query)
+            ->addColumn('name_en', function (Tenant $tenant) {
+                return $tenant->getTranslation('name', 'en');
+            })
+            ->addColumn('name_ar', function (Tenant $tenant) {
+                return $tenant->getTranslation('name', 'ar');
+            })
+            ->addColumn('domain', function (Tenant $tenant) {
+                return $tenant->domains->first()?->domain;
+            })
+            ->filterColumn('name_en', function ($query, $keyword) {
+                $query->whereJsonContainsLocale('name', 'en', "%{$keyword}%", 'like');
+            })
+            ->filterColumn('name_ar', function ($query, $keyword) {
+                $query->whereJsonContainsLocale('name', 'ar', "%{$keyword}%", 'like');
+            })
+            ->filterColumn('domain', function ($query, $keyword) {
+                $query->whereHas('domains', function ($domainQuery) use ($keyword) {
+                    $domainQuery->where('domain', 'like', "%{$keyword}%");
+                });
+            })
+            ->toJson();
     }
 
     public function save(TenantDto $dto): Tenant

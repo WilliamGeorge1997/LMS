@@ -2,9 +2,9 @@
     transition: height 350ms ease;
 }
 
-#kt_app_main {
+/* #kt_app_main {
     background-color: #f5f5f5;
-}
+} */
 
 #create-toolbar-area:has(#create-collapse.show) .create-open-btn {
     display: none !important;
