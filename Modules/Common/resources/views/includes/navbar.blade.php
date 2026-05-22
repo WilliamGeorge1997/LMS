@@ -1,5 +1,16 @@
 @php
-    $isRtl = app()->getLocale() === 'ar';
+    $locale = app()->getLocale();
+    $admin = auth('admin')->user();
+    $isRtl = $locale == 'ar';
+    $is_super_admin = $admin?->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN->value);
+    $tenants = \Modules\Tenant\Models\Tenant::active()
+        ->latest()
+        ->with([
+            'domains' => function ($query) {
+                $query->select('id', 'domain', 'tenant_id')->limit(1);
+            },
+        ])
+        ->get(['id', 'name']);
 @endphp
 
 <div id="kt_app_header" class="app-header" data-kt-sticky="true" data-kt-sticky-activate="{default: true, lg: true}"
@@ -27,21 +38,33 @@
         <!--end::Mobile logo-->
         <!--begin::Header wrapper-->
         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" id="kt_app_header_wrapper">
-            <!--begin::Menu wrapper-->
-            <div class="app-header-menu app-header-mobile-drawer align-items-stretch" data-kt-drawer="true"
-                data-kt-drawer-name="app-header-menu" data-kt-drawer-activate="{default: true, lg: false}"
-                data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="end"
-                data-kt-drawer-toggle="#kt_app_header_menu_toggle" data-kt-swapper="true"
-                data-kt-swapper-mode="{default: 'append', lg: 'prepend'}"
-                data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}">
-                <!--begin::Menu-->
-                <div class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0"
-                    id="kt_app_header_menu" data-kt-menu="true">
+
+            {{-- Navbar left side --}}
+
+            <div class="app-navbar flex-shrink-0">
+                <div class="app-navbar-item ms-1 ms-md-4">
+                    @if ($is_super_admin)
+                        <form action="{{ route('tenants.initialize') }}" method="POST">
+                            @csrf
+                            <select id="select-tenant" class="form-select form-select-solid w-250px" name="tenant_id"
+                                data-placeholder="Select a tenant">
+                                <option></option>
+                                @foreach ($tenants as $tenant)
+                                    <option value="{{ $tenant->id }}"
+                                        data-kt-rich-content-subcontent="{{ $tenant->domains->first()?->domain }}"
+                                        @selected(tenant()?->id === $tenant->id)>
+                                        {{ $tenant->getTranslation('name', $locale) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </form>
+                    @endif
                 </div>
-                <!--end::Menu-->
             </div>
-            <!--end::Menu wrapper-->
-            <!--begin::Navbar-->
+            {{-- Navbar left side --}}
+
+
+            {{-- Navbar right side --}}
             <div class="app-navbar flex-shrink-0">
                 <!--begin::Theme mode-->
                 <div class="app-navbar-item ms-1 ms-md-4">
@@ -130,7 +153,7 @@
                     <div class="cursor-pointer symbol symbol-35px"
                         data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
                         data-kt-menu-placement="{{ $isRtl ? 'bottom-start' : 'bottom-end' }}">
-                        <img src="{{ auth('admin')->user()?->image ?? asset('dashboard/assets/media/avatars/blank.png') }}"
+                        <img src="{{ $admin?->image ?? asset('dashboard/assets/media/avatars/blank.png') }}"
                             class="rounded-3" alt="user" />
                     </div>
                     <!--begin::User account menu-->
@@ -147,10 +170,10 @@
                                 <!--begin::Username-->
                                 <div class="d-flex flex-column">
                                     <div class="fw-bold d-flex align-items-center fs-5">
-                                        {{ auth('admin')->user()?->name ?? 'Admin' }}
+                                        {{ $admin?->name ?? 'Admin' }}
                                     </div>
                                     <a href="#"
-                                        class="fw-semibold text-muted text-hover-primary fs-7">{{ auth('admin')->user()?->email ?? 'email@email.com' }}</a>
+                                        class="fw-semibold text-muted text-hover-primary fs-7">{{ $admin?->email ?? 'email@email.com' }}</a>
                                 </div>
                                 <!--end::Username-->
                             </div>
@@ -303,7 +326,7 @@
                 </div>
                 <!--end::User menu-->
                 <!--begin::Header menu toggle-->
-                <div class="app-navbar-item d-lg-none ms-2 me-n2" title="Show header menu">
+                {{-- <div class="app-navbar-item d-lg-none ms-2 me-n2" title="Show header menu">
                     <div class="btn btn-flex btn-icon btn-active-color-primary w-30px h-30px"
                         id="kt_app_header_menu_toggle">
                         <i class="ki-duotone ki-element-4 fs-1">
@@ -311,12 +334,17 @@
                             <span class="path2"></span>
                         </i>
                     </div>
-                </div>
+                </div> --}}
                 <!--end::Header menu toggle-->
                 <!--begin::Aside toggle-->
                 <!--end::Header menu toggle-->
             </div>
-            <!--end::Navbar-->
+            {{-- Navbar right side --}}
+
+
+
+
+
         </div>
         <!--end::Header wrapper-->
     </div>

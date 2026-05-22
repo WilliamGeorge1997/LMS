@@ -4,6 +4,7 @@ namespace Modules\Tenant\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Admin\Enums\Role;
@@ -49,7 +50,7 @@ class TenantController extends Controller implements HasMiddleware
     {
         return view('tenant::tenants.partials.edit', ['tenant' => $tenant->load('domains')])->render();
     }
-    
+
     public function update(TenantRequest $request, Tenant $tenant): JsonResponse
     {
         $dto = TenantDto::fromRequest($request);
@@ -75,5 +76,16 @@ class TenantController extends Controller implements HasMiddleware
             : __('tenant::messages.deactivated_successfully');
 
         return ApiResponse::success($message, $tenant);
+    }
+
+    public function initialize(Request $request): RedirectResponse
+    {
+        if ($request->filled('tenant_id')) {
+            session(['admin_tenant_id' => $request->input('tenant_id')]);
+        } else {
+            session()->forget('admin_tenant_id');
+        }
+
+        return back();
     }
 }

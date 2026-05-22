@@ -13,7 +13,7 @@ class TenantService
     {
         $query = Tenant::query()
             ->select(['id', 'name', 'is_active', 'created_at'])
-            ->with(['domains:id,domain,tenant_id']);
+            ->with(['domains:id,domain,tenant_id'])->latest();
 
         return DataTables::eloquent($query)
             ->addColumn('name_en', function (Tenant $tenant) {
@@ -39,6 +39,10 @@ class TenantService
             ->toJson();
     }
 
+    public function findById(int $id, $columns = ['*'])
+    {
+        return Tenant::findOrFail($id, $columns);
+    }
     public function save(TenantDto $dto): Tenant
     {
         $tenant = Tenant::create($dto->toArray());

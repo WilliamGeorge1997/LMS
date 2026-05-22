@@ -2,6 +2,7 @@
 
 namespace Modules\Tenant\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
@@ -20,7 +21,7 @@ class Tenant extends BaseTenant
     {
         return $date->format('Y-m-d H:i A');
     }
-    
+
     protected function casts(): array
     {
         return [
@@ -30,5 +31,11 @@ class Tenant extends BaseTenant
     public static function getCustomColumns(): array
     {
         return ['id', 'name', 'is_active'];
+    }
+
+    //Scopes
+    public function scopeActive(Builder $query)
+    {
+        return $query->where('is_active', 1);
     }
 }

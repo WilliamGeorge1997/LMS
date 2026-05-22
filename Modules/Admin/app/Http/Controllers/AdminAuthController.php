@@ -25,7 +25,7 @@ class AdminAuthController extends Controller implements HasMiddleware
      */
     public function loginForm()
     {
-        return view('admin::lotgin');
+        return view('admin::login');
     }
 
     public function login(AdminLoginRequest $request)

@@ -143,7 +143,7 @@ window.Actions = {
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    _success: function (title, text) {
+        _success: function (title, text) {
         Swal.fire({
             icon: 'success',
             title: title || 'Done',
