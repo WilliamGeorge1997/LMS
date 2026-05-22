@@ -4,15 +4,14 @@ namespace Modules\Admin\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticable;
 use Illuminate\Support\Facades\Storage;
-use Modules\Tenant\Models\Tenant;
 use Spatie\Permission\Traits\HasRoles;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Admin extends Authenticable
 {
-    use HasFactory, HasRoles;
+    use HasFactory, HasRoles, BelongsToTenant;
 
     /**
      * The attributes that are mass assignable.
@@ -41,11 +40,5 @@ class Admin extends Authenticable
         }
 
         return Storage::url('uploads/admin/'.$value);
-    }
-
-    // Relations
-    public function tenants(): BelongsTo
-    {
-        return $this->belongsTo(Tenant::class);
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Tenant\Http\Controllers\TenantController;
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::post('tenants/initialize', [TenantController::class, 'initialize'])->name('tenants.initialize');
+    Route::post('tenants/set', [TenantController::class, 'set'])->name('tenants.set');
 
     Route::resource('tenants', TenantController::class)->except(['show']);
     Route::post('tenants/{tenant}', [TenantController::class, 'update'])->name('tenants.update');

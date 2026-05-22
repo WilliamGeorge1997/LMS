@@ -78,7 +78,7 @@ class TenantController extends Controller implements HasMiddleware
         return ApiResponse::success($message, $tenant);
     }
 
-    public function initialize(Request $request): RedirectResponse
+    public function set(Request $request): RedirectResponse
     {
         if ($request->filled('tenant_id')) {
             session(['admin_tenant_id' => $request->input('tenant_id')]);

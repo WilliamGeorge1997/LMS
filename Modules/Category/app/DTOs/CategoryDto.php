@@ -7,10 +7,10 @@ use Modules\Category\Http\Requests\CategoryRequest;
 class CategoryDto
 {
     public function __construct(
-        public readonly string $name_ar,
-        public readonly string $name_en,
+        public readonly string $title_ar,
+        public readonly string $title_en,
         public readonly int $publisher_id,
-        public readonly int $manager_id,
+        public readonly int $tenant_id,
         public readonly bool $is_active,
     ) {
     }
@@ -18,10 +18,10 @@ class CategoryDto
     public static function fromRequest(CategoryRequest $request): self
     {
         return new self(
-            name_ar: $request->input('name_ar'),
-            name_en: $request->input('name_en'),
+            title_ar: $request->input('title_ar'),
+            title_en: $request->input('title_en'),
             publisher_id: $request->input('publisher_id'),
-            manager_id: $request->input('manager_id'),
+            tenant_id: $request->input('tenant_id'),
             is_active: $request->has('is_active') ? 1 : 0,
         );
     }
@@ -30,11 +30,11 @@ class CategoryDto
     {
         return [
             'name' => [
-                'ar' => $this->name_ar,
-                'en' => $this->name_en,
+                'ar' => $this->title_ar,
+                'en' => $this->title_en,
             ],
             'publisher_id' => $this->publisher_id,
-            'manager_id' => $this->manager_id,
+            'tenant_id' => $this->tenant_id,
             'is_active' => $this->is_active,
         ];
     }

@@ -5,18 +5,19 @@ namespace Modules\Publisher\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Admin\Enums\Role;
-use Modules\Admin\Models\Admin;
+use Spatie\Translatable\HasTranslations;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Publisher extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations, BelongsToTenant;
 
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['name', 'manager_id', 'is_active'];
+    protected $fillable = ['name', 'tenant_id', 'is_active'];
+
+    protected $translatable = ['name'];
 
     // Date Serialization
     protected function serializeDate(\DateTimeInterface $date): string
@@ -28,23 +29,5 @@ class Publisher extends Model
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
-    }
-
-    // Relations
-    public function manager(): BelongsTo
-    {
-        return $this->belongsTo(Admin::class, 'manager_id');
-    }
-
-    public function scopeAvailable(Builder $query): Builder
-    {
-        if (auth('admin')->check()) {
-            $admin = auth('admin')->user();
-            if ($admin->hasRole(Role::MANAGER->value)) {
-                return $query->whereBelongsTo($admin, 'manager');
-            }
-        }
-
-        return $query;
     }
 }

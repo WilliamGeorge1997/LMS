@@ -7,28 +7,30 @@ use Illuminate\Http\Request;
 class PublisherDto
 {
     public function __construct(
-        public readonly string $name,
-        public readonly int $manager_id,
+        public readonly string $name_ar,
+        public readonly string $name_en,
+        public readonly int $tenant_id,
         public readonly int $is_active,
     ) {}
 
     public static function fromRequest(Request $request): self
     {
         return new self(
-            name: $request->input('name'),
-            manager_id: $request->input('manager_id'),
+            name_ar: $request->input('name_ar'),
+            name_en: $request->input('name_en'),
+            tenant_id: $request->input('tenant_id'),
             is_active: $request->has('is_active') ? 1 : 0,
         );
     }
 
-    /**
-     * @return array{name: string, manager_id: int, is_active: int}
-     */
     public function toArray(): array
     {
         return [
-            'name' => $this->name,
-            'manager_id' => $this->manager_id,
+            'name' => [
+                'ar' => $this->name_ar,
+                'en' => $this->name_en,
+            ],
+            'tenant_id' => $this->tenant_id,
             'is_active' => $this->is_active,
         ];
     }

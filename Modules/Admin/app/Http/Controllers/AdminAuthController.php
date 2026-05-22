@@ -7,6 +7,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Modules\Admin\Enums\Role;
 use Modules\Admin\Http\Requests\AdminLoginRequest;
 use Modules\Admin\Models\Admin;
 use Modules\Common\Helpers\ApiResponse;
@@ -30,14 +31,43 @@ class AdminAuthController extends Controller implements HasMiddleware
 
     public function login(AdminLoginRequest $request)
     {
-        $admin = Admin::where('email', $request->string('email'))->first();
+        $currentHost = $request->getHost();
+        $isCentralDomain = in_array($currentHost, config('tenancy.central_domains'), true);
 
-        if (! $admin || ! Hash::check($request->string('password'), $admin->password)) {
+        // Bypass BelongsToTenant global scope
+        /** @var Admin $admin */
+        $admin = Admin::withoutGlobalScopes()->where('email', $request->string('email'))->first();
+
+        if (!$admin) {
             return ApiResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
         }
 
-        if (! $admin->is_active) {
+        if (!Hash::check($request->string('password'), $admin->password)) {
+            return ApiResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
+        }
+
+        if (!$admin->is_active) {
             return ApiResponse::validationError(['email' => __('admin::messages.unactive_account')]);
+        }
+
+        //Case manager and central domin 
+        if ($isCentralDomain && $admin->hasRole(Role::MANAGER->value)) {
+            return ApiResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
+        }
+
+        //Case super admin and tenant subdomain
+        if (!$isCentralDomain && $admin->hasRole(Role::SUPER_ADMIN->value)) {
+            return ApiResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
+        }
+
+        //Case manager and tenant subdomain 
+        if (!$isCentralDomain && $admin->hasRole(Role::MANAGER->value)) {
+            $tenantDomain = optional($admin->tenant)->domains->first()?->domain;
+
+            //Check if the tenant subdomain is the same as the current host
+            if ($tenantDomain !== $currentHost) {
+                return ApiResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
+            }
         }
 
         Auth::guard('admin')->attempt($request->only(['email', 'password']), $request->boolean('remember_me'));
@@ -49,6 +79,8 @@ class AdminAuthController extends Controller implements HasMiddleware
     public function logout()
     {
         Auth::guard('admin')->logout();
+        //Case super admin include session tenant id
+        session()->forget('admin_tenant_id');
 
         return redirect()->route('admin.login');
     }

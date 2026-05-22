@@ -6,21 +6,20 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Admin\Enums\Role;
-use Modules\Admin\Models\Admin;
 use Modules\Publisher\Models\Publisher;
 use Spatie\Translatable\HasTranslations;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Category extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory, HasTranslations, BelongsToTenant;
 
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['name','publisher_id', 'manager_id', 'is_active'];
+    protected $fillable = ['title','publisher_id', 'tenant_id', 'is_active'];
 
-    protected $translatable = ['name'];
+    protected $translatable = ['title'];
     // Date Serialization
     protected function serializeDate(\DateTimeInterface $date): string
     {
@@ -34,25 +33,8 @@ class Category extends Model
     }
 
     // Relations
-    public function manager(): BelongsTo
-    {
-        return $this->belongsTo(Admin::class, 'manager_id');
-    }
-
     public function publisher(): BelongsTo
     {
         return $this->belongsTo(Publisher::class);
-    }
-
-    public function scopeAvailable(Builder $query): Builder
-    {
-        if (auth('admin')->check()) {
-            $admin = auth('admin')->user();
-            if ($admin->hasRole(Role::MANAGER->value)) {
-                return $query->whereBelongsTo($admin, 'manager');
-            }
-        }
-
-        return $query;
     }
 }
