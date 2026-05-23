@@ -32,11 +32,18 @@ class AdminService
     {
         $query = Admin::query()
             ->select(['id', 'name', 'email', 'image', 'is_active', 'created_at'])
-            ->with(['roles' => function (MorphToMany $q) {
-                $q->select(['id', 'name']);
-            }]);
+            ->where('id', '!=', auth('admin')->id())
+            ->with([
+                'roles' => function (MorphToMany $q) {
+                    $q->select(['id', 'name']);
+                }
+            ]);
 
-        return DataTables::eloquent($query)->toJson();
+        return DataTables::eloquent($query)
+            ->addColumn('role', function (Admin $admin) {
+                return $admin->roles->first()?->name ?? '';
+            })
+            ->toJson();
     }
 
     public function save(AdminDto $dto, ?UploadedFile $image = null): Admin
@@ -46,7 +53,7 @@ class AdminService
             $data['image'] = $this->uploadImage($image, $this->uploadFolder);
 
         $admin = Admin::create($data);
-        $admin->assignRole($dto->role_id);
+        $admin->assignRole($dto->role);
 
         return $admin;
     }
@@ -54,14 +61,15 @@ class AdminService
     public function update(Admin $admin, AdminDto $dto, ?UploadedFile $image = null): Admin
     {
         $data = $dto->toArray();
-
         if ($image) {
-            $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'));
+            if ($admin->image)
+                $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'));
+
             $data['image'] = $this->uploadImage($image, $this->uploadFolder);
         }
 
         $admin->update($data);
-        $admin->syncRoles($dto->role_id);
+        $admin->syncRoles($dto->role);
 
         return $admin->fresh();
     }

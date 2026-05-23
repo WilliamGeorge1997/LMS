@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Modules\Common\Helpers\ApiResponse;
+use Modules\Common\Helpers\AjaxResponse;
 use Modules\Country\DTOs\CityDto;
 use Modules\Country\Http\Requests\CityStoreRequest;
 use Modules\Country\Http\Requests\CityUpdateRequest;
@@ -19,7 +19,8 @@ class CityController extends Controller
     public function __construct(
         private readonly CityService $cityService,
         private readonly CountryService $countryService,
-    ) {}
+    ) {
+    }
 
     public function index(Request $request)
     {
@@ -53,7 +54,7 @@ class CityController extends Controller
         $dto = CityDto::fromRequest($request);
         $city = $this->cityService->save($dto);
 
-        return ApiResponse::success($city);
+        return AjaxResponse::success($city);
     }
 
     public function update(CityUpdateRequest $request, City $city): JsonResponse
@@ -61,20 +62,20 @@ class CityController extends Controller
         $dto = CityDto::fromRequest($request);
         $city = $this->cityService->update($city, $dto);
 
-        return ApiResponse::success($city);
+        return AjaxResponse::success($city);
     }
 
     public function destroy(City $city): JsonResponse
     {
         $status = $this->cityService->delete($city);
 
-        return $status ? ApiResponse::success() : ApiResponse::error();
+        return $status ? AjaxResponse::success() : AjaxResponse::error();
     }
 
     public function toggleActivate(City $city): JsonResponse
     {
         $city = $this->cityService->toggleActivate($city);
 
-        return ApiResponse::success($city);
+        return AjaxResponse::success($city);
     }
 }

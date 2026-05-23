@@ -14,6 +14,7 @@
     display: inline-flex !important;
 }
 
-.edit-inline-form {
-    display: contents;
+
+.additional-fields-panel {
+    background-color: #eefcff !important;
 }

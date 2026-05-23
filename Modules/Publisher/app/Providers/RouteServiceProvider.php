@@ -26,7 +26,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
         $this->mapWebRoutes();
-        $this->mapTenantRoutes();
     }
 
     /**
@@ -47,15 +46,5 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes(): void
     {
         Route::middleware('api')->prefix('api')->name('api.')->group(module_path($this->name, '/routes/api.php'));
-    }
-
-    /**
-     * Define the "tenant" routes for the application.
-     *
-     * These routes all receive session state, CSRF protection, etc.
-     */
-    protected function mapTenantRoutes(): void
-    {
-        Route::middleware('web')->group(module_path($this->name, '/routes/tenant.php'));
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Admin\Enums\Role;
-use Modules\Common\Helpers\ApiResponse;
+use Modules\Common\Helpers\AjaxResponse;
 use Modules\Tenant\DTOs\TenantDto;
 use Modules\Tenant\Http\Requests\TenantRequest;
 use Modules\Tenant\Models\Tenant;
@@ -40,10 +40,16 @@ class TenantController extends Controller implements HasMiddleware
 
     public function store(TenantRequest $request): JsonResponse
     {
-        $dto = TenantDto::fromRequest($request);
-        $tenant = $this->tenantService->save($dto);
+        try {
 
-        return ApiResponse::success(__('tenant::messages.created_successfully'), $tenant);
+            $dto = TenantDto::fromRequest($request);
+            $tenant = $this->tenantService->save($dto);
+
+            return AjaxResponse::success(__('tenant::messages.created_successfully'), $tenant);
+
+        } catch (\RuntimeException $e) {
+            return AjaxResponse::error($e->getMessage());
+        }
     }
 
     public function edit(Tenant $tenant): string
@@ -56,7 +62,7 @@ class TenantController extends Controller implements HasMiddleware
         $dto = TenantDto::fromRequest($request);
         $tenant = $this->tenantService->update($tenant, $dto);
 
-        return ApiResponse::success(__('tenant::messages.updated_successfully'), $tenant);
+        return AjaxResponse::success(__('tenant::messages.updated_successfully'), $tenant);
     }
 
     public function destroy(Tenant $tenant): JsonResponse
@@ -64,8 +70,8 @@ class TenantController extends Controller implements HasMiddleware
         $status = $this->tenantService->delete($tenant);
 
         return $status
-            ? ApiResponse::success(__('tenant::messages.deleted_successfully'))
-            : ApiResponse::error();
+            ? AjaxResponse::success(__('tenant::messages.deleted_successfully'))
+            : AjaxResponse::error();
     }
 
     public function toggleActivate(Tenant $tenant): JsonResponse
@@ -75,7 +81,7 @@ class TenantController extends Controller implements HasMiddleware
             ? __('tenant::messages.activated_successfully')
             : __('tenant::messages.deactivated_successfully');
 
-        return ApiResponse::success($message, $tenant);
+        return AjaxResponse::success($message, $tenant);
     }
 
     public function set(Request $request): RedirectResponse

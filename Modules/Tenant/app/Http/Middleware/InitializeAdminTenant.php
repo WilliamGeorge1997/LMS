@@ -15,19 +15,19 @@ class InitializeAdminTenant
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! in_array($request->getHost(), config('tenancy.central_domains'), true)) {
+        if (!in_array($request->getHost(), config('tenancy.central_domains'), true)) {
             return $next($request);
         }
 
         $admin = auth('admin')->user();
 
-        if (! $admin?->hasRole(Role::SUPER_ADMIN->value)) {
+        if (!$admin?->hasRole(Role::SUPER_ADMIN->value)) {
             return $next($request);
         }
 
         $tenantId = session('admin_tenant_id');
 
-        if (! $tenantId) {
+        if (!$tenantId) {
             return $next($request);
         }
 

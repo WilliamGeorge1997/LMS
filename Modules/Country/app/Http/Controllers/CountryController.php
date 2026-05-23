@@ -11,7 +11,7 @@ use Modules\Country\Http\Requests\CountryStoreRequest;
 use Modules\Country\Http\Requests\CountryUpdateRequest;
 use Modules\Country\Models\Country;
 use Modules\Country\Services\CountryService;
-use Modules\Common\Helpers\ApiResponse;
+use Modules\Common\Helpers\AjaxResponse;
 
 class CountryController extends Controller implements HasMiddleware
 {
@@ -21,7 +21,9 @@ class CountryController extends Controller implements HasMiddleware
         return ['set.locale'];
     }
 
-    public function __construct(private readonly CountryService $countryService) {}
+    public function __construct(private readonly CountryService $countryService)
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -47,9 +49,9 @@ class CountryController extends Controller implements HasMiddleware
      */
     public function store(CountryStoreRequest $request): JsonResponse
     {
-        $dto   = CountryDto::fromRequest($request);
+        $dto = CountryDto::fromRequest($request);
         $country = $this->countryService->save($dto);
-        return ApiResponse::success('Country created successfully.', $country);
+        return AjaxResponse::success('Country created successfully.', $country);
     }
 
     /**
@@ -73,9 +75,9 @@ class CountryController extends Controller implements HasMiddleware
      */
     public function update(CountryUpdateRequest $request, Country $country): JsonResponse
     {
-        $dto   = CountryDto::fromRequest($request);
+        $dto = CountryDto::fromRequest($request);
         $country = $this->countryService->update($country, $dto);
-        return ApiResponse::success($country);
+        return AjaxResponse::success($country);
     }
     /**
      * Remove the specified resource from storage.
@@ -83,12 +85,12 @@ class CountryController extends Controller implements HasMiddleware
     public function destroy(Country $country): JsonResponse
     {
         $status = $this->countryService->delete($country);
-        return $status ? ApiResponse::success() : ApiResponse::error();
+        return $status ? AjaxResponse::success() : AjaxResponse::error();
     }
 
     public function toggleActivate(Country $country): JsonResponse
     {
         $country = $this->countryService->toggleActivate($country);
-        return ApiResponse::success($country);
+        return AjaxResponse::success($country);
     }
 }

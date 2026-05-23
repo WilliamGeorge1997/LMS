@@ -72,7 +72,7 @@ trait UploaderTrait
 
     public function getFileUrl(string $folder, string $fileName): string
     {
-        return Storage::url($this->buildPath($folder, $fileName));
+        return Storage::disk($this->disk)->url($this->buildPath($folder, $fileName));
     }
 
     private function generateFileName(UploadedFile $file): string

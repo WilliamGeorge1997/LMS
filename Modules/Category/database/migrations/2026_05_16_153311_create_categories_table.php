@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Publisher\Models\Publisher;
 use Modules\Tenant\Models\Tenant;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,9 +16,11 @@ return new class extends Migration
             $table->id();
             $table->json('title');
             $table->foreignIdFor(Publisher::class)->index()->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Tenant::class)->index()->constrained()->cascadeOnDelete();
+            $table->string('tenant_id');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
         });
     }
 

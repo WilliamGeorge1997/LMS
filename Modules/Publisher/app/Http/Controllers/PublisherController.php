@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Admin\Enums\Role;
-use Modules\Common\Helpers\ApiResponse;
+use Modules\Common\Helpers\AjaxResponse;
 use Modules\Publisher\DTOs\PublisherDto;
 use Modules\Publisher\Http\Requests\PublisherRequest;
 use Modules\Publisher\Models\Publisher;
@@ -50,7 +50,7 @@ class PublisherController extends Controller implements HasMiddleware
         $dto = PublisherDto::fromRequest($request);
         $admin = $this->publisherService->save($dto);
 
-        return ApiResponse::success(__('publisher::messages.created_sucessfully'), $admin);
+        return AjaxResponse::success(__('publisher::messages.created_sucessfully'), $admin);
     }
 
     /**
@@ -61,7 +61,7 @@ class PublisherController extends Controller implements HasMiddleware
         $dto = PublisherDto::fromRequest($request);
         $publisher = $this->publisherService->update($publisher, $dto);
 
-        return ApiResponse::success(__('publisher::messages.updated_sucessfully'), $publisher);
+        return AjaxResponse::success(__('publisher::messages.updated_sucessfully'), $publisher);
     }
 
     /**
@@ -72,8 +72,8 @@ class PublisherController extends Controller implements HasMiddleware
         $status = $this->publisherService->delete($publisher);
 
         return $status
-            ? ApiResponse::success(__('publisher::messages.deleted_sucessfully'))
-            : ApiResponse::error();
+            ? AjaxResponse::success(__('publisher::messages.deleted_sucessfully'))
+            : AjaxResponse::error();
     }
 
     public function toggleActivate(Publisher $publisher): JsonResponse
@@ -83,12 +83,12 @@ class PublisherController extends Controller implements HasMiddleware
             ? __('publisher::messages.activated_sucessfully')
             : __('publisher::messages.deactivated_sucessfully');
 
-        return ApiResponse::success($message, $publisher);
+        return AjaxResponse::success($message, $publisher);
     }
 
     public function byManager(int $manager_id)
     {
         $publishers = $this->publisherService->findBy('manager_id', $manager_id, ['id', 'name']);
-        return ApiResponse::success(data: $publishers);
+        return AjaxResponse::success(data: $publishers);
     }
 }

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Modules\Common\Helpers\ApiResponse;
+use Modules\Common\Helpers\AjaxResponse;
 use Modules\Country\DTOs\RegionDto;
 use Modules\Country\Http\Requests\RegionStoreRequest;
 use Modules\Country\Http\Requests\RegionUpdateRequest;
@@ -19,7 +19,8 @@ class RegionController extends Controller
     public function __construct(
         private readonly RegionService $regionService,
         private readonly CountryService $countryService,
-    ) {}
+    ) {
+    }
 
     public function index(Request $request)
     {
@@ -42,7 +43,7 @@ class RegionController extends Controller
         $dto = RegionDto::fromRequest($request);
         $region = $this->regionService->save($dto);
 
-        return ApiResponse::success($region);
+        return AjaxResponse::success($region);
     }
 
     public function update(RegionUpdateRequest $request, Region $region): JsonResponse
@@ -50,20 +51,20 @@ class RegionController extends Controller
         $dto = RegionDto::fromRequest($request);
         $region = $this->regionService->update($region, $dto);
 
-        return ApiResponse::success($region);
+        return AjaxResponse::success($region);
     }
 
     public function destroy(Region $region): JsonResponse
     {
         $status = $this->regionService->delete($region);
 
-        return $status ? ApiResponse::success() : ApiResponse::error();
+        return $status ? AjaxResponse::success() : AjaxResponse::error();
     }
 
     public function toggleActivate(Region $region): JsonResponse
     {
         $region = $this->regionService->toggleActivate($region);
 
-        return ApiResponse::success($region);
+        return AjaxResponse::success($region);
     }
 }

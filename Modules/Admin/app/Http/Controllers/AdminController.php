@@ -13,7 +13,7 @@ use Modules\Admin\Http\Requests\AdminStoreRequest;
 use Modules\Admin\Http\Requests\AdminUpdateRequest;
 use Modules\Admin\Models\Admin;
 use Modules\Admin\Services\AdminService;
-use Modules\Common\Helpers\ApiResponse;
+use Modules\Common\Helpers\AjaxResponse;
 
 class AdminController extends Controller implements HasMiddleware
 {
@@ -21,13 +21,15 @@ class AdminController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            new Middleware('role:'.Role::SUPER_ADMIN->value, except: ['dashboard']),
-            new Middleware('role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value, only: ['dashboard']),
+            new Middleware('role:' . Role::SUPER_ADMIN->value, except: ['dashboard']),
+            new Middleware('role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value, only: ['dashboard']),
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly AdminService $adminService) {}
+    public function __construct(private readonly AdminService $adminService)
+    {
+    }
 
     /**
      * Display a listing of the resource.
@@ -51,10 +53,21 @@ class AdminController extends Controller implements HasMiddleware
      */
     public function store(AdminStoreRequest $request): JsonResponse
     {
-        $dto = AdminDto::fromRequest($request);
-        $admin = $this->adminService->save($dto, $request->file('image'));
+        try {
 
-        return ApiResponse::success(__('admin::attributes.admin_created_sucessfully'), $admin);
+            $dto = AdminDto::fromRequest($request);
+            $admin = $this->adminService->save($dto, $request->file('image'));
+
+            return AjaxResponse::success(__('admin::attributes.admin_created_sucessfully'), $admin);
+
+        } catch (\RuntimeException $e) {
+            return AjaxResponse::error($e->getMessage());
+        }
+    }
+
+    public function edit(Admin $admin): string
+    {
+        return view('admin::admins.partials.edit', ['admin' => $admin->load('roles:id,name')])->render();
     }
 
     /**
@@ -65,7 +78,7 @@ class AdminController extends Controller implements HasMiddleware
         $dto = AdminDto::fromRequest($request);
         $admin = $this->adminService->update($admin, $dto, $request->file('image'));
 
-        return ApiResponse::success(__('admin::attributes.admin_updated_sucessfully'), $admin);
+        return AjaxResponse::success(__('admin::attributes.admin_updated_sucessfully'), $admin);
     }
 
     /**
@@ -75,13 +88,13 @@ class AdminController extends Controller implements HasMiddleware
     {
         $status = $this->adminService->delete($admin);
 
-        return $status ? ApiResponse::success('test') : ApiResponse::error();
+        return $status ? AjaxResponse::success('test') : AjaxResponse::error();
     }
 
     public function toggleActivate(Admin $admin): JsonResponse
     {
         $admin = $this->adminService->toggleActivate($admin);
 
-        return ApiResponse::success('test', $admin);
+        return AjaxResponse::success('test', $admin);
     }
 }

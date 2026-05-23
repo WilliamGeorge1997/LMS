@@ -11,8 +11,8 @@ class AdminDto
         public readonly string  $name,
         public readonly string  $email,
         public readonly int     $is_active,
-        public readonly int     $role_id,
-        public readonly ?int    $tenant_id = null,
+        public readonly string  $role,
+        public readonly ?string $tenant_id = null,
         public readonly ?string $password = null,
     ) {}
 
@@ -22,7 +22,7 @@ class AdminDto
             name: $request->input('name'),
             email: $request->input('email'),
             is_active: $request->has('is_active') ? 1 : 0,
-            role_id: $request->input('role_id'),
+            role: $request->input('role'),
             tenant_id: $request->input('tenant_id'),
             password: $request->filled('password') ? Hash::make($request->input('password')) : null,
         );
@@ -37,7 +37,7 @@ class AdminDto
             'is_active' => $this->is_active,
         ];
 
-        if (!is_null($this->password)) {
+        if (! is_null($this->password)) {
             $data['password'] = $this->password;
         }
 
