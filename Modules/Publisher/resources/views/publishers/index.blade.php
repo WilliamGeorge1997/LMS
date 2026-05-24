@@ -204,7 +204,7 @@
                     [0, "desc"]
                 ], // order by hidden id DESC
                 ajax: {
-                    url: "{{ route('publishers.index') }}"
+                    url: "{{ url('/admin/publishers') }}"
                 },
                 columns: [{
                         data: "id"
@@ -341,7 +341,7 @@
 
             // ── 3. Create Plugin ────────────────────────────────────────────────
             CreatePlugin.init({
-                storeUrl: "{{ route('publishers.store') }}",
+                storeUrl: "{{ url('/admin/publishers') }}",
                 datatable: dt,
                 labels: {
                     create: "+ {{ __('publisher::buttons.create') }}",
@@ -351,7 +351,7 @@
 
             // ── EditPlugin ────────────────────────────────────────────────────────────
             EditPlugin.init({
-                updateUrl: "{{ route('publishers.update', ['publisher' => ':id']) }}",
+                updateUrl: "{{ url('/admin/publishers') }}/:id",
                 datatable: dt,
                 selector: ".edit-btn",
 
@@ -410,13 +410,13 @@
 
             // ── 5. Toggle Plugin ────────────────────────────────────────────────
             TogglePlugin.init({
-                toggleUrl: "{{ route('publishers.toggle-activate', ['publisher' => ':id']) }}",
+                toggleUrl: "{{ url('/admin/publishers') }}/:id/toggle-activate",
                 selector: ".active-toggle"
             });
 
             // ── 6. Delete Plugin ────────────────────────────────────────────────
             DeletePlugin.init({
-                deleteUrl: "{{ route('publishers.destroy', ['publisher' => ':id']) }}",
+                deleteUrl: "{{ url('/admin/publishers') }}/:id",
                 datatable: dt,
                 selector: ".delete-btn"
             });

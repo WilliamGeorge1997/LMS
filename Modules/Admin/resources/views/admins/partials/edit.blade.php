@@ -4,7 +4,7 @@
 @endphp
 
 <tr class="edit-inline-row" data-edit-form-id="{{ $admin->id }}">
-    <form id="{{ $formId }}" action="{{ route('admins.update', $admin) }}" method="POST" class="edit-inline-form"
+    <form id="{{ $formId }}" action="{{ url('/admin/admins/'.$admin->id) }}" method="POST" class="edit-inline-form"
         enctype="multipart/form-data">
         @csrf
 

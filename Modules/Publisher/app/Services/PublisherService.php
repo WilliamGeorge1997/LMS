@@ -12,7 +12,7 @@ class PublisherService
 {
     public function findAll(array $data)
     {
-        $query = Publisher::query()->available()->latest('id');
+        $query = Publisher::query()->latest('id');
 
         return getCaseCollection($query, $data);
     }
@@ -20,28 +20,26 @@ class PublisherService
     public function dataTable(): JsonResponse
     {
         $query = Publisher::query()
-            ->available()
-            ->select(['id', 'name', 'manager_id', 'is_active', 'created_at'])
+            ->select(['id', 'name', 'is_active', 'created_at'])
             ->with([
-                'manager' => function (BelongsTo $q) {
+                'tenant' => function (BelongsTo $q) {
                     $q->select(['id', 'name']);
-                }
+                },
             ]);
 
         return DataTables::eloquent($query)->toJson();
     }
 
-
     public function findBy(string $key, string $value, array $columns = ['*'])
     {
-        return Publisher::query()->available()->active()->where($key, $value)->get($columns);
+        return Publisher::query()->active()->where($key, $value)->get($columns);
     }
 
     public function findActive()
     {
-        return Publisher::query()->available()->active()->orderBy('name')->get(['id', 'name']);
+        return Publisher::query()->active()->orderBy('name')->get(['id', 'name']);
     }
-    
+
     public function save(PublisherDto $dto): Publisher
     {
         $data = $dto->toArray();
@@ -66,7 +64,7 @@ class PublisherService
 
     public function toggleActivate(Publisher $publisher): Publisher
     {
-        $publisher->update(['is_active' => !$publisher->is_active]);
+        $publisher->update(['is_active' => ! $publisher->is_active]);
 
         return $publisher->fresh();
     }

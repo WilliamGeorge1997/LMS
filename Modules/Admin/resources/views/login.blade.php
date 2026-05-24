@@ -47,7 +47,7 @@
                 <div class="d-flex justify-content-between flex-column-fluid flex-column w-100 mw-450px">
                     <div class="py-20">
                         <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form"
-                            data-kt-redirect-url="{{ route('admin.dashboard') }}" action="{{ route('admin.login') }}">
+                            data-kt-redirect-url="{{ url('/admin/dashboard') }}" action="{{ url('/admin/login') }}">
                             @csrf
                             <div class="card-body">
                                 <div class="text-start mb-10">

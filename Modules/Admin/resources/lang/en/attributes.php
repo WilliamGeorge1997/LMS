@@ -1,27 +1,27 @@
 <?php
 
 return [
-    //Title
+    // Title
     'admins' => 'Admins',
     'user_management' => 'User Management',
     'admins_list' => 'Admins List',
 
-    //Attributes
+    // Attributes
     'name' => 'Name',
-    'email' => 'Email',
     'password' => 'Password',
     'role' => 'Role',
+    'tenant' => 'Tenant',
     'image' => 'Image',
     'is_active' => 'Active',
     'created_at' => 'Created At',
     'actions' => 'Actions',
 
-    //Buttons
+    // Buttons
     'create_admin' => 'Create Admin',
     'submit' => 'Submit',
     'cancel' => 'Cancel',
 
-    //Placholders
+    // Placholders
     'enter_name' => 'Enter Name',
     'enter_email' => 'Enter Email',
     'enter_password' => 'Enter Password',
@@ -29,6 +29,6 @@ return [
     'search_admins' => 'Search Admins',
     'leave_blank_to_keep_current' => 'Leave blank to keep current',
 
-    //Messages
-    'admin_created_successfully' => 'Admin created successfully.'
+    // Messages
+    'admin_created_successfully' => 'Admin created successfully.',
 ];

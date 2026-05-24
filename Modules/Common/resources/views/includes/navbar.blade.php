@@ -314,7 +314,7 @@
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
                             <a href="javascript:void(0);" class="menu-link px-5" id="admin-logout-link">Sign Out</a>
-                            <form id="admin-logout-form" class="d-none" action="{{ route('admin.logout') }}"
+                            <form id="admin-logout-form" class="d-none" action="{{ url('/admin/logout') }}"
                                 method="post">
                                 @csrf
                             </form>

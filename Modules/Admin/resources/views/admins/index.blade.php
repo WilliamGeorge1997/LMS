@@ -77,8 +77,8 @@
                             </div>
                         </th>
                         <th class="min-w-125px">{{ __('admin::attributes.name') }}</th>
-                        <th class="min-w-125px">{{ __('admin::attributes.email') }}</th>
                         <th class="min-w-125px">{{ __('admin::attributes.role') }}</th>
+                        <th class="min-w-125px">{{ __('admin::attributes.tenant') }}</th>
                         <th class="min-w-125px">{{ __('admin::attributes.is_active') }}</th>
                         <th class="min-w-125px">{{ __('admin::attributes.created_at') }}</th>
                         <th class="text-end min-w-100px">{{ __('admin::attributes.actions') }}</th>
@@ -106,7 +106,7 @@
                 [0, 'desc']
             ],
             ajax: {
-                url: "{{ route('admins.index') }}"
+                url: "{{ url('/admin/admins') }}"
             },
             columns: [{
                     data: 'id'
@@ -118,10 +118,10 @@
                     data: 'name'
                 },
                 {
-                    data: 'email'
+                    data: 'role'
                 },
                 {
-                    data: 'role'
+                    data: 'tenant'
                 },
                 {
                     data: 'is_active'
@@ -173,17 +173,20 @@
                 },
                 {
                     targets: 3,
-                    orderable: true,
-                    render: function(data) {
-                        return '<span class="fw-bold text-gray-800">' + (data || '') + '</span>';
-                    }
-                },
-                {
-                    targets: 4,
                     orderable: false,
                     searchable: false,
                     render: function(data) {
-                        return '<span class="badge badge-light-primary fw-bold">' + (data || '') + '</span>';
+                        return '<span class="badge badge-light-primary fw-bold">' + (data || '') +
+                        '</span>';
+                    }
+                },
+                   {
+                        targets: 4,
+                    orderable: false,
+                    searchable: false,
+                    render: function(data) {
+                        return '<span class="badge badge-light-primary fw-bold">' + (data || '') +
+                        '</span>';
                     }
                 },
                 {
@@ -192,7 +195,8 @@
                     searchable: false,
                     render: function(data, t, row) {
                         return '<label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">' +
-                            '<input class="form-check-input active-toggle" type="checkbox" data-id="' + row.id + '"' +
+                            '<input class="form-check-input active-toggle" type="checkbox" data-id="' + row
+                            .id + '"' +
                             (data ? ' checked' : '') + ' />' +
                             '</label>';
                     }
@@ -233,8 +237,8 @@
         });
 
         Actions.initCreate(dt);
-        Actions.initEdit(dt, "{{ route('admins.edit', ':id') }}");
-        Actions.initDelete(dt, "{{ route('admins.destroy', ':id') }}");
-        Actions.initToggle("{{ route('admins.toggle-activate', ':id') }}");
+        Actions.initEdit(dt, "{{ url('/admin/admins') }}/:id/edit");
+        Actions.initDelete(dt, "{{ url('/admin/admins') }}/:id");
+        Actions.initToggle("{{ url('/admin/admins') }}/:id/toggle-activate");
     </script>
 @endsection

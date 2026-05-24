@@ -31,46 +31,40 @@ class AdminAuthController extends Controller implements HasMiddleware
 
     public function login(AdminLoginRequest $request)
     {
+
         $currentHost = $request->getHost();
         $isCentralDomain = in_array($currentHost, config('tenancy.central_domains'), true);
 
         // Bypass BelongsToTenant global scope
         /** @var Admin $admin */
-        $admin = Admin::withoutGlobalScopes()->where('email', $request->string('email'))->first();
+        $admin = Admin::withoutTenancy()->where('email', $request->string('email'))->first();
 
-        if (!$admin) {
+        if (! $admin) {
             return AjaxResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
         }
 
-        if (!Hash::check($request->string('password'), $admin->password)) {
+        if (! Hash::check($request->string('password'), $admin->password)) {
             return AjaxResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
         }
 
-        if (!$admin->is_active) {
+        if (! $admin->is_active) {
             return AjaxResponse::validationError(['email' => __('admin::messages.unactive_account')]);
         }
 
-        //Case manager and central domin 
+        // Case manager and central domin
         if ($isCentralDomain && $admin->hasRole(Role::MANAGER->value)) {
             return AjaxResponse::validationError(['email' => __('admin::messages.manager_central_login')]);
         }
 
-        //Case super admin and tenant subdomain
-        if (!$isCentralDomain && $admin->hasRole(Role::SUPER_ADMIN->value)) {
+        // Case super admin and tenant subdomain
+        if (! $isCentralDomain && $admin->hasRole(Role::SUPER_ADMIN->value)) {
             return AjaxResponse::validationError(['email' => __('admin::messages.super_admin_subdomain_login')]);
         }
 
-        //Case manager and tenant subdomain 
-        if (!$isCentralDomain && $admin->hasRole(Role::MANAGER->value)) {
-            $tenantDomain = optional($admin->tenant)->domains->first()?->domain;
-
-            //Check if the tenant subdomain is the same as the current host
-            if ($tenantDomain !== $currentHost) {
+        // Case manager and tenant subdomain
+        if (! $isCentralDomain && $admin->hasRole(Role::MANAGER->value)) {
+            if ($admin->tenant_id !== tenant()->getTenantKey()) {
                 return AjaxResponse::validationError(['email' => __('admin::messages.manager_wrong_subdomain')]);
-            }
-
-            if (!tenancy()->initialized || $admin->tenant_id !== tenant()->getTenantKey()) {
-                return AjaxResponse::validationError(['email' => __('admin::messages.manager_subdomain_mismatch')]);
             }
         }
 
@@ -83,9 +77,9 @@ class AdminAuthController extends Controller implements HasMiddleware
     public function logout()
     {
         Auth::guard('admin')->logout();
-        //Case super admin include session tenant id
+        // Case super admin include session tenant id
         session()->forget('admin_tenant_id');
 
-        return redirect()->route('admin.login');
+        return redirect(url('/admin/login'));
     }
 }

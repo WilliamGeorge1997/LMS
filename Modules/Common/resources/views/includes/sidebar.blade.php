@@ -49,7 +49,7 @@
                     <div class="menu-item">
                         <!--begin:Menu link-->
                         <a class="menu-link @if ($request->routeIs('admin.dashboard')) active @endif"
-                            href="{{ route('admin.dashboard') }}">
+                            href="{{ url('/admin/dashboard') }}">
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-home fs-2">
                                 </i>
@@ -104,7 +104,7 @@
                                 <div class="menu-item">
                                     <!--begin:Menu link-->
                                     <a class="menu-link @if ($request->routeIs('admins.*')) active @endif"
-                                        href="{{ route('admins.index') }}">
+                                        href="{{ url('/admin/admins') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
@@ -125,7 +125,7 @@
                     <div class="menu-item">
                         <!--begin:Menu link-->
                         <a class="menu-link @if ($request->routeIs('publishers.index')) active @endif"
-                            href="{{ route('publishers.index') }}">
+                            href="{{ url('/admin/publishers') }}">
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-user-edit fs-2">
                                     <span class="path1"></span>

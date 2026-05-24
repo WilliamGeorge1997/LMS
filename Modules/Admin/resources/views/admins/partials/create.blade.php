@@ -7,7 +7,7 @@
         <h3 class="card-title fw-bold fs-5 m-0">{{ __('admin::attributes.create_admin') }}</h3>
     </div>
     <div class="card-body pt-0">
-        <form id="create-form" action="{{ route('admins.store') }}" method="POST" enctype="multipart/form-data">
+        <form id="create-form" action="{{ url('/admin/admins') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row g-6">
                 <div class="col-md-6">
