@@ -52,12 +52,12 @@ class AdminAuthController extends Controller implements HasMiddleware
 
         //Case manager and central domin 
         if ($isCentralDomain && $admin->hasRole(Role::MANAGER->value)) {
-            return AjaxResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
+            return AjaxResponse::validationError(['email' => __('admin::messages.manager_central_login')]);
         }
 
         //Case super admin and tenant subdomain
         if (!$isCentralDomain && $admin->hasRole(Role::SUPER_ADMIN->value)) {
-            return AjaxResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
+            return AjaxResponse::validationError(['email' => __('admin::messages.super_admin_subdomain_login')]);
         }
 
         //Case manager and tenant subdomain 
@@ -66,11 +66,11 @@ class AdminAuthController extends Controller implements HasMiddleware
 
             //Check if the tenant subdomain is the same as the current host
             if ($tenantDomain !== $currentHost) {
-                return AjaxResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
+                return AjaxResponse::validationError(['email' => __('admin::messages.manager_wrong_subdomain')]);
             }
 
             if (!tenancy()->initialized || $admin->tenant_id !== tenant()->getTenantKey()) {
-                return AjaxResponse::validationError(['email' => __('admin::messages.invalid_credentials')]);
+                return AjaxResponse::validationError(['email' => __('admin::messages.manager_subdomain_mismatch')]);
             }
         }
 

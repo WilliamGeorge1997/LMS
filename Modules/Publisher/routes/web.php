@@ -14,10 +14,11 @@ $routes = function () {
         Route::patch('publishers/{publisher}/toggle-activate', [PublisherController::class, 'toggleActivate'])->name('publishers.toggle-activate');
     });
 };
+Route::domain($central)->group($routes);
 
 Route::domain('{tenant}.' . $central)->middleware([
     InitializeTenancyBySubdomain::class,
     PreventAccessFromCentralDomains::class
 ])->group($routes);
 
-Route::domain($central)->group($routes);
+
