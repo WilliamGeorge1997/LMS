@@ -2,7 +2,8 @@
 
 return [
     //Placholders
-    'enter_name' => 'Enter name',
+    'enter_name_en' => 'Enter name in English',
+    'enter_name_ar' => 'Enter name in Arabic',
     'select_manager' => 'Select manager',
 
     'search_publishers' => 'Search publishers',

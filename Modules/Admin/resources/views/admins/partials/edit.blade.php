@@ -4,7 +4,7 @@
 @endphp
 
 <tr class="edit-inline-row" data-edit-form-id="{{ $admin->id }}">
-    <form id="{{ $formId }}" action="{{ url('/admin/admins/'.$admin->id) }}" method="POST" class="edit-inline-form"
+    <form id="{{ $formId }}" action="{{ url('/admin/admins/' . $admin->id) }}" method="POST" class="edit-inline-form"
         enctype="multipart/form-data">
         @csrf
 
@@ -34,6 +34,18 @@
             </select>
             <div class="invalid-feedback d-block" data-error="role"></div>
         </td>
+
+        <td>
+            <span class="text-gray-700 fw-semibold">
+                @if ($admin->tenant)
+                    {{ $admin->tenant->getTranslation('name', 'en') }} -
+                    {{ $admin->tenant->getTranslation('name', 'ar') }}
+                @else
+                    -
+                @endif
+            </span>
+        </td>
+
 
         <td>
             <label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
@@ -68,8 +80,7 @@
             <h6 class="fw-bold text-gray-800 mb-4">Additional Fields</h6>
             <div class="row g-4">
                 <div class="col-md-6">
-                    <label class="form-label"
-                        for="password">{{ __('admin::attributes.password') }}</label>
+                    <label class="form-label" for="password">{{ __('admin::attributes.password') }}</label>
                     <input id="password" type="password" name="password"
                         class="form-control form-control-solid form-control-sm"
                         placeholder="{{ __('admin::attributes.leave_blank_to_keep_current') }}"
@@ -77,8 +88,7 @@
                     <div class="invalid-feedback d-block" data-error="password"></div>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label"
-                        for="image">{{ __('admin::attributes.image') }}</label>
+                    <label class="form-label" for="image">{{ __('admin::attributes.image') }}</label>
                     <input id="image" type="file" name="image"
                         class="form-control form-control-solid form-control-sm"
                         accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />

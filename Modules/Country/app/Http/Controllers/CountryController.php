@@ -62,12 +62,9 @@ class CountryController extends Controller implements HasMiddleware
         return view('country::countries.show');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function edit(Country $country): string
     {
-        return view('country::countries.edit');
+        return view('country::countries.partials.edit', ['country' => $country])->render();
     }
 
     /**

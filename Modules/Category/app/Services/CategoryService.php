@@ -10,21 +10,37 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CategoryService
 {
+    public function findAll(array $data)
+    {
+        $query = Category::query()->latest('id');
+
+        return getCaseCollection($query, $data);
+    }
+
     public function dataTable(): JsonResponse
     {
         $query = Category::query()
-            ->available()
-            ->select(['id', 'name', 'publisher_id', 'manager_id', 'is_active', 'created_at'])
-            ->with([
-                'manager' => function (BelongsTo $q) {
-                    $q->select(['id', 'name']);
-                },
-                'publisher' => function ($q) {
-                    $q->select(['id', 'name']);
-                },
-            ]);
+            ->select(['id', 'title', 'publisher_id', 'tenant_id', 'is_active', 'created_at'])
+            ->with(['publisher:id,name', 'tenant:id,name']);
 
-        return DataTables::eloquent($query)->toJson();
+        return DataTables::eloquent($query)
+        ->addColumn('name_en', function (Category $category) {
+            return $category->getTranslation('title', 'en');
+        })
+        ->addColumn('name_ar', function (Category $category) {
+            return $category->getTranslation('title', 'ar');
+        })
+        ->toJson();
+    }
+
+    public function findBy(string $key, string $value, array $columns = ['*'])
+    {
+        return Category::query()->active()->where($key, $value)->get($columns);
+    }
+
+    public function findActive()
+    {
+        return Category::query()->active()->orderBy('title')->get(['id', 'title']);
     }
 
     public function save(CategoryDto $dto): Category

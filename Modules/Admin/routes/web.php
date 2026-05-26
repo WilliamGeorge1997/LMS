@@ -7,7 +7,7 @@ use Modules\Admin\Http\Controllers\AdminController;
 $central = config('tenancy.central_domains')[0];
 
 Route::domain($central)
-    ->middleware(['central.super_admin'])
+    ->middleware(['central.super_admin.tenant'])
     ->prefix('admin')
     ->group(function () {
         Route::get('login', [AdminAuthController::class, 'loginForm'])->name('admin.login.form');

@@ -77,6 +77,7 @@
                             </div>
                         </th>
                         <th class="min-w-125px">{{ __('admin::attributes.name') }}</th>
+                        <th class="min-w-125px">{{ __('admin::attributes.email') }}</th>
                         <th class="min-w-125px">{{ __('admin::attributes.role') }}</th>
                         <th class="min-w-125px">{{ __('admin::attributes.tenant') }}</th>
                         <th class="min-w-125px">{{ __('admin::attributes.is_active') }}</th>
@@ -118,10 +119,13 @@
                     data: 'name'
                 },
                 {
+                    data: 'email'
+                },
+                {
                     data: 'role'
                 },
                 {
-                    data: 'tenant'
+                    data: 'tenant.name'
                 },
                 {
                     data: 'is_active'
@@ -176,21 +180,30 @@
                     orderable: false,
                     searchable: false,
                     render: function(data) {
-                        return '<span class="badge badge-light-primary fw-bold">' + (data || '') +
-                        '</span>';
+                        return '<span class="fw-bold text-gray-800">' + (data || '') + '</span>';
+
                     }
                 },
-                   {
-                        targets: 4,
+                {
+                    targets: 4,
                     orderable: false,
                     searchable: false,
                     render: function(data) {
                         return '<span class="badge badge-light-primary fw-bold">' + (data || '') +
-                        '</span>';
+                            '</span>';
                     }
                 },
                 {
                     targets: 5,
+                    orderable: false,
+                    searchable: false,
+                    render: function(data) {
+                        return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data.ar :
+                            '') + '</span>';
+                    }
+                },
+                {
+                    targets: 6,
                     orderable: false,
                     searchable: false,
                     render: function(data, t, row) {
@@ -202,7 +215,7 @@
                     }
                 },
                 {
-                    targets: 6,
+                    targets: 7,
                     orderable: true,
                     searchable: false,
                     render: function(data) {
@@ -210,7 +223,7 @@
                     }
                 },
                 {
-                    targets: 7,
+                    targets: 8,
                     orderable: false,
                     searchable: false,
                     className: 'text-end',

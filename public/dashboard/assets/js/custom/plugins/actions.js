@@ -93,6 +93,10 @@ window.Actions = {
                     $btn.removeAttr('data-kt-indicator').prop('disabled', false);
                 });
         });
+
+        $(document).on('click', '.cancel-btn', function () {
+            dataTable.ajax.reload(null, false);
+        });
     },
 
     // ── Toggle ────────────────────────────────────────────────────────────────

@@ -47,9 +47,6 @@ class AdminService
             ->addColumn('role', function (Admin $admin) {
                 return $admin->roles->first()?->name ?? '';
             })
-            ->addColumn('tenant', function (Admin $admin) {
-                return $admin->tenant?->name ?? '';
-            })
             ->toJson();
     }
 

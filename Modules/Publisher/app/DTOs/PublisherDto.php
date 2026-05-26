@@ -2,18 +2,19 @@
 
 namespace Modules\Publisher\DTOs;
 
-use Illuminate\Http\Request;
+use Modules\Publisher\Http\Requests\PublisherStoreRequest;
+use Modules\Publisher\Http\Requests\PublisherUpdateRequest;
 
 class PublisherDto
 {
     public function __construct(
         public readonly string $name_ar,
         public readonly string $name_en,
-        public readonly int $tenant_id,
+        public readonly string $tenant_id,
         public readonly int $is_active,
     ) {}
 
-    public static function fromRequest(Request $request): self
+    public static function fromRequest(PublisherStoreRequest|PublisherUpdateRequest $request): self
     {
         return new self(
             name_ar: $request->input('name_ar'),
@@ -25,13 +26,18 @@ class PublisherDto
 
     public function toArray(): array
     {
-        return [
+        $data =  [
             'name' => [
                 'ar' => $this->name_ar,
                 'en' => $this->name_en,
             ],
-            'tenant_id' => $this->tenant_id,
             'is_active' => $this->is_active,
         ];
+
+        if (! is_null($this->tenant_id)) {
+            $data['tenant_id'] = $this->tenant_id;
+        }
+
+        return $data;
     }
 }

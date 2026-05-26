@@ -6,8 +6,9 @@ return [
     'publishers_list' => 'Publishers List',
 
     //Attributes
-    'name' => 'Name',
-    'manager_id' => 'Manager',
+    'name_en' => 'Name (English)',
+    'name_ar' => 'Name (Arabic)',
+    'tenant' => 'Tenant',
     'is_active' => 'Active',
     'created_at' => 'Created At',
     'actions' => 'Actions',

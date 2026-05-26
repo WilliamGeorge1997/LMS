@@ -9,7 +9,8 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Admin\Enums\Role;
 use Modules\Common\Helpers\AjaxResponse;
 use Modules\Category\DTOs\CategoryDto;
-use Modules\Category\Http\Requests\CategoryRequest;
+use Modules\Category\Http\Requests\CategoryStoreRequest;
+use Modules\Category\Http\Requests\CategoryUpdateRequest;
 use Modules\Category\Models\Category;
 use Modules\Category\Services\CategoryService;
 use Modules\Category\ViewModel\CategoryViewModel;
@@ -40,7 +41,7 @@ class CategoryController extends Controller implements HasMiddleware
         return view('category::categories.index', compact('viewModel'));
     }
 
-    public function store(CategoryRequest $request): JsonResponse
+    public function store(CategoryStoreRequest $request): JsonResponse
     {
         $dto = CategoryDto::fromRequest($request);
         $category = $this->categoryService->save($dto);
@@ -48,7 +49,17 @@ class CategoryController extends Controller implements HasMiddleware
         return AjaxResponse::success(__('category::messages.created_successfully'), $category);
     }
 
-    public function update(CategoryRequest $request, Category $category): JsonResponse
+    public function edit(Category $category): string
+    {
+        $viewModel = new CategoryViewModel();
+
+        return view('category::categories.partials.edit', [
+            'category' => $category->load(['publisher']),
+            'viewModel' => $viewModel,
+        ])->render();
+    }
+
+    public function update(CategoryUpdateRequest $request, Category $category): JsonResponse
     {
         $dto = CategoryDto::fromRequest($request);
         $category = $this->categoryService->update($category, $dto);

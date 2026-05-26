@@ -20,14 +20,19 @@ class PublisherService
     public function dataTable(): JsonResponse
     {
         $query = Publisher::query()
-            ->select(['id', 'name', 'is_active', 'created_at'])
+            ->select(['id', 'name', 'tenant_id','is_active', 'created_at'])
             ->with([
-                'tenant' => function (BelongsTo $q) {
-                    $q->select(['id', 'name']);
-                },
-            ]);
+                'tenant:id,name'
+            ])->latest('id');
 
-        return DataTables::eloquent($query)->toJson();
+        return DataTables::eloquent($query)
+        ->addColumn('name_en', function (Publisher $publisher) {
+            return $publisher->getTranslation('name', 'en');
+        })
+        ->addColumn('name_ar', function (Publisher $publisher) {
+            return $publisher->getTranslation('name', 'ar');
+        })
+        ->toJson();
     }
 
     public function findBy(string $key, string $value, array $columns = ['*'])

@@ -9,6 +9,7 @@ return [
     // Attributes
     'name' => 'Name',
     'password' => 'Password',
+    'email' => 'Email',
     'role' => 'Role',
     'tenant' => 'Tenant',
     'image' => 'Image',

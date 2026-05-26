@@ -4,8 +4,7 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Modules\Tenant\Http\Middleware\InitializeAdminTenant;
-use Modules\Tenant\Http\Middleware\RestrictCentralToSuperAdmin;
+use Modules\Tenant\Http\Middleware\EnsureCentralSuperAdminWithTenant;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 
@@ -16,16 +15,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->web(append: [
-            InitializeAdminTenant::class,
-        ]);
         $middleware->redirectGuestsTo('/admin/login');
         $middleware->redirectUsersTo('/admin/dashboard');
         $middleware->alias([
             'set.locale' => SetLocale::class,
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
-            'central.super_admin' => RestrictCentralToSuperAdmin::class,
+            'central.super_admin.tenant' => EnsureCentralSuperAdminWithTenant::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

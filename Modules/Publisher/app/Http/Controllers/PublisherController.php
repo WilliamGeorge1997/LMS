@@ -9,10 +9,10 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Admin\Enums\Role;
 use Modules\Common\Helpers\AjaxResponse;
 use Modules\Publisher\DTOs\PublisherDto;
-use Modules\Publisher\Http\Requests\PublisherRequest;
+use Modules\Publisher\Http\Requests\PublisherStoreRequest;
+use Modules\Publisher\Http\Requests\PublisherUpdateRequest;
 use Modules\Publisher\Models\Publisher;
 use Modules\Publisher\Services\PublisherService;
-use Modules\Publisher\ViewModel\PublisherViewModel;
 
 class PublisherController extends Controller implements HasMiddleware
 {
@@ -25,9 +25,7 @@ class PublisherController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(private readonly PublisherService $publisherService)
-    {
-    }
+    public function __construct(private readonly PublisherService $publisherService) {}
 
     /**
      * Display a listing of the resource.
@@ -37,15 +35,14 @@ class PublisherController extends Controller implements HasMiddleware
         if ($request->ajax()) {
             return $this->publisherService->dataTable();
         }
-        $viewModel = new PublisherViewModel();
 
-        return view('publisher::publishers.index', compact('viewModel'));
+        return view('publisher::publishers.index');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PublisherRequest $request): JsonResponse
+    public function store(PublisherStoreRequest $request): JsonResponse
     {
         $dto = PublisherDto::fromRequest($request);
         $admin = $this->publisherService->save($dto);
@@ -53,10 +50,17 @@ class PublisherController extends Controller implements HasMiddleware
         return AjaxResponse::success(__('publisher::messages.created_sucessfully'), $admin);
     }
 
+    public function edit(Publisher $publisher): string
+    {
+        return view('publisher::publishers.partials.edit', [
+            'publisher' => $publisher->load('tenant:id,name'),
+        ])->render();
+    }
+
     /**
      * Update the specified resource in storage.
      */
-    public function update(PublisherRequest $request, Publisher $publisher): JsonResponse
+    public function update(PublisherUpdateRequest $request, Publisher $publisher): JsonResponse
     {
         $dto = PublisherDto::fromRequest($request);
         $publisher = $this->publisherService->update($publisher, $dto);

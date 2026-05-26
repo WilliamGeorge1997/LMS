@@ -38,6 +38,14 @@ class CityController extends Controller
         return redirect()->route('cities.index');
     }
 
+    public function edit(City $city): string
+    {
+        return view('country::cities.partials.edit', [
+            'city' => $city->load('country'),
+            'countryOptions' => $this->countryService->selectOptions(),
+        ])->render();
+    }
+
     public function selectOptions(Request $request): JsonResponse
     {
         $validated = $request->validate([

@@ -5,9 +5,10 @@ namespace Modules\Tenant\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Modules\Admin\Enums\Role;
+use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Symfony\Component\HttpFoundation\Response;
 
-class RestrictCentralToSuperAdmin
+class EnsureCentralSuperAdminWithTenant
 {
     /**
      * @param  Closure(Request): (Response)  $next
@@ -22,6 +23,18 @@ class RestrictCentralToSuperAdmin
 
         if ($admin && ! $admin->hasRole(Role::SUPER_ADMIN->value)) {
             abort(403);
+        }
+
+        if ($admin?->hasRole(Role::SUPER_ADMIN->value)) {
+            $tenantId = session('admin_tenant_id');
+
+            if ($tenantId) {
+                try {
+                    tenancy()->initialize($tenantId);
+                } catch (TenantCouldNotBeIdentifiedById) {
+                    session()->forget('admin_tenant_id');
+                }
+            }
         }
 
         return $next($request);

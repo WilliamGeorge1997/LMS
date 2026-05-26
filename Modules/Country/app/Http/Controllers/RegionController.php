@@ -38,6 +38,14 @@ class RegionController extends Controller
         return redirect()->route('regions.index');
     }
 
+    public function edit(Region $region): string
+    {
+        return view('country::regions.partials.edit', [
+            'region' => $region->load('city'),
+            'countryOptions' => $this->countryService->selectOptions(),
+        ])->render();
+    }
+
     public function store(RegionStoreRequest $request): JsonResponse
     {
         $dto = RegionDto::fromRequest($request);
