@@ -3,6 +3,7 @@
 namespace Modules\Publisher\Services;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Admin\Enums\Role;
 use Modules\Publisher\DTOs\PublisherDto;
 use Modules\Publisher\Models\Publisher;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,19 +21,19 @@ class PublisherService
     public function dataTable(): JsonResponse
     {
         $query = Publisher::query()
-            ->select(['id', 'name', 'tenant_id','is_active', 'created_at'])
+            ->select(['id', 'name', 'tenant_id', 'is_active', 'created_at'])
             ->with([
                 'tenant:id,name'
             ])->latest('id');
 
         return DataTables::eloquent($query)
-        ->addColumn('name_en', function (Publisher $publisher) {
-            return $publisher->getTranslation('name', 'en');
-        })
-        ->addColumn('name_ar', function (Publisher $publisher) {
-            return $publisher->getTranslation('name', 'ar');
-        })
-        ->toJson();
+            ->addColumn('name_en', function (Publisher $publisher) {
+                return $publisher->getTranslation('name', 'en');
+            })
+            ->addColumn('name_ar', function (Publisher $publisher) {
+                return $publisher->getTranslation('name', 'ar');
+            })
+            ->toJson();
     }
 
     public function findBy(string $key, string $value, array $columns = ['*'])
@@ -40,9 +41,19 @@ class PublisherService
         return Publisher::query()->active()->where($key, $value)->get($columns);
     }
 
-    public function findActive()
+
+    public function active()
     {
         return Publisher::query()->active()->orderBy('name')->get(['id', 'name']);
+    }
+
+    public function findByTenant(array $columns = ['*'])
+    {
+        return Publisher::query()->active()
+            ->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
+                $query->where('tenant_id', session('admin_tenant_id'));
+            })
+            ->get($columns);
     }
 
     public function save(PublisherDto $dto): Publisher
@@ -69,7 +80,7 @@ class PublisherService
 
     public function toggleActivate(Publisher $publisher): Publisher
     {
-        $publisher->update(['is_active' => ! $publisher->is_active]);
+        $publisher->update(['is_active' => !$publisher->is_active]);
 
         return $publisher->fresh();
     }

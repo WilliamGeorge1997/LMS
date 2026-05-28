@@ -54,7 +54,7 @@ class CategoryController extends Controller implements HasMiddleware
         $viewModel = new CategoryViewModel();
 
         return view('category::categories.partials.edit', [
-            'category' => $category->load(['publisher']),
+            'category' => $category->load(['publisher', 'tenant']),
             'viewModel' => $viewModel,
         ])->render();
     }

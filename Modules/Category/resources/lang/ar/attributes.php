@@ -2,12 +2,14 @@
 
 return [
     //Title
-    'publishers' => 'الناشرين',
-    'publishers_list' => 'قائمة الناشرين',
+    'categories' => 'الفئات',
+    'categories_list' => 'قائمة الفئات',
 
     //Attributes
-    'name' => 'الاسم',
-    'manager' => 'المدير',
+    'title' => 'العنوان',
+    'title_ar' => 'العنوان (عربي)',
+    'title_en' => 'العنوان (انجليزي)',
+    'publisher_id' => 'الناشر',
     'is_active' => 'الحالة',
     'created_at' => 'تاريخ الإنشاء',
     'actions' => 'الإجراءات',

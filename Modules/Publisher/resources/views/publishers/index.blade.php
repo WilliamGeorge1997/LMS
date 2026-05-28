@@ -98,7 +98,7 @@
     <script>
         "use strict";
 
-        var dt = $('#kt_datatable').DataTable({
+    var dt = $('#kt_datatable').DataTable({
             serverSide: true,
             processing: true,
             stateSave: false,

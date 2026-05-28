@@ -2,7 +2,7 @@
 
 namespace Modules\Category\Services;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Admin\Enums\Role;
 use Modules\Category\DTOs\CategoryDto;
 use Modules\Category\Models\Category;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,10 +24,10 @@ class CategoryService
             ->with(['publisher:id,name', 'tenant:id,name']);
 
         return DataTables::eloquent($query)
-        ->addColumn('name_en', function (Category $category) {
+        ->addColumn('title_en', function (Category $category) {
             return $category->getTranslation('title', 'en');
         })
-        ->addColumn('name_ar', function (Category $category) {
+        ->addColumn('title_ar', function (Category $category) {
             return $category->getTranslation('title', 'ar');
         })
         ->toJson();
@@ -38,9 +38,18 @@ class CategoryService
         return Category::query()->active()->where($key, $value)->get($columns);
     }
 
-    public function findActive()
+    public function active()
     {
         return Category::query()->active()->orderBy('title')->get(['id', 'title']);
+    }
+
+    public function findByTenant(array $columns = ['*'])
+    {
+        return Category::query()->active()
+            ->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
+                $query->where('tenant_id', session('admin_tenant_id'));
+            })
+            ->get($columns);
     }
 
     public function save(CategoryDto $dto): Category

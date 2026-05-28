@@ -10,7 +10,7 @@ class PublisherDto
     public function __construct(
         public readonly string $name_ar,
         public readonly string $name_en,
-        public readonly string $tenant_id,
+        public readonly ?string $tenant_id,
         public readonly int $is_active,
     ) {}
 

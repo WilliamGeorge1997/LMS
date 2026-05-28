@@ -76,10 +76,11 @@
                                     data-kt-check-target="#kt_datatable .row-checkbox" value="1" />
                             </div>
                         </th>
-                        <th class="min-w-175px">{{ __('category::attributes.name') }}</th>
+                        <th class="min-w-125px">{{ __('category::attributes.title_en') }}</th>
+                        <th class="min-w-125px">{{ __('category::attributes.title_ar') }}</th>
                         <th class="min-w-125px">{{ __('category::attributes.publisher_id') }}</th>
                         @if ($is_super_admin)
-                            <th class="min-w-125px">{{ __('category::attributes.manager_id') }}</th>
+                            <th class="min-w-125px">{{ __('publisher::attributes.tenant') }}</th>
                         @endif
                         <th class="min-w-125px">{{ __('category::attributes.is_active') }}</th>
                         <th class="min-w-125px">{{ __('category::attributes.created_at') }}</th>
@@ -95,7 +96,7 @@
 @section('js')
     <script src="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/actions.js') }}"></script>
-    <script>
+        <script>
         "use strict";
 
         var dt = $('#kt_datatable').DataTable({
@@ -117,14 +118,17 @@
                     data: 'id'
                 },
                 {
-                    data: 'name_display'
+                    data: 'title_en'
+                },
+                {
+                    data: 'title_ar'
                 },
                 {
                     data: 'publisher.name'
                 },
                 @if ($is_super_admin)
                     {
-                        data: 'manager.name'
+                        data: 'tenant.name'
                     },
                 @endif
                 {
@@ -155,27 +159,46 @@
                 },
                 {
                     targets: 2,
-                    orderable: false,
-                    searchable: true,
-                    render: function(data) {
-                        return '<span class="text-gray-800 fw-bold fs-6">' + (data || '') + '</span>';
+                    orderable: true,
+                    render: function(data, type, row) {
+                        var fullName = (data || '').trim();
+                        var parts = fullName ? fullName.split(/\s+/) : [];
+                        var initials = parts.length > 1 ?
+                            (parts[0][0] + parts[1][0]).toUpperCase() :
+                            (fullName[0] || 'C').toUpperCase();
+
+                        return `<div class="d-flex align-items-center">
+                                <div class="symbol symbol-circle symbol-40px overflow-hidden me-3">
+                                    <div class="symbol-label fs-5 fw-bold bg-light-primary text-primary">${initials}</div>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <span class="text-gray-800 fw-bold fs-6 mb-1">${fullName}</span>
+                                </div>
+                            </div>`;
                     }
                 },
                 {
                     targets: 3,
-                    orderable: false,
-                    searchable: true,
+                    orderable: true,
                     render: function(data) {
                         return '<span class="fw-bold text-gray-800">' + (data || '') + '</span>';
                     }
                 },
+                {
+                    targets: 4,
+                    orderable: false,
+                    searchable: false,
+                    render: function(data) {
+                        return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data.ar : '') + '</span>';
+                    }
+                },
                 @if ($is_super_admin)
                     {
-                        targets: 4,
+                        targets: 5,
                         orderable: false,
-                        searchable: true,
+                        searchable: false,
                         render: function(data) {
-                            return '<span class="fw-bold text-gray-800">' + (data || '') + '</span>';
+                            return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data.ar : '') + '</span>';
                         }
                     },
                 @endif
@@ -230,16 +253,5 @@
         Actions.initEdit(dt, "{{ route('categories.edit', ':id') }}");
         Actions.initDelete(dt, "{{ route('categories.destroy', ':id') }}");
         Actions.initToggle("{{ route('categories.toggle-activate', ':id') }}");
-
-        @if ($is_super_admin)
-            PluginDependentDropdown.bind($('#create-form'));
-            $(document).ajaxSuccess(function(event, xhr, settings) {
-                if (settings.url && settings.url.indexOf('/edit') !== -1) {
-                    $('tr.edit-inline-row form').each(function() {
-                        PluginDependentDropdown.bind($(this));
-                    });
-                }
-            });
-        @endif
     </script>
 @endsection

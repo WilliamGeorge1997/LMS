@@ -1,9 +1,8 @@
 <?php
 
 return [
-    'name_ar_required' => 'Arabic name is required',
-    'name_en_required' => 'English name is required',
-    'name_max' => 'Max 255 characters',
-    'manager_required' => 'Manager is required',
+    'title_ar_required' => 'Arabic title is required',
+    'title_en_required' => 'English title is required',
+    'title_max' => 'Max 255 characters',
     'publisher_required' => 'Publisher is required',
 ];

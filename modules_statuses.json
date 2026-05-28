@@ -4,5 +4,6 @@
     "Publisher": true,
     "Country": true,
     "Category": true,
-    "Tenant": true
+    "Tenant": true,
+    "Level": true
 }

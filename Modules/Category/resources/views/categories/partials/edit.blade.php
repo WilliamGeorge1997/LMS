@@ -12,44 +12,37 @@
         </td>
 
         <td>
-            <input type="text" name="name_en" class="form-control form-control-solid form-control-sm"
+            <input type="text" name="title_en" class="form-control form-control-solid form-control-sm"
                 value="{{ $category->getTranslation('title', 'en') }}"
-                placeholder="{{ __('category::placeholders.enter_name_en') }}" />
-            <div class="invalid-feedback d-block" data-error="name_en"></div>
+                placeholder="{{ __('category::placeholders.enter_title_en') }}" />
+            <div class="invalid-feedback d-block" data-error="title_en"></div>
         </td>
 
         <td>
-            <select name="publisher_id" class="form-select form-select-solid form-select-sm"
-                @if ($is_super_admin) data-depends-on="manager_id" data-depends-url="/admin/managers/:value/publishers"
-                data-value-key="id" data-label-key="name"
-                data-depends-placeholder="{{ __('category::placeholders.select_publisher') }}" @endif>
+            <input type="text" name="title_ar" class="form-control form-control-solid form-control-sm"
+                value="{{ $category->getTranslation('title', 'ar') }}"
+                placeholder="{{ __('category::placeholders.enter_title_ar') }}" />
+            <div class="invalid-feedback d-block" data-error="title_ar"></div>
+        </td>
+
+        <td>
+            <select name="publisher_id" class="form-select form-select-solid form-select-sm">
                 <option value="" disabled>{{ __('category::placeholders.select_publisher') }}</option>
-                @if (! $is_super_admin)
-                    @foreach ($viewModel->activePublishers() as $publisher)
-                        <option value="{{ $publisher->id }}" @selected($category->publisher_id === $publisher->id)>
-                            {{ $publisher->name }}
-                        </option>
-                    @endforeach
-                @else
-                    @if ($category->publisher)
-                        <option value="{{ $category->publisher_id }}" selected>{{ $category->publisher->name }}</option>
-                    @endif
-                @endif
+                @foreach ($viewModel->publishersByTenant() as $publisher)
+                    <option value="{{ $publisher->id }}" @selected($category->publisher_id === $publisher->id)>
+                        {{ $publisher->getTranslation('name', 'en') }} - {{ $publisher->getTranslation('name', 'ar') }}
+                    </option>
+                @endforeach
             </select>
             <div class="invalid-feedback d-block" data-error="publisher_id"></div>
         </td>
 
         @if ($is_super_admin)
             <td>
-                <select name="manager_id" class="form-select form-select-solid form-select-sm">
-                    <option value="" disabled>{{ __('category::placeholders.select_manager') }}</option>
-                    @foreach ($viewModel->activeManagers() as $manager)
-                        <option value="{{ $manager->id }}" @selected(($category->manager_id ?? null) === $manager->id)>
-                            {{ $manager->name }}
-                        </option>
-                    @endforeach
-                </select>
-                <div class="invalid-feedback d-block" data-error="manager_id"></div>
+                <span class="text-gray-700 fw-semibold">
+                    {{ $category->tenant?->getTranslation('name', 'en') ?? '' }}
+                    - {{ $category->tenant?->getTranslation('name', 'ar') ?? '' }}
+                </span>
             </td>
         @endif
 
@@ -79,20 +72,4 @@
             </button>
         </td>
     </form>
-</tr>
-
-<tr class="edit-extra-row" data-extra-edit-form-for="{{ $category->id }}">
-    <td colspan="{{ $is_super_admin ? 8 : 7 }}" class="p-0 border-0">
-        <div class="additional-fields-panel rounded-2 p-5 m-2">
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <label class="form-label">{{ __('category::attributes.name_ar') }}</label>
-                    <input dir="rtl" type="text" name="name_ar" class="form-control form-control-solid form-control-sm"
-                        value="{{ $category->getTranslation('title', 'ar') }}"
-                        placeholder="{{ __('category::placeholders.enter_name_ar') }}" />
-                    <div class="invalid-feedback d-block" data-error="name_ar"></div>
-                </div>
-            </div>
-        </div>
-    </td>
 </tr>

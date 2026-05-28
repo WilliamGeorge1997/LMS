@@ -91,7 +91,7 @@
                             <!--end:Menu link-->
                             <!--begin:Menu sub-->
                             <div class="menu-sub menu-sub-accordion">
-                                         <div class="menu-item">
+                                <div class="menu-item">
                                     <a class="menu-link @if ($request->routeIs('tenants.*')) active @endif"
                                         href="{{ route('tenants.index') }}">
                                         <span class="menu-bullet">
@@ -160,6 +160,19 @@
                             <span class="menu-title">Categories</span>
                         </a>
                         <!--end:Menu link-->
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link @if ($request->routeIs('levels.index')) active @endif"
+                            href="{{ route('levels.index') }}">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-abstract-26 fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">Levels</span>
+                        </a>
                     </div>
 
 

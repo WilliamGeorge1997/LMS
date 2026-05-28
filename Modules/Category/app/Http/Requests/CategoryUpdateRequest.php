@@ -10,8 +10,8 @@ class CategoryUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_ar' => ['required', 'string', 'max:255'],
-            'name_en' => ['required', 'string', 'max:255'],
+            'title_ar' => ['required', 'string', 'max:255'],
+            'title_en' => ['required', 'string', 'max:255'],
             'publisher_id' => ['required', 'integer', 'exists:publishers,id'],
             'is_active' => ['nullable', 'boolean'],
         ];

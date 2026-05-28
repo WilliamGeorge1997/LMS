@@ -12,7 +12,7 @@ class CategoryDto
         public readonly string $title_ar,
         public readonly string $title_en,
         public readonly int $publisher_id,
-        public readonly string $tenant_id,
+        public readonly ?string $tenant_id,
         public readonly bool $is_active,
     ) {}
 
@@ -30,7 +30,7 @@ class CategoryDto
     public function toArray(): array
     {
         $data =  [
-            'name' => [
+            'title' => [
                 'ar' => $this->title_ar,
                 'en' => $this->title_en,
             ],
