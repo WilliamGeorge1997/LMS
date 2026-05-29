@@ -121,6 +121,23 @@ window.Actions = {
         });
     },
 
+    // ── Dependent selects ─────────────────────────────────────────────────────
+
+    initDepends: function () {
+        $(document).on('change', 'select[name]', function () {
+            var $parent = $(this);
+            var $form = $parent.closest('form');
+            if (!$form.length) return;
+
+            $form.find('[data-depends-on="' + $parent.attr('name') + '"]').each(function () {
+                var $child = $(this);
+                Actions._resetDescendants($form, $child.attr('name'));
+                Actions._resetDepend($child);
+                Actions._loadDepend($child, $parent.val());
+            });
+        });
+    },
+
     // ── Delete ────────────────────────────────────────────────────────────────
 
     initDelete: function (dataTable, deleteUrl, confirmMsg) {
@@ -206,6 +223,34 @@ window.Actions = {
     _resetForm: function ($form) {
         $form[0].reset();
         Actions._clearErrors($form);
+        Actions._resetDepends($form);
+    },
+
+    _resetDepend: function ($child) {
+        var ph = $child.attr('data-depends-placeholder') || '';
+        $child.html('<option value="" disabled selected>' + ph + '</option>').prop('disabled', true);
+    },
+
+    _resetDescendants: function ($form, parentName) {
+        $form.find('[data-depends-on="' + parentName + '"]').each(function () {
+            var $child = $(this);
+            Actions._resetDepend($child);
+            Actions._resetDescendants($form, $child.attr('name'));
+        });
+    },
+
+    _loadDepend: function ($child, val) {
+        var url = $child.attr('data-depends-url');
+        if (!url || !val) return;
+        $.get(url.replace(':value', encodeURIComponent(val)))
+            .done(function (html) { $child.html(html).prop('disabled', false); })
+            .fail(function () { Actions._resetDepend($child); });
+    },
+
+    _resetDepends: function ($form) {
+        $form.find('[data-depends-on]').each(function () {
+            Actions._resetDepend($(this));
+        });
     },
 
     _formData: function ($root) {

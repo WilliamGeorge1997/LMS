@@ -2,6 +2,7 @@
 
 namespace Modules\Level\Services;
 
+use Modules\Admin\Enums\Role;
 use Modules\Level\DTOs\LevelDto;
 use Modules\Level\Models\Level;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,12 +35,27 @@ class LevelService
 
     public function findBy(string $key, string $value, array $columns = ['*'])
     {
-        return Level::query()->active()->where($key, $value)->get($columns);
+        return Level::query()
+            ->active()
+            ->where($key, $value)
+            ->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
+                $query->where('tenant_id', session('admin_tenant_id'));
+            })
+            ->get($columns);
     }
 
     public function active()
     {
         return Level::query()->active()->orderBy('title')->get(['id', 'title']);
+    }
+
+    public function findByTenant(array $columns = ['*'])
+    {
+        return Level::query()->active()
+            ->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
+                $query->where('tenant_id', session('admin_tenant_id'));
+            })
+            ->get($columns);
     }
 
     public function save(LevelDto $dto): Level
@@ -61,7 +77,7 @@ class LevelService
 
     public function toggleActivate(Level $level): Level
     {
-        $level->update(['is_active' => ! $level->is_active]);
+        $level->update(['is_active' => !$level->is_active]);
 
         return $level->fresh();
     }

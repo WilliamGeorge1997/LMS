@@ -3,7 +3,7 @@
         <h3 class="card-title fw-bold fs-5 m-0">Create Region</h3>
     </div>
     <div class="card-body pt-0">
-        <form id="create-form" action="{{ route('regions.store') }}" method="POST">
+        <form id="create-form" action="{{ url('/admin/regions') }}" method="POST">
             @csrf
             <div class="row g-6">
                 <div class="col-md-6">
@@ -19,7 +19,7 @@
                 <div class="col-md-6">
                     <label class="required form-label">City</label>
                     <select name="city_id" class="form-select form-select-solid" data-depends-on="country_id"
-                        data-depends-url="{{ route('cities.select-options') }}?country_id=:value"
+                        data-depends-url="{{ url('/admin/cities/select-options') }}?country_id=:value"
                         data-depends-placeholder="Select city">
                         <option value="" disabled selected>Select city</option>
                     </select>

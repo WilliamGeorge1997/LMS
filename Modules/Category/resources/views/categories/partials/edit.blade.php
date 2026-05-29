@@ -1,7 +1,7 @@
 @php($is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN))
 
 <tr class="edit-inline-row" data-edit-form-id="{{ $category->id }}">
-    <form id="edit-form-{{ $category->id }}" action="{{ route('categories.update', $category) }}" method="POST"
+    <form id="edit-form-{{ $category->id }}" action="{{ url('/admin/categories/' . $category->id) }}" method="POST"
         class="edit-inline-form" enctype="multipart/form-data">
         @csrf
 

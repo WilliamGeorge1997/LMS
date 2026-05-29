@@ -12,8 +12,8 @@ class LevelViewModel
         return (new PublisherService)->findByTenant();
     }
 
-    public function categoriesByTenant()
+    public function categoriesByPublisher(int $publisherId)
     {
-        return (new CategoryService)->findByTenant();
+        return (new CategoryService)->findBy('publisher_id', (string) $publisherId, ['id', 'title']);
     }
 }

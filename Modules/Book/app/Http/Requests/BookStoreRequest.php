@@ -1,0 +1,53 @@
+<?php
+
+namespace Modules\Book\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Modules\Admin\Enums\Role;
+
+class BookStoreRequest extends FormRequest
+{
+    protected function prepareForValidation(): void
+    {
+        $admin = auth('admin')->user();
+
+        if (!$admin->hasRole(Role::SUPER_ADMIN->value)) {
+            $this->merge([
+                'tenant_id' => $admin->tenant_id,
+            ]);
+        }
+        if ($admin->hasRole(Role::SUPER_ADMIN->value)) {
+            $this->merge([
+                'tenant_id' => session('admin_tenant_id'),
+            ]);
+        }
+    }
+
+    public function rules(): array
+    {
+        return [
+            'title_ar' => ['required', 'string', 'max:255'],
+            'title_en' => ['required', 'string', 'max:255'],
+            'isbn' => ['required', 'string', 'max:255', 'unique:books,isbn'],
+            'description_ar' => ['nullable', 'string'],
+            'description_en' => ['nullable', 'string'],
+            'publisher_id' => ['required', 'integer', 'exists:publishers,id'],
+            'category_id' => ['required', 'integer', 'exists:categories,id'],
+            'level_id' => ['required', 'integer', 'exists:levels,id'],
+            'tenant_id' => ['required', 'string', 'exists:tenants,id'],
+            'is_active' => ['nullable', 'boolean'],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'tenant_id' => 'tenant',
+        ];
+    }
+
+    public function authorize(): bool
+    {
+        return true;
+    }
+}

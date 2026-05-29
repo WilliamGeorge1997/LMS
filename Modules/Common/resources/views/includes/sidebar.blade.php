@@ -93,7 +93,7 @@
                             <div class="menu-sub menu-sub-accordion">
                                 <div class="menu-item">
                                     <a class="menu-link @if ($request->routeIs('tenants.*')) active @endif"
-                                        href="{{ route('tenants.index') }}">
+                                        href="{{ url('/admin/tenants') }}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
@@ -148,7 +148,7 @@
                     <div class="menu-item">
                         <!--begin:Menu link-->
                         <a class="menu-link @if ($request->routeIs('categories.index')) active @endif"
-                            href="{{ route('categories.index') }}">
+                            href="{{ url('/admin/categories') }}">
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-category fs-2">
                                     <span class="path1"></span>
@@ -164,7 +164,7 @@
 
                     <div class="menu-item">
                         <a class="menu-link @if ($request->routeIs('levels.index')) active @endif"
-                            href="{{ route('levels.index') }}">
+                            href="{{ url('/admin/levels') }}">
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-abstract-26 fs-2">
                                     <span class="path1"></span>
@@ -172,6 +172,21 @@
                                 </i>
                             </span>
                             <span class="menu-title">Levels</span>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link @if ($request->routeIs('books.index')) active @endif"
+                            href="{{ url('/admin/books') }}">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-book-open fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                    <span class="path4"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">Books</span>
                         </a>
                     </div>
 
@@ -198,7 +213,7 @@
                         <div class="menu-sub menu-sub-accordion">
                             <div class="menu-item">
                                 <a class="menu-link @if ($request->routeIs('countries.index')) active @endif"
-                                    href="{{ route('countries.index') }}">
+                                    href="{{ url('/admin/countries') }}">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
@@ -207,7 +222,7 @@
                             </div>
                             <div class="menu-item">
                                 <a class="menu-link @if ($request->routeIs('cities.index')) active @endif"
-                                    href="{{ route('cities.index') }}">
+                                    href="{{ url('/admin/cities') }}">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
@@ -216,7 +231,7 @@
                             </div>
                             <div class="menu-item">
                                 <a class="menu-link @if ($request->routeIs('regions.index')) active @endif"
-                                    href="{{ route('regions.index') }}">
+                                    href="{{ url('/admin/regions') }}">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>

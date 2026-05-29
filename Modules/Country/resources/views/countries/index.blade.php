@@ -15,7 +15,7 @@
                 </h1>
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <li class="breadcrumb-item text-muted">
-                        <a href="{{ route('countries.index') }}" class="text-muted text-hover-primary">Locations</a>
+                        <a href="{{ url('/admin/countries') }}" class="text-muted text-hover-primary">Locations</a>
                     </li>
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-500 w-5px h-2px"></span>
@@ -97,7 +97,7 @@
                 [0, 'desc']
             ],
             ajax: {
-                url: "{{ route('countries.index') }}"
+                url: "{{ url('/admin/countries') }}"
             },
             columns: [{
                     data: 'id'
@@ -201,8 +201,8 @@
         });
 
         Actions.initCreate(dt);
-        Actions.initEdit(dt, "{{ route('countries.edit', ':id') }}");
-        Actions.initDelete(dt, "{{ route('countries.destroy', ':id') }}");
-        Actions.initToggle("{{ route('countries.toggle-activate', ':id') }}");
+        Actions.initEdit(dt, "{{ url('/admin/countries') }}/:id/edit");
+        Actions.initDelete(dt, "{{ url('/admin/countries') }}/:id");
+        Actions.initToggle("{{ url('/admin/countries') }}/:id/toggle-activate");
     </script>
 @endsection

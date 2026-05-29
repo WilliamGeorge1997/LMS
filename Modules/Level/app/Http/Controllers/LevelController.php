@@ -21,12 +21,14 @@ class LevelController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value,
+            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly LevelService $levelService) {}
+    public function __construct(private readonly LevelService $levelService)
+    {
+    }
 
     public function index(Request $request)
     {
@@ -82,5 +84,20 @@ class LevelController extends Controller implements HasMiddleware
             : __('level::messages.deactivated_successfully');
 
         return AjaxResponse::success($message, $level);
+    }
+
+    public function ajaxLevel(Request $request): string
+    {
+        $validated = $request->validate([
+            'category_id' => ['required', 'integer', 'exists:categories,id'],
+        ]);
+
+        $levels = $this->levelService->findBy(
+            'category_id',
+            (string) $validated['category_id'],
+            ['id', 'title'],
+        );
+
+        return view('level::levels.partials.ajax', compact('levels'))->render();
     }
 }

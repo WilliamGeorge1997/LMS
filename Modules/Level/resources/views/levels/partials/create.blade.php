@@ -34,13 +34,11 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="required form-label">{{ __('level::attributes.category_id') }}</label>
-                    <select name="category_id" class="form-select form-select-solid">
-                        <option value="" disabled selected>
-                            {{ __('level::placeholders.select_category') }}</option>
-                        @foreach ($viewModel->categoriesByTenant() as $category)
-                            <option value="{{ $category->id }}">{{ $category->title }}</option>
-                        @endforeach
+                    <label for="category_id" class="required form-label">{{ __('level::attributes.category_id') }}</label>
+                    <select name="category_id" id="category_id" class="form-select form-select-solid" data-depends-on="publisher_id"
+                        data-depends-url="{{ url('/admin/categories/ajax_category') }}?publisher_id=:value"
+                        data-depends-placeholder="{{ __('level::placeholders.select_category') }}" disabled>
+                        <option value="" disabled selected>{{ __('level::placeholders.select_category') }}</option>
                     </select>
                     <div class="invalid-feedback d-block" data-error="category_id"></div>
                 </div>

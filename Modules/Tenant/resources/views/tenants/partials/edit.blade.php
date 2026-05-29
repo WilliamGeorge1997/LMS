@@ -4,7 +4,7 @@
 @endphp
 
 <tr class="edit-inline-row" data-id="{{ $tenant->id }}">
-    <form id="edit-form-{{ $tenant->id }}" action="{{ route('tenants.update', $tenant) }}" method="POST" class="edit-inline-form">
+    <form id="edit-form-{{ $tenant->id }}" action="{{ url('/admin/tenants/' . $tenant->id) }}" method="POST" class="edit-inline-form">
         @csrf
 
         <td class="w-10px pe-2">

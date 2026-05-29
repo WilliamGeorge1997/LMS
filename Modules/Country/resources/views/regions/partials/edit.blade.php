@@ -1,6 +1,6 @@
 @php($countryId = $region->city?->country_id)
 <tr class="edit-inline-row" data-edit-form-id="{{ $region->id }}">
-    <form id="edit-form-{{ $region->id }}" action="{{ route('regions.update', $region) }}" method="POST"
+    <form id="edit-form-{{ $region->id }}" action="{{ url('/admin/regions/' . $region->id) }}" method="POST"
         class="edit-inline-form">
         @csrf
 
@@ -36,7 +36,7 @@
 
         <td>
             <select name="city_id" class="form-select form-select-solid form-select-sm" data-depends-on="country_id"
-                data-depends-url="{{ route('cities.select-options') }}?country_id=:value"
+                data-depends-url="{{ url('/admin/cities/select-options') }}?country_id=:value"
                 data-depends-placeholder="Select city">
                 <option value="" disabled>Select city</option>
                 @if ($region->city)

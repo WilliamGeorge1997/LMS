@@ -85,4 +85,19 @@ class CategoryController extends Controller implements HasMiddleware
 
         return AjaxResponse::success($message, $category);
     }
+
+    public function ajaxCategory(Request $request): string
+    {
+        $validated = $request->validate([
+            'publisher_id' => ['required', 'integer', 'exists:publishers,id'],
+        ]);
+
+        $categories = $this->categoryService->findBy(
+            'publisher_id',
+            (string) $validated['publisher_id'],
+            ['id', 'title'],
+        );
+
+        return view('category::categories.partials.ajax', compact('categories'))->render();
+    }
 }

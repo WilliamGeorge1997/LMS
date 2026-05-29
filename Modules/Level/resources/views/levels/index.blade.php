@@ -22,8 +22,7 @@
                 </h1>
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <li class="breadcrumb-item text-muted">
-                        <a href="index.html"
-                            class="text-muted text-hover-primary">{{ __('level::attributes.levels') }}</a>
+                        <a href="index.html" class="text-muted text-hover-primary">{{ __('level::attributes.levels') }}</a>
                     </li>
                     <li class="breadcrumb-item"><span class="bullet bg-gray-500 w-5px h-2px"></span></li>
                     <li class="breadcrumb-item text-muted">{{ __('level::attributes.levels') }}</li>
@@ -110,7 +109,7 @@
                 [0, 'desc']
             ],
             ajax: {
-                url: "{{ route('levels.index') }}"
+                url: "{{ url('/admin/levels') }}"
             },
             columns: [{
                     data: 'id'
@@ -134,8 +133,7 @@
                     {
                         data: 'tenant.name'
                     },
-                @endif
-                {
+                @endif {
                     data: 'is_active'
                 },
                 {
@@ -193,7 +191,8 @@
                     orderable: false,
                     searchable: false,
                     render: function(data) {
-                        return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data.ar : '') + '</span>';
+                        return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data.ar :
+                            '') + '</span>';
                     }
                 },
                 {
@@ -201,7 +200,8 @@
                     orderable: false,
                     searchable: false,
                     render: function(data) {
-                        return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data.ar : '') + '</span>';
+                        return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data.ar :
+                            '') + '</span>';
                     }
                 },
                 @if ($is_super_admin)
@@ -210,11 +210,11 @@
                         orderable: false,
                         searchable: false,
                         render: function(data) {
-                            return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data.ar : '') + '</span>';
+                            return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data
+                                .ar : '') + '</span>';
                         }
                     },
-                @endif
-                {
+                @endif {
                     targets: -3,
                     orderable: false,
                     searchable: false,
@@ -262,8 +262,9 @@
         });
 
         Actions.initCreate(dt);
-        Actions.initEdit(dt, "{{ route('levels.edit', ':id') }}");
-        Actions.initDelete(dt, "{{ route('levels.destroy', ':id') }}");
-        Actions.initToggle("{{ route('levels.toggle-activate', ':id') }}");
+        Actions.initEdit(dt, "{{ url('/admin/levels') }}/:id/edit");
+        Actions.initDelete(dt, "{{ url('/admin/levels') }}/:id");
+        Actions.initToggle("{{ url('/admin/levels') }}/:id/toggle-activate");
+        Actions.initDepends();
     </script>
 @endsection

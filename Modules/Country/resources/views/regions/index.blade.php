@@ -15,7 +15,7 @@
                 </h1>
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <li class="breadcrumb-item text-muted">
-                        <a href="{{ route('countries.index') }}" class="text-muted text-hover-primary">Locations</a>
+                        <a href="{{ url('/admin/countries') }}" class="text-muted text-hover-primary">Locations</a>
                     </li>
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-500 w-5px h-2px"></span>
@@ -102,7 +102,7 @@
                 [0, 'desc']
             ],
             ajax: {
-                url: "{{ route('regions.index') }}"
+                url: "{{ url('/admin/regions') }}"
             },
             columns: [{
                     data: 'id'
@@ -230,9 +230,9 @@
         });
 
         Actions.initCreate(dt);
-        Actions.initEdit(dt, "{{ route('regions.edit', ':id') }}");
-        Actions.initDelete(dt, "{{ route('regions.destroy', ':id') }}");
-        Actions.initToggle("{{ route('regions.toggle-activate', ':id') }}");
+        Actions.initEdit(dt, "{{ url('/admin/regions') }}/:id/edit");
+        Actions.initDelete(dt, "{{ url('/admin/regions') }}/:id");
+        Actions.initToggle("{{ url('/admin/regions') }}/:id/toggle-activate");
 
         PluginDependentDropdown.bind($('#create-form'));
         $(document).ajaxSuccess(function(event, xhr, settings) {

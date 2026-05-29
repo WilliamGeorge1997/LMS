@@ -1,5 +1,5 @@
 <tr class="edit-inline-row" data-edit-form-id="{{ $city->id }}">
-    <form id="edit-form-{{ $city->id }}" action="{{ route('cities.update', $city) }}" method="POST"
+    <form id="edit-form-{{ $city->id }}" action="{{ url('/admin/cities/' . $city->id) }}" method="POST"
         class="edit-inline-form">
         @csrf
 

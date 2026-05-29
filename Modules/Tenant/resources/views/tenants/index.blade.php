@@ -106,7 +106,7 @@
                 [0, 'desc']
             ],
             ajax: {
-                url: "{{ route('tenants.index') }}"
+                url: "{{ url('/admin/tenants') }}"
             },
             columns: [{
                     data: "id"
@@ -222,9 +222,9 @@
         });
 
         Actions.initCreate(dt);
-        Actions.initEdit(dt, "{{ route('tenants.edit', ':id') }}");
-        Actions.initDelete(dt, "{{ route('tenants.destroy', ':id') }}");
-        Actions.initToggle("{{ route('tenants.toggle-activate', ':id') }}");
+        Actions.initEdit(dt, "{{ url('/admin/tenants') }}/:id/edit");
+        Actions.initDelete(dt, "{{ url('/admin/tenants') }}/:id");
+        Actions.initToggle("{{ url('/admin/tenants') }}/:id/toggle-activate");
     </script>
 
 @endsection

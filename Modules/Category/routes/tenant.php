@@ -8,7 +8,7 @@ use Stancl\Tenancy\Middleware\ScopeSessions;
 
 $central = config('tenancy.central_domains')[0];
 
-Route::domain('{tenant}.'.$central)
+Route::domain('{tenant}.' . $central)
     ->middleware([
         InitializeTenancyBySubdomain::class,
         PreventAccessFromCentralDomains::class,
@@ -16,6 +16,7 @@ Route::domain('{tenant}.'.$central)
     ])
     ->prefix('admin')
     ->group(function () {
+        Route::get('categories/ajax_category', [CategoryController::class, 'ajaxCategory']);
         Route::resource('categories', CategoryController::class)->except(['show', 'edit', 'update']);
         Route::post('categories/{category}', [CategoryController::class, 'update']);
         Route::patch('categories/{category}/toggle-activate', [CategoryController::class, 'toggleActivate']);

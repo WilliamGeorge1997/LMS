@@ -1,7 +1,7 @@
 @php($is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN))
 
 <tr class="edit-inline-row" data-edit-form-id="{{ $level->id }}">
-    <form id="edit-form-{{ $level->id }}" action="{{ route('levels.update', $level) }}" method="POST"
+    <form id="edit-form-{{ $level->id }}" action="{{ url('/admin/levels/' . $level->id) }}" method="POST"
         class="edit-inline-form" enctype="multipart/form-data">
         @csrf
 
@@ -30,7 +30,8 @@
                 <option value="" disabled>{{ __('level::placeholders.select_publisher') }}</option>
                 @foreach ($viewModel->publishersByTenant() as $publisher)
                     <option value="{{ $publisher->id }}" @selected($level->publisher_id === $publisher->id)>
-                        {{ $publisher->getTranslation('name', 'en') }} - {{ $publisher->getTranslation('name', 'ar') }}
+                        {{ $publisher->getTranslation('name', 'en') }} -
+                        {{ $publisher->getTranslation('name', 'ar') }}
                     </option>
                 @endforeach
             </select>
@@ -38,11 +39,15 @@
         </td>
 
         <td>
-            <select name="category_id" class="form-select form-select-solid form-select-sm">
+            <select name="category_id" class="form-select form-select-solid form-select-sm"
+                data-depends-on="publisher_id"
+                data-depends-url="{{ url('/admin/categories/ajax_category') }}?publisher_id=:value"
+                data-depends-placeholder="{{ __('level::placeholders.select_category') }}">
                 <option value="" disabled>{{ __('level::placeholders.select_category') }}</option>
-                @foreach ($viewModel->categoriesByTenant() as $category)
+                @foreach ($viewModel->categoriesByPublisher($level->publisher_id) as $category)
                     <option value="{{ $category->id }}" @selected($level->category_id === $category->id)>
-                        {{ $category->getTranslation('title', 'en') }} - {{ $category->getTranslation('title', 'ar') }}
+                        {{ $category->getTranslation('title', 'en') }} -
+                        {{ $category->getTranslation('title', 'ar') }}
                     </option>
                 @endforeach
             </select>

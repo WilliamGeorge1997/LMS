@@ -25,7 +25,9 @@ class PublisherController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(private readonly PublisherService $publisherService) {}
+    public function __construct(private readonly PublisherService $publisherService)
+    {
+    }
 
     /**
      * Display a listing of the resource.

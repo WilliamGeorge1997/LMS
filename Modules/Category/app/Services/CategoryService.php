@@ -24,18 +24,24 @@ class CategoryService
             ->with(['publisher:id,name', 'tenant:id,name']);
 
         return DataTables::eloquent($query)
-        ->addColumn('title_en', function (Category $category) {
-            return $category->getTranslation('title', 'en');
-        })
-        ->addColumn('title_ar', function (Category $category) {
-            return $category->getTranslation('title', 'ar');
-        })
-        ->toJson();
+            ->addColumn('title_en', function (Category $category) {
+                return $category->getTranslation('title', 'en');
+            })
+            ->addColumn('title_ar', function (Category $category) {
+                return $category->getTranslation('title', 'ar');
+            })
+            ->toJson();
     }
 
     public function findBy(string $key, string $value, array $columns = ['*'])
     {
-        return Category::query()->active()->where($key, $value)->get($columns);
+        return Category::query()
+            ->active()
+            ->where($key, $value)
+            ->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
+                $query->where('tenant_id', session('admin_tenant_id'));
+            })
+            ->get($columns);
     }
 
     public function active()

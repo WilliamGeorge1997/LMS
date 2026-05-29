@@ -3,7 +3,7 @@
         <h3 class="card-title fw-bold fs-5 m-0">{{ __('tenant::text.create') }}</h3>
     </div>
     <div class="card-body pt-0">
-        <form id="create-form" action="{{ route('tenants.store') }}" method="POST">
+        <form id="create-form" action="{{ url('/admin/tenants') }}" method="POST">
             @csrf
             <div class="row g-6">
                 {{-- Name EN --}}

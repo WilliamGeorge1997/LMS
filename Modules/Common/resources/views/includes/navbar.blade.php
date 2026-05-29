@@ -44,7 +44,7 @@
             <div class="app-navbar flex-shrink-0">
                 <div class="app-navbar-item ms-1 ms-md-4">
                     @if ($isSuperAdmin)
-                        <form action="{{ route('tenants.set') }}" method="POST">
+                        <form action="{{ url('/admin/tenants/set') }}" method="POST">
                             @csrf
                             <select id="select-tenant" class="form-select form-select-solid w-250px" name="tenant_id"
                                 data-placeholder="Select a tenant">

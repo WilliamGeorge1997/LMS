@@ -109,7 +109,7 @@
                 [0, 'desc']
             ],
             ajax: {
-                url: "{{ route('categories.index') }}"
+                url: "{{ url('/admin/categories') }}"
             },
             columns: [{
                     data: 'id'
@@ -250,8 +250,8 @@
         });
 
         Actions.initCreate(dt);
-        Actions.initEdit(dt, "{{ route('categories.edit', ':id') }}");
-        Actions.initDelete(dt, "{{ route('categories.destroy', ':id') }}");
-        Actions.initToggle("{{ route('categories.toggle-activate', ':id') }}");
+        Actions.initEdit(dt, "{{ url('/admin/categories') }}/:id/edit");
+        Actions.initDelete(dt, "{{ url('/admin/categories') }}/:id");
+        Actions.initToggle("{{ url('/admin/categories') }}/:id/toggle-activate");
     </script>
 @endsection
