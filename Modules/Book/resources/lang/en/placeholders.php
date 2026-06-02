@@ -10,4 +10,7 @@ return [
     'select_category' => 'Select category',
     'select_level' => 'Select level',
     'search_books' => 'Search books',
+    'select_book' => 'Select book',
+    'search_book_codes' => 'Search books...',
+    'access_code_type_hint' => 'Choose one to specify Access Code generation type',
 ];

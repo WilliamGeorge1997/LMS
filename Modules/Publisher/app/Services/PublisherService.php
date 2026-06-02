@@ -2,8 +2,6 @@
 
 namespace Modules\Publisher\Services;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Admin\Enums\Role;
 use Modules\Publisher\DTOs\PublisherDto;
 use Modules\Publisher\Models\Publisher;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,11 +47,7 @@ class PublisherService
 
     public function findByTenant(array $columns = ['*'])
     {
-        return Publisher::query()->active()
-            ->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
-                $query->where('tenant_id', session('admin_tenant_id'));
-            })
-            ->get($columns);
+        return Publisher::query()->active()->byTenant()->get($columns);
     }
 
     public function save(PublisherDto $dto): Publisher

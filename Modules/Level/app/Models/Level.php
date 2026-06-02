@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Admin\Enums\Role;
 use Modules\Category\Models\Category;
 use Modules\Publisher\Models\Publisher;
 use Spatie\Translatable\HasTranslations;
@@ -26,12 +27,23 @@ class Level extends Model
     {
         return $date->format('Y-m-d H:i A');
     }
-
+    //Scopes
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
     }
 
+    public function scopeByTenant(Builder $query): Builder
+    {
+        //Scope for super admin
+        return $query->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
+            $query->where('tenant_id', session('admin_tenant_id'));
+        });
+
+        //Already scoped for tenant by BelongsToTenant trait
+    }
+
+    //Relations
     public function publisher(): BelongsTo
     {
         return $this->belongsTo(Publisher::class);
@@ -41,4 +53,6 @@ class Level extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+
 }

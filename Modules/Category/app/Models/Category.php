@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Admin\Enums\Role;
 use Modules\Publisher\Models\Publisher;
 use Spatie\Translatable\HasTranslations;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
@@ -30,6 +31,16 @@ class Category extends Model
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
+    }
+
+    public function scopeByTenant(Builder $query): Builder
+    {
+        //Scope for super admin
+        return $query->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
+            $query->where('tenant_id', session('admin_tenant_id'));
+        });
+
+        //Already scoped for tenant by BelongsToTenant trait
     }
 
     // Relations

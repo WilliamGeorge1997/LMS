@@ -4,74 +4,75 @@
 @endphp
 
 <tr class="edit-inline-row" data-edit-form-id="{{ $admin->id }}">
-    <form id="{{ $formId }}" action="{{ url('/admin/admins/' . $admin->id) }}" method="POST" class="edit-inline-form"
-        enctype="multipart/form-data">
-        @csrf
+    <td class="d-none" aria-hidden="true">
+        <form id="{{ $formId }}" action="{{ url('/admin/admins/' . $admin->id) }}" method="POST"
+            class="edit-inline-form" enctype="multipart/form-data">
+            @csrf
+        </form>
+    </td>
 
-        <td class="w-10px pe-2">
-            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                <input class="form-check-input row-checkbox" type="checkbox" value="{{ $admin->id }}" disabled />
-            </div>
-        </td>
+    <td class="w-10px pe-2">
+        <div class="form-check form-check-sm form-check-custom form-check-solid">
+            <input class="form-check-input row-checkbox" type="checkbox" value="{{ $admin->id }}" disabled />
+        </div>
+    </td>
 
-        <td>
-            <input type="text" name="name" class="form-control form-control-solid form-control-sm"
-                value="{{ $admin->name }}" />
-            <div class="invalid-feedback d-block" data-error="name"></div>
-        </td>
+    <td>
+        <input form="{{ $formId }}" type="text" name="name" class="form-control form-control-solid form-control-sm"
+            value="{{ $admin->name }}" />
+        <div class="invalid-feedback d-block" data-error="name"></div>
+    </td>
 
-        <td>
-            <input type="text" name="email" class="form-control form-control-solid form-control-sm"
-                value="{{ $admin->email }}" />
-            <div class="invalid-feedback d-block" data-error="email"></div>
-        </td>
+    <td>
+        <input form="{{ $formId }}" type="text" name="email" class="form-control form-control-solid form-control-sm"
+            value="{{ $admin->email }}" />
+        <div class="invalid-feedback d-block" data-error="email"></div>
+    </td>
 
-        <td>
-            <select name="role" class="form-select form-select-solid form-select-sm">
-                @foreach (\Modules\Admin\Enums\Role::cases() as $role)
-                    <option value="{{ $role->value }}" @selected($currentRole === $role->value)>{{ $role->value }}</option>
-                @endforeach
-            </select>
-            <div class="invalid-feedback d-block" data-error="role"></div>
-        </td>
+    <td>
+        <select form="{{ $formId }}" name="role" class="form-select form-select-solid form-select-sm">
+            @foreach (\Modules\Admin\Enums\Role::cases() as $role)
+                <option value="{{ $role->value }}" @selected($currentRole === $role->value)>{{ $role->value }}</option>
+            @endforeach
+        </select>
+        <div class="invalid-feedback d-block" data-error="role"></div>
+    </td>
 
-        <td>
-            <span class="text-gray-700 fw-semibold">
-                @if ($admin->tenant)
-                    {{ $admin->tenant->getTranslation('name', 'en') }} -
-                    {{ $admin->tenant->getTranslation('name', 'ar') }}
-                @else
-                    -
-                @endif
+    <td>
+        <span class="text-gray-700 fw-semibold">
+            @if ($admin->tenant)
+                {{ $admin->tenant->getTranslation('name', 'en') }} -
+                {{ $admin->tenant->getTranslation('name', 'ar') }}
+            @else
+                -
+            @endif
+        </span>
+    </td>
+
+    <td>
+        <label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
+            <input form="{{ $formId }}" class="form-check-input" type="checkbox" name="is_active" value="1"
+                {{ $admin->is_active ? 'checked' : '' }} />
+        </label>
+    </td>
+
+    <td>
+        <span class="text-gray-700 fw-semibold">{{ $admin->created_at }}</span>
+    </td>
+
+    <td class="text-end">
+        <button type="submit" form="{{ $formId }}" class="btn btn-icon btn-sm btn-light-success save-btn">
+            <span class="indicator-label">
+                <i class="ki-duotone ki-check fs-4"><span class="path1"></span><span class="path2"></span></i>
             </span>
-        </td>
-
-
-        <td>
-            <label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                <input class="form-check-input" type="checkbox" name="is_active" value="1"
-                    {{ $admin->is_active ? 'checked' : '' }} />
-            </label>
-        </td>
-
-        <td>
-            <span class="text-gray-700 fw-semibold">{{ $admin->created_at }}</span>
-        </td>
-
-        <td class="text-end">
-            <button type="submit" form="{{ $formId }}" class="btn btn-icon btn-sm btn-light-success save-btn">
-                <span class="indicator-label">
-                    <i class="ki-duotone ki-check fs-4"><span class="path1"></span><span class="path2"></span></i>
-                </span>
-                <span class="indicator-progress">
-                    <span class="spinner-border spinner-border-sm"></span>
-                </span>
-            </button>
-            <button type="button" class="btn btn-icon btn-sm btn-light-danger cancel-btn">
-                <i class="ki-duotone ki-cross fs-4"><span class="path1"></span><span class="path2"></span></i>
-            </button>
-        </td>
-    </form>
+            <span class="indicator-progress">
+                <span class="spinner-border spinner-border-sm"></span>
+            </span>
+        </button>
+        <button type="button" class="btn btn-icon btn-sm btn-light-danger cancel-btn">
+            <i class="ki-duotone ki-cross fs-4"><span class="path1"></span><span class="path2"></span></i>
+        </button>
+    </td>
 </tr>
 
 <tr class="edit-extra-row" data-extra-edit-form-for="{{ $admin->id }}">
@@ -80,16 +81,16 @@
             <h6 class="fw-bold text-gray-800 mb-4">Additional Fields</h6>
             <div class="row g-4">
                 <div class="col-md-6">
-                    <label class="form-label" for="password">{{ __('admin::attributes.password') }}</label>
-                    <input id="password" type="password" name="password"
+                    <label class="form-label" for="password-{{ $admin->id }}">{{ __('admin::attributes.password') }}</label>
+                    <input form="{{ $formId }}" id="password-{{ $admin->id }}" type="password" name="password"
                         class="form-control form-control-solid form-control-sm"
                         placeholder="{{ __('admin::attributes.leave_blank_to_keep_current') }}"
                         autocomplete="new-password" />
                     <div class="invalid-feedback d-block" data-error="password"></div>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label" for="image">{{ __('admin::attributes.image') }}</label>
-                    <input id="image" type="file" name="image"
+                    <label class="form-label" for="image-{{ $admin->id }}">{{ __('admin::attributes.image') }}</label>
+                    <input form="{{ $formId }}" id="image-{{ $admin->id }}" type="file" name="image"
                         class="form-control form-control-solid form-control-sm"
                         accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
                     <div class="invalid-feedback d-block" data-error="image"></div>

@@ -57,6 +57,11 @@ class BookService
         return Book::query()->active()->orderBy('title')->get(['id', 'title']);
     }
 
+    public function findByTenant(array $columns = ['*'])
+    {
+        return Book::query()->active()->byTenant()->orderBy('title')->get($columns);
+    }
+
     public function save(BookDto $dto): Book
     {
         return Book::create($dto->toArray());

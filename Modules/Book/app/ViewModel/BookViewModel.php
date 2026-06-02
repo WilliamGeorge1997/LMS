@@ -2,6 +2,7 @@
 
 namespace Modules\Book\ViewModel;
 
+use Modules\Book\Services\BookService;
 use Modules\Category\Services\CategoryService;
 use Modules\Level\Services\LevelService;
 use Modules\Publisher\Services\PublisherService;
@@ -13,19 +14,14 @@ class BookViewModel
         return (new PublisherService)->findByTenant();
     }
 
-    public function categoriesByTenant()
+    public function booksByTenant()
     {
-        return (new CategoryService)->findByTenant();
+        return (new BookService)->findByTenant(['id', 'title']);
     }
 
     public function categoriesByPublisher(int $publisherId)
     {
         return (new CategoryService)->findBy('publisher_id', (string) $publisherId, ['id', 'title']);
-    }
-
-    public function levelsByTenant()
-    {
-        return (new LevelService)->findByTenant();
     }
 
     public function levelsByCategory(int $categoryId)

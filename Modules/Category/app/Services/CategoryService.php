@@ -2,7 +2,6 @@
 
 namespace Modules\Category\Services;
 
-use Modules\Admin\Enums\Role;
 use Modules\Category\DTOs\CategoryDto;
 use Modules\Category\Models\Category;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,9 +37,7 @@ class CategoryService
         return Category::query()
             ->active()
             ->where($key, $value)
-            ->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
-                $query->where('tenant_id', session('admin_tenant_id'));
-            })
+            ->byTenant()
             ->get($columns);
     }
 
@@ -52,9 +49,7 @@ class CategoryService
     public function findByTenant(array $columns = ['*'])
     {
         return Category::query()->active()
-            ->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
-                $query->where('tenant_id', session('admin_tenant_id'));
-            })
+            ->byTenant()
             ->get($columns);
     }
 

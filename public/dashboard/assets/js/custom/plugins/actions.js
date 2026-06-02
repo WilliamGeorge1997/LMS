@@ -47,7 +47,7 @@ window.Actions = {
             var $btn = $(this);
             var $tr = $btn.closest('tr');
 
-            if ($table.find('tbody [data-extra-for]').length) {
+            if ($table.find('tbody tr.edit-inline-row').length) {
                 Actions._warning('Warning', 'Please save or cancel the current edit first.');
                 return;
             }
@@ -78,7 +78,7 @@ window.Actions = {
             $.ajax({
                 url: $form.attr('action'),
                 method: 'POST',
-                data: Actions._formData($scope),
+                data: Actions._formData($scope, $form),
                 processData: false,
                 contentType: false
             })
@@ -126,12 +126,12 @@ window.Actions = {
     initDepends: function () {
         $(document).on('change', 'select[name]', function () {
             var $parent = $(this);
-            var $form = $parent.closest('form');
-            if (!$form.length) return;
+            var $scope = Actions._dependScope($parent);
+            if (!$scope.length) return;
 
-            $form.find('[data-depends-on="' + $parent.attr('name') + '"]').each(function () {
+            $scope.find('[data-depends-on="' + $parent.attr('name') + '"]').each(function () {
                 var $child = $(this);
-                Actions._resetDescendants($form, $child.attr('name'));
+                Actions._resetDescendants($scope, $child.attr('name'));
                 Actions._resetDepend($child);
                 Actions._loadDepend($child, $parent.val());
             });
@@ -226,6 +226,11 @@ window.Actions = {
         Actions._resetDepends($form);
     },
 
+    _dependScope: function ($el) {
+        var $row = $el.closest('tr.edit-inline-row');
+        return $row.length ? $row : $el.closest('form');
+    },
+
     _resetDepend: function ($child) {
         var ph = $child.attr('data-depends-placeholder') || '';
         $child.html('<option value="" disabled selected>' + ph + '</option>').prop('disabled', true);
@@ -253,7 +258,11 @@ window.Actions = {
         });
     },
 
-    _formData: function ($root) {
+    _formData: function ($root, $form) {
+        if ($form && $form.length && $form[0]) {
+            return new FormData($form[0]);
+        }
+
         var fd = new FormData();
         $root.find('[name]').each(function () {
             if (this.disabled || !this.name) return;

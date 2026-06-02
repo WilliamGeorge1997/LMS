@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Admin\Enums\Role;
 use Modules\Category\Models\Category;
 use Modules\Level\Models\Level;
 use Modules\Publisher\Models\Publisher;
@@ -42,6 +44,13 @@ class Book extends Model
         return $query->where('is_active', true);
     }
 
+    public function scopeByTenant(Builder $query): Builder
+    {
+        return $query->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
+            $query->where('tenant_id', session('admin_tenant_id'));
+        });
+    }
+
     public function publisher(): BelongsTo
     {
         return $this->belongsTo(Publisher::class);
@@ -55,5 +64,10 @@ class Book extends Model
     public function level(): BelongsTo
     {
         return $this->belongsTo(Level::class);
+    }
+
+    public function bookCodes(): HasMany
+    {
+        return $this->hasMany(BookCode::class);
     }
 }

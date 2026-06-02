@@ -10,4 +10,7 @@ return [
     'select_category' => 'اختر الفئة',
     'select_level' => 'اختر المستوى',
     'search_books' => 'بحث في الكتب',
+    'select_book' => 'اختر الكتاب',
+    'search_book_codes' => 'بحث في الكتب...',
+    'access_code_type_hint' => 'اختر نوع كود الوصول المراد إنشاؤه',
 ];
