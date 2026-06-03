@@ -88,13 +88,9 @@ class LevelController extends Controller implements HasMiddleware
 
     public function ajaxLevel(Request $request): string
     {
-        $validated = $request->validate([
-            'category_id' => ['required', 'integer', 'exists:categories,id'],
-        ]);
-
         $levels = $this->levelService->findBy(
             'category_id',
-            (string) $validated['category_id'],
+            $request->input('category_id'),
             ['id', 'title'],
         );
 

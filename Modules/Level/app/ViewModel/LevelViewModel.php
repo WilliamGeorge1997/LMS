@@ -14,6 +14,6 @@ class LevelViewModel
 
     public function categoriesByPublisher(int $publisherId)
     {
-        return (new CategoryService)->findBy('publisher_id', (string) $publisherId, ['id', 'title']);
+        return (new CategoryService)->findBy('publisher_id', $publisherId, ['id', 'title']);
     }
 }

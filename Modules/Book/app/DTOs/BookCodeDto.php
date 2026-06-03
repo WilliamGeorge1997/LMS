@@ -13,7 +13,8 @@ class BookCodeDto
         public readonly int $duration,
         public readonly BookCodeType $type,
         public readonly int $quantity,
-    ) {}
+    ) {
+    }
 
     public static function fromRequest(BookCodeStoreRequest $request): self
     {
