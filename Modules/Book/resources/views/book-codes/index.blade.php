@@ -51,6 +51,8 @@
     </div>
 @endsection
 
+@php($is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN))
+
 @section('content')
     <div class="card">
         <div class="card-header border-0 pt-6">
@@ -83,6 +85,9 @@
                         <th class="min-w-100px">{{ __('book::attributes.from') }}</th>
                         <th class="min-w-100px">{{ __('book::attributes.to') }}</th>
                         <th class="min-w-100px">{{ __('book::attributes.is_used') }}</th>
+                        @if ($is_super_admin)
+                            <th class="min-w-125px">{{ __('publisher::attributes.tenant') }}</th>
+                        @endif
                         <th class="min-w-100px">{{ __('book::attributes.is_active') }}</th>
                         <th class="min-w-100px">{{ __('book::attributes.created_at') }}</th>
                         <th class="text-end min-w-75px">{{ __('book::attributes.actions') }}</th>
@@ -99,8 +104,6 @@
     <script src="{{ asset('dashboard/assets/js/custom/plugins/actions.js') }}"></script>
     <script>
         "use strict";
-
-        var pendingRegister = @json(__('book::attributes.pending_register'));
 
         var dt = $('#kt_datatable').DataTable({
             serverSide: true,
@@ -121,13 +124,15 @@
                     data: 'id'
                 },
                 {
-                    data: 'code'
+                    data: 'code',
+                    name: 'code',
                 },
                 {
-                    data: 'book_title'
+                    data: 'book.title',
+                    name: 'book.title',
                 },
                 {
-                    data: 'type_label'
+                    data: 'type'
                 },
                 {
                     data: 'duration'
@@ -141,7 +146,11 @@
                 {
                     data: 'is_used'
                 },
-                {
+                @if ($is_super_admin)
+                    {
+                        data: 'tenant.name'
+                    },
+                @endif {
                     data: 'is_active'
                 },
                 {
@@ -170,6 +179,7 @@
                 {
                     targets: 2,
                     orderable: true,
+                    searchable: true,
                     render: function(data) {
                         return '<span class="fw-bold text-gray-800">' + (data || '') + '</span>';
                     }
@@ -177,8 +187,10 @@
                 {
                     targets: 3,
                     orderable: false,
+                    searchable: true,
                     render: function(data) {
-                        return '<span class="fw-bold text-gray-800">' + (data || '') + '</span>';
+                        return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data.ar :
+                            '') + '</span>';
                     }
                 },
                 {
@@ -186,7 +198,19 @@
                     orderable: false,
                     searchable: false,
                     render: function(data) {
-                        return '<span class="text-gray-700 fw-semibold">' + (data || '') + '</span>';
+                        var label = {
+                            student: @json(__('book::attributes.student')),
+                            teacher: @json(__('book::attributes.teacher')),
+                        } [data] || data || '';
+
+                        if (data === 'student') {
+                            return '<span class="badge badge-primary fw-bold">' + label + '</span>';
+                        }
+                        if (data === 'teacher') {
+                            return '<span class="badge badge-info fw-bold">' + label + '</span>';
+                        }
+
+                        return '<span class="badge badge-light fw-bold">' + label + '</span>';
                     }
                 },
                 {
@@ -202,7 +226,8 @@
                     orderable: false,
                     searchable: false,
                     render: function(data, t, row) {
-                        var value = row.is_used && data ? data : pendingRegister;
+                        var value = row.is_used && data ? data : @json(__('book::attributes.pending_register'));
+
                         return '<span class="text-gray-700 fw-semibold">' + value + '</span>';
                     }
                 },
@@ -211,7 +236,8 @@
                     orderable: false,
                     searchable: false,
                     render: function(data, t, row) {
-                        var value = row.is_used && data ? data : pendingRegister;
+                        var value = row.is_used && data ? data : @json(__('book::attributes.pending_register'));
+
                         return '<span class="text-gray-700 fw-semibold">' + value + '</span>';
                     }
                 },
@@ -221,28 +247,39 @@
                     searchable: false,
                     render: function(data) {
                         if (data == 1) {
-                            return '<span class="badge badge-light-success"><i class="ki-duotone ki-check fs-5 text-success"><span class="path1"></span><span class="path2"></span></i></span>';
+                            return '<i class="ki-duotone ki-check fs-2 text-success"><span class="path1"></span><span class="path2"></span></i>';
                         }
-                        return '<span class="badge badge-light-danger"><i class="ki-duotone ki-cross fs-5 text-danger"><span class="path1"></span><span class="path2"></span></i></span>';
+                        return '<i class="ki-duotone ki-cross fs-2 text-danger"><span class="path1"></span><span class="path2"></span></i>';
                     }
                 },
-                {
-                    targets: 9,
+                @if ($is_super_admin)
+                    {
+                        targets: 9,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            return '<span class="fw-bold text-gray-800">' + (data ? data.en + ' - ' + data
+                                .ar : '') + '</span>';
+                        }
+                    },
+                @endif {
+                    targets: -3,
                     orderable: false,
                     searchable: false,
                     render: function(data, t, row) {
                         return '<label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">' +
-                            '<input class="form-check-input active-toggle" type="checkbox" data-id="' + row.id + '"' +
+                            '<input class="form-check-input active-toggle" type="checkbox" data-id="' + row
+                            .id + '"' +
                             (data ? ' checked' : '') + ' />' +
                             '</label>';
                     }
                 },
                 {
-                    targets: 10,
+                    targets: -2,
                     orderable: true,
                     searchable: false,
                     render: function(data) {
-                        return '<span class="text-gray-700 fw-semibold">' + (data || '') + '</span>';
+                        return data;
                     }
                 },
                 {

@@ -2,6 +2,7 @@
 
 namespace Modules\Book\DTOs;
 
+use Illuminate\Support\Str;
 use Modules\Book\Enums\BookCodeType;
 use Modules\Book\Http\Requests\BookCodeStoreRequest;
 use Modules\Book\Models\BookCode;
@@ -13,6 +14,7 @@ class BookCodeDto
         public readonly int $duration,
         public readonly BookCodeType $type,
         public readonly int $quantity,
+        public readonly string $tenant_id,
     ) {
     }
 
@@ -27,29 +29,29 @@ class BookCodeDto
             duration: (int) $request->input('duration'),
             type: BookCodeType::from($request->input('type')),
             quantity: max(1, $quantity),
+            tenant_id: $request->input('tenant_id'),
         );
     }
 
     /**
      * @return list<string>
      */
-    public function codes(): array
+    public function codes(string $isbn): array
     {
-        $suffix = $this->type->suffix();
         $codes = [];
 
         for ($i = 0; $i < $this->quantity; $i++) {
-            $codes[] = $this->makeUniqueCode($suffix);
+            $codes[] = $this->generateUniqueCode($isbn);
         }
 
         return $codes;
     }
 
-    public function toArray(string $code, string $tenant_id): array
+    public function toArray(string $code): array
     {
         return [
             'book_id' => $this->book_id,
-            'tenant_id' => $tenant_id,
+            'tenant_id' => $this->tenant_id,
             'code' => $code,
             'duration' => $this->duration,
             'type' => $this->type->value,
@@ -58,10 +60,15 @@ class BookCodeDto
         ];
     }
 
-    private function makeUniqueCode(string $suffix): string
+    private function generateUniqueCode(string $isbn): string
     {
+        $isbn = str_replace(['-', ' '], '', $isbn);
+        $suffix = '-' . $this->type->suffix();
+
         do {
-            $code = strtoupper(bin2hex(random_bytes(4))) . '-' . $suffix;
+            $tail = substr($isbn, -4);
+            $isbn4 = substr(strtoupper(Str::random(4 - strlen($tail))) . $tail, -4);
+            $code = $isbn4 . strtoupper(Str::random(6)) . $suffix;
         } while (BookCode::withoutTenancy()->where('code', $code)->exists());
 
         return $code;

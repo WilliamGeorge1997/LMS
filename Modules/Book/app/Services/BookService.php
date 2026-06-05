@@ -62,6 +62,11 @@ class BookService
         return Book::query()->active()->byTenant()->orderBy('title')->get($columns);
     }
 
+    public function findFirstByTenant(string $key, string $value, array $columns = ['*']): Book
+    {
+        return Book::byTenant()->where($key, $value)->firstOrFail($columns);
+    }
+
     public function save(BookDto $dto): Book
     {
         return Book::create($dto->toArray());

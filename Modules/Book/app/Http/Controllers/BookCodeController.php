@@ -43,11 +43,10 @@ class BookCodeController extends Controller implements HasMiddleware
     public function store(BookCodeStoreRequest $request): JsonResponse
     {
         $dto = BookCodeDto::fromRequest($request);
-        $codes = $this->bookCodeService->save($dto);
+        $this->bookCodeService->save($dto);
 
         return AjaxResponse::success(
-            __('book::messages.codes_generated_successfully', ['count' => $codes->count()]),
-            $codes,
+            __('book::messages.codes_generated_successfully', ['count' => $dto->quantity]),
         );
     }
 

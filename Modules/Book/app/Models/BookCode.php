@@ -27,12 +27,12 @@ class BookCode extends Model
 
     protected function serializeDate(\DateTimeInterface $date): string
     {
-        return $date->format('Y-m-d');
+        return $date->format('Y-m-d H:i A');
     }
 
     public function scopeByTenant(Builder $query): Builder
     {
-        return $query->when(auth('admin')->user()?->hasRole(Role::SUPER_ADMIN->value), function (Builder $query) {
+        return $query->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
             $query->where('tenant_id', session('admin_tenant_id'));
         });
     }
