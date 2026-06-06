@@ -20,23 +20,25 @@
     <td>
         <input form="{{ $formId }}" type="text" name="title_en"
             class="form-control form-control-solid form-control-sm"
-            value="{{ $region->getTranslation('title', 'en') }}" />
+            value="{{ $region->getTranslation('title', 'en') }}"
+            placeholder="{{ __('country::placeholders.enter_title_en') }}" />
         <div class="invalid-feedback d-block" data-error="title_en"></div>
     </td>
 
     <td>
         <input form="{{ $formId }}" type="text" name="title_ar"
             class="form-control form-control-solid form-control-sm"
-            value="{{ $region->getTranslation('title', 'ar') }}" />
+            value="{{ $region->getTranslation('title', 'ar') }}"
+            placeholder="{{ __('country::placeholders.enter_title_ar') }}" />
         <div class="invalid-feedback d-block" data-error="title_ar"></div>
     </td>
 
     <td>
         <select form="{{ $formId }}" name="country_id" class="form-select form-select-solid form-select-sm">
-            <option value="" disabled>Select country</option>
-            @foreach ($countryOptions as $opt)
-                <option value="{{ $opt['value'] }}" @selected($countryId === $opt['value'])>
-                    {{ $opt['label'] }}
+            <option value="" disabled>{{ __('country::placeholders.select_country') }}</option>
+            @foreach ($viewModel->countries() as $country)
+                <option value="{{ $country->id }}" @selected($countryId === $country->id)>
+                    {{ $country->getTranslation('title', 'en') }} - {{ $country->getTranslation('title', 'ar') }}
                 </option>
             @endforeach
         </select>
@@ -46,11 +48,13 @@
     <td>
         <select form="{{ $formId }}" name="city_id" class="form-select form-select-solid form-select-sm"
             data-depends-on="country_id"
-            data-depends-url="{{ url('/admin/cities/select-options') }}?country_id=:value"
-            data-depends-placeholder="Select city">
-            <option value="" disabled>Select city</option>
+            data-depends-url="{{ url('/admin/cities/ajax_city') }}?country_id=:value"
+            data-depends-placeholder="{{ __('country::placeholders.select_city') }}">
+            <option value="" disabled>{{ __('country::placeholders.select_city') }}</option>
             @if ($region->city)
-                <option value="{{ $region->city_id }}" selected>{{ $region->city->title }}</option>
+                <option value="{{ $region->city_id }}" selected>
+                    {{ $region->city->getTranslation('title', 'en') }} - {{ $region->city->getTranslation('title', 'ar') }}
+                </option>
             @endif
         </select>
         <div class="invalid-feedback d-block" data-error="city_id"></div>

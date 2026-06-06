@@ -14,23 +14,19 @@ class CountryService
         $query = Country::query()
             ->select(['id', 'title', 'is_active', 'created_at']);
 
-        return DataTables::eloquent($query)->toJson();
+        return DataTables::eloquent($query)
+            ->addColumn('title_en', function (Country $country) {
+                return $country->getTranslation('title', 'en');
+            })
+            ->addColumn('title_ar', function (Country $country) {
+                return $country->getTranslation('title', 'ar');
+            })
+            ->toJson();
     }
 
-    /**
-     * @return list<array{value: int, label: string}>
-     */
-    public function selectOptions(): array
+    public function active()
     {
-        return Country::query()
-            ->orderBy('id')
-            ->get(['id', 'title'])
-            ->map(fn (Country $c): array => [
-                'value' => $c->id,
-                'label' => (string) $c->title,
-            ])
-            ->values()
-            ->all();
+        return Country::query()->active()->orderBy('id')->get(['id', 'title']);
     }
 
     public function save(CountryDto $dto): Country

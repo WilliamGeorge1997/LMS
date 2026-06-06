@@ -1,9 +1,14 @@
 @extends('common::layouts.master')
-@section('title', config('app.name') . ' - Countries')
+@section('title', config('app.name') . ' - ' . __('country::attributes.countries_list'))
 
 @section('css')
-    <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
-        type="text/css" />
+    @if (app()->getLocale() === 'ar')
+        <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet"
+            type="text/css" />
+    @else
+        <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
+            type="text/css" />
+    @endif
 @endsection
 
 @section('toolbar')
@@ -11,27 +16,26 @@
         <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack my-3">
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                    Countries
+                    {{ __('country::attributes.countries') }}
                 </h1>
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <li class="breadcrumb-item text-muted">
-                        <a href="{{ url('/admin/countries') }}" class="text-muted text-hover-primary">Locations</a>
+                        <a href="{{ url('/admin/countries') }}"
+                            class="text-muted text-hover-primary">{{ __('country::attributes.locations') }}</a>
                     </li>
-                    <li class="breadcrumb-item">
-                        <span class="bullet bg-gray-500 w-5px h-2px"></span>
-                    </li>
-                    <li class="breadcrumb-item text-muted">Countries</li>
+                    <li class="breadcrumb-item"><span class="bullet bg-gray-500 w-5px h-2px"></span></li>
+                    <li class="breadcrumb-item text-muted">{{ __('country::attributes.countries') }}</li>
                 </ul>
             </div>
             <div class="d-flex align-items-center gap-2 gap-lg-3">
                 <a href="#create-collapse" class="btn btn-sm fw-bold btn-primary create-open-btn" data-bs-toggle="collapse"
                     data-bs-target="#create-collapse" aria-expanded="false" aria-controls="create-collapse">
-                    Create Country
+                    {{ __('country::buttons.create_country') }}
                 </a>
                 <a href="#create-collapse" class="btn btn-sm fw-bold btn-danger create-close-btn d-none"
                     data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true"
                     aria-controls="create-collapse">
-                    × Cancel
+                    × {{ __('country::buttons.cancel') }}
                 </a>
             </div>
         </div>
@@ -53,7 +57,7 @@
                         <span class="path1"></span><span class="path2"></span>
                     </i>
                     <input type="text" id="table-search" class="form-control form-control-solid w-250px ps-13"
-                        placeholder="Search" />
+                        placeholder="{{ __('country::placeholders.search_countries') }}" />
                 </div>
             </div>
         </div>
@@ -68,11 +72,11 @@
                                     data-kt-check-target="#kt_datatable .row-checkbox" value="1" />
                             </div>
                         </th>
-                        <th class="min-w-125px">Title (EN)</th>
-                        <th class="min-w-125px">Title (AR)</th>
-                        <th class="min-w-125px">{{ __('attributes.is_active') }}</th>
-                        <th class="min-w-125px">{{ __('attributes.created_at') }}</th>
-                        <th class="text-end min-w-100px">Actions</th>
+                        <th class="min-w-125px">{{ __('country::attributes.title_en') }}</th>
+                        <th class="min-w-125px">{{ __('country::attributes.title_ar') }}</th>
+                        <th class="min-w-125px">{{ __('country::attributes.is_active') }}</th>
+                        <th class="min-w-125px">{{ __('country::attributes.created_at') }}</th>
+                        <th class="text-end min-w-100px">{{ __('country::attributes.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 fw-semibold"></tbody>
@@ -139,18 +143,16 @@
                 },
                 {
                     targets: 2,
-                    orderable: false,
-                    searchable: false,
+                    orderable: true,
                     render: function(data) {
-                        return '<span class="fw-bold text-gray-800">' + (data ?? '') + '</span>';
+                        return '<span class="fw-bold text-gray-800">' + (data || '') + '</span>';
                     }
                 },
                 {
                     targets: 3,
-                    orderable: false,
-                    searchable: false,
+                    orderable: true,
                     render: function(data) {
-                        return '<span class="fw-bold text-gray-800">' + (data ?? '') + '</span>';
+                        return '<span class="fw-bold text-gray-800">' + (data || '') + '</span>';
                     }
                 },
                 {
@@ -168,9 +170,9 @@
                 {
                     targets: 5,
                     orderable: true,
-                    searchable: true,
+                    searchable: false,
                     render: function(data) {
-                        return '<span class="text-gray-700 fw-semibold">' + (data ?? '') + '</span>';
+                        return '<span class="text-gray-700 fw-semibold">' + (data || '') + '</span>';
                     }
                 },
                 {

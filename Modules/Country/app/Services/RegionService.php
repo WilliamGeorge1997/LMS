@@ -13,14 +13,24 @@ class RegionService
     {
         $query = Region::query()
             ->select(['id', 'title', 'city_id', 'is_active', 'created_at'])
-            ->with(['city' => function ($q): void {
-                $q->select(['id', 'title', 'country_id'])
-                    ->with(['country' => function ($q2): void {
-                        $q2->select(['id', 'title']);
-                    }]);
-            }]);
+            ->with([
+                'city:id,title,country_id',
+                'city.country:id,title',
+            ]);
 
-        return DataTables::eloquent($query)->toJson();
+        return DataTables::eloquent($query)
+            ->addColumn('title_en', function (Region $region) {
+                return $region->getTranslation('title', 'en');
+            })
+            ->addColumn('title_ar', function (Region $region) {
+                return $region->getTranslation('title', 'ar');
+            })
+            ->toJson();
+    }
+
+    public function findBy(string $key, string $value, array $columns = ['*'])
+    {
+        return Region::query()->active()->where($key, $value)->orderBy('id')->get($columns);
     }
 
     public function save(RegionDto $dto): Region

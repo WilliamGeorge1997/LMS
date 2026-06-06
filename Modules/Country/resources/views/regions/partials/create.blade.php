@@ -1,51 +1,55 @@
 <div class="card shadow-sm border-0">
     <div class="card-header border-0 py-4">
-        <h3 class="card-title fw-bold fs-5 m-0">Create Region</h3>
+        <h3 class="card-title fw-bold fs-5 m-0">{{ __('country::buttons.create_region') }}</h3>
     </div>
     <div class="card-body pt-0">
         <form id="create-form" action="{{ url('/admin/regions') }}" method="POST">
             @csrf
             <div class="row g-6">
+                  <div class="col-md-6">
+                    <label class="required form-label">{{ __('country::attributes.title_en') }}</label>
+                    <input type="text" name="title_en" class="form-control form-control-solid"
+                        placeholder="{{ __('country::placeholders.enter_title_en') }}" autocomplete="off" />
+                    <div class="invalid-feedback d-block" data-error="title_en"></div>
+                </div>
                 <div class="col-md-6">
-                    <label class="required form-label">Country</label>
+                    <label class="required form-label">{{ __('country::attributes.title_ar') }}</label>
+                    <input type="text" name="title_ar" class="form-control form-control-solid"
+                        placeholder="{{ __('country::placeholders.enter_title_ar') }}" autocomplete="off" />
+                    <div class="invalid-feedback d-block" data-error="title_ar"></div>
+                </div>
+                <div class="col-md-6">
+                    <label class="required form-label">{{ __('country::attributes.country_id') }}</label>
                     <select name="country_id" class="form-select form-select-solid">
-                        <option value="" disabled selected>Select country</option>
-                        @foreach ($countryOptions as $opt)
-                            <option value="{{ $opt['value'] }}">{{ $opt['label'] }}</option>
+                        <option value="" disabled selected>{{ __('country::placeholders.select_country') }}</option>
+                        @foreach ($viewModel->countries() as $country)
+                            <option value="{{ $country->id }}">
+                                {{ $country->getTranslation('title', 'en') }} - {{ $country->getTranslation('title', 'ar') }}
+                            </option>
                         @endforeach
                     </select>
                     <div class="invalid-feedback d-block" data-error="country_id"></div>
                 </div>
                 <div class="col-md-6">
-                    <label class="required form-label">City</label>
+                    <label class="required form-label">{{ __('country::attributes.city_id') }}</label>
                     <select name="city_id" class="form-select form-select-solid" data-depends-on="country_id"
-                        data-depends-url="{{ url('/admin/cities/select-options') }}?country_id=:value"
-                        data-depends-placeholder="Select city">
-                        <option value="" disabled selected>Select city</option>
+                        data-depends-url="{{ url('/admin/cities/ajax_city') }}?country_id=:value"
+                        data-depends-placeholder="{{ __('country::placeholders.select_city') }}" disabled>
+                        <option value="" disabled selected>{{ __('country::placeholders.select_city') }}</option>
                     </select>
                     <div class="invalid-feedback d-block" data-error="city_id"></div>
                 </div>
                 <div class="col-md-6">
-                    <label class="required form-label">Title (EN)</label>
-                    <input type="text" name="title_en" class="form-control form-control-solid" />
-                    <div class="invalid-feedback d-block" data-error="title_en"></div>
-                </div>
-                <div class="col-md-6">
-                    <label class="required form-label">Title (AR)</label>
-                    <input type="text" name="title_ar" class="form-control form-control-solid" />
-                    <div class="invalid-feedback d-block" data-error="title_ar"></div>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">{{ __('attributes.is_active') }}</label>
+                    <label class="form-label">{{ __('country::attributes.is_active') }}</label>
                     <div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
                         <input class="form-check-input" type="checkbox" name="is_active" value="1" />
                     </div>
                 </div>
             </div>
             <div class="d-flex justify-content-end gap-3 mt-8">
-                <button type="button" id="create-cancel" class="btn btn-light">Cancel</button>
+                <button type="button" id="create-cancel" class="btn btn-light">{{ __('country::buttons.cancel') }}</button>
                 <button type="submit" id="create-submit" class="btn btn-primary">
-                    <span class="indicator-label">Submit</span>
+                    <span class="indicator-label">{{ __('country::buttons.submit') }}</span>
                     <span class="indicator-progress">
                         <span class="spinner-border spinner-border-sm align-middle"></span>
                     </span>

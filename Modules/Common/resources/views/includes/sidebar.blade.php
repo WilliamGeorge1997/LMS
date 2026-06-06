@@ -190,6 +190,19 @@
                         </a>
                     </div>
 
+                    <div class="menu-item">
+                        <a class="menu-link @if ($request->routeIs('schools.index')) active @endif"
+                            href="{{ url('/admin/schools') }}">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-bank fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">{{ __('school::attributes.schools') }}</span>
+                        </a>
+                    </div>
+
 
                     
 
@@ -216,50 +229,52 @@
 
 
 
-                    <!--begin:Menu item-->
-                    <div data-kt-menu-trigger="click"
-                        class="menu-item menu-accordion @if ($request->routeIs('countries.index', 'cities.index', 'regions.index')) here show @endif">
-                        <span class="menu-link">
-                            <span class="menu-icon">
-                                <i class="ki-duotone ki-geolocation fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
+                    @if ($is_super_admin)
+                        <!--begin:Menu item-->
+                        <div data-kt-menu-trigger="click"
+                            class="menu-item menu-accordion @if ($request->routeIs('countries.index', 'cities.index', 'regions.index')) here show @endif">
+                            <span class="menu-link">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-geolocation fs-2">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">{{ __('common::sidebar.locations') }}</span>
+                                <span class="menu-arrow"></span>
                             </span>
-                            <span class="menu-title">{{ __('common::sidebar.locations') }}</span>
-                            <span class="menu-arrow"></span>
-                        </span>
-                        <div class="menu-sub menu-sub-accordion">
-                            <div class="menu-item">
-                                <a class="menu-link @if ($request->routeIs('countries.index')) active @endif"
-                                    href="{{ url('/admin/countries') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title">{{ __('common::sidebar.countries') }}</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a class="menu-link @if ($request->routeIs('cities.index')) active @endif"
-                                    href="{{ url('/admin/cities') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title">{{ __('common::sidebar.cities') }}</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a class="menu-link @if ($request->routeIs('regions.index')) active @endif"
-                                    href="{{ url('/admin/regions') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title">{{ __('common::sidebar.regions') }}</span>
-                                </a>
+                            <div class="menu-sub menu-sub-accordion">
+                                <div class="menu-item">
+                                    <a class="menu-link @if ($request->routeIs('countries.index')) active @endif"
+                                        href="{{ url('/admin/countries') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">{{ __('common::sidebar.countries') }}</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a class="menu-link @if ($request->routeIs('cities.index')) active @endif"
+                                        href="{{ url('/admin/cities') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">{{ __('common::sidebar.cities') }}</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a class="menu-link @if ($request->routeIs('regions.index')) active @endif"
+                                        href="{{ url('/admin/regions') }}">
+                                        <span class="menu-bullet">
+                                            <span class="bullet bullet-dot"></span>
+                                        </span>
+                                        <span class="menu-title">{{ __('common::sidebar.regions') }}</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!--end:Menu item-->
+                        <!--end:Menu item-->
+                    @endif
 
 
 

@@ -17,14 +17,16 @@
     <td>
         <input form="{{ $formId }}" type="text" name="title_en"
             class="form-control form-control-solid form-control-sm"
-            value="{{ $country->getTranslation('title', 'en') }}" placeholder="English title" />
+            value="{{ $country->getTranslation('title', 'en') }}"
+            placeholder="{{ __('country::placeholders.enter_title_en') }}" />
         <div class="invalid-feedback d-block" data-error="title_en"></div>
     </td>
 
     <td>
         <input form="{{ $formId }}" type="text" name="title_ar"
             class="form-control form-control-solid form-control-sm"
-            value="{{ $country->getTranslation('title', 'ar') }}" placeholder="Arabic title" />
+            value="{{ $country->getTranslation('title', 'ar') }}"
+            placeholder="{{ __('country::placeholders.enter_title_ar') }}" />
         <div class="invalid-feedback d-block" data-error="title_ar"></div>
     </td>
 

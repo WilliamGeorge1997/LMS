@@ -5,23 +5,23 @@ use Modules\Country\Http\Controllers\CityController;
 use Modules\Country\Http\Controllers\CountryController;
 use Modules\Country\Http\Controllers\RegionController;
 
-Route::group(['prefix' => 'admin'], function () {
-    //Ajax
-    // Route::get('countries/select-options', [CountryController::class, 'selectOptions'])->name('countries.select-options');
-    Route::get('cities/select-options', [CityController::class, 'selectOptions'])->name('cities.select-options');
+$central = config('tenancy.central_domains')[0];
 
-    //Countries
-    Route::resource('countries', CountryController::class)->except(['show', 'update']);
-    Route::post('countries/{country}', [CountryController::class, 'update'])->name('countries.update');
-    Route::patch('countries/{country}/toggle-activate', [CountryController::class, 'toggleActivate'])->name('countries.toggle-activate');
+Route::domain($central)
+    ->middleware(['central.super_admin.tenant'])
+    ->prefix('admin')
+    ->group(function () {
+        Route::get('cities/ajax_city', [CityController::class, 'ajaxCity'])->name('cities.ajax_city');
 
-    //Cities
-    Route::resource('cities', CityController::class)->except(['show', 'update']);
-    Route::post('cities/{city}', [CityController::class, 'update'])->name('cities.update');
-    Route::patch('cities/{city}/toggle-activate', [CityController::class, 'toggleActivate'])->name('cities.toggle-activate');
+        Route::resource('countries', CountryController::class)->except(['show', 'update']);
+        Route::post('countries/{country}', [CountryController::class, 'update'])->name('countries.update');
+        Route::patch('countries/{country}/toggle-activate', [CountryController::class, 'toggleActivate'])->name('countries.toggle-activate');
 
-    //Regions
-    Route::resource('regions', RegionController::class)->except(['show', 'update']);
-    Route::post('regions/{region}', [RegionController::class, 'update'])->name('regions.update');
-    Route::patch('regions/{region}/toggle-activate', [RegionController::class, 'toggleActivate'])->name('regions.toggle-activate');
-});
+        Route::resource('cities', CityController::class)->except(['show', 'update']);
+        Route::post('cities/{city}', [CityController::class, 'update'])->name('cities.update');
+        Route::patch('cities/{city}/toggle-activate', [CityController::class, 'toggleActivate'])->name('cities.toggle-activate');
+
+        Route::resource('regions', RegionController::class)->except(['show', 'update']);
+        Route::post('regions/{region}', [RegionController::class, 'update'])->name('regions.update');
+        Route::patch('regions/{region}/toggle-activate', [RegionController::class, 'toggleActivate'])->name('regions.toggle-activate');
+    });

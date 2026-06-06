@@ -6,5 +6,6 @@
     "Category": true,
     "Tenant": true,
     "Level": true,
-    "Book": true
+    "Book": true,
+    "School": true
 }

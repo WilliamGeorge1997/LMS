@@ -13,28 +13,21 @@ class CityService
     {
         $query = City::query()
             ->select(['id', 'title', 'country_id', 'is_active', 'created_at'])
-            ->with(['country' => function ($q): void {
-                $q->select(['id', 'title']);
-            }]);
+            ->with(['country:id,title']);
 
-        return DataTables::eloquent($query)->toJson();
+        return DataTables::eloquent($query)
+            ->addColumn('title_en', function (City $city) {
+                return $city->getTranslation('title', 'en');
+            })
+            ->addColumn('title_ar', function (City $city) {
+                return $city->getTranslation('title', 'ar');
+            })
+            ->toJson();
     }
 
-    /**
-     * @return list<array{value: int, label: string}>
-     */
-    public function selectOptionsByCountryId(int $countryId): array
+    public function findBy(string $key, string $value, array $columns = ['*'])
     {
-        return City::query()
-            ->where('country_id', $countryId)
-            ->orderBy('id')
-            ->get(['id', 'title'])
-            ->map(fn (City $c): array => [
-                'value' => $c->id,
-                'label' => (string) $c->title,
-            ])
-            ->values()
-            ->all();
+        return City::query()->active()->where($key, $value)->orderBy('id')->get($columns);
     }
 
     public function save(CityDto $dto): City

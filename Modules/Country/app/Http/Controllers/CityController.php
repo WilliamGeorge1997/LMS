@@ -4,22 +4,30 @@ namespace Modules\Country\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Modules\Admin\Enums\Role;
 use Modules\Common\Helpers\AjaxResponse;
 use Modules\Country\DTOs\CityDto;
 use Modules\Country\Http\Requests\CityStoreRequest;
 use Modules\Country\Http\Requests\CityUpdateRequest;
 use Modules\Country\Models\City;
 use Modules\Country\Services\CityService;
-use Modules\Country\Services\CountryService;
+use Modules\Country\ViewModel\CountryViewModel;
 
-class CityController extends Controller
+class CityController extends Controller implements HasMiddleware
 {
-    public function __construct(
-        private readonly CityService $cityService,
-        private readonly CountryService $countryService,
-    ) {
+    public static function middleware(): array
+    {
+        return [
+            'auth:admin',
+            'role:' . Role::SUPER_ADMIN->value,
+            'set.locale',
+        ];
+    }
+
+    public function __construct(private readonly CityService $cityService)
+    {
     }
 
     public function index(Request $request)
@@ -28,33 +36,9 @@ class CityController extends Controller
             return $this->cityService->dataTable();
         }
 
-        return view('country::cities.index', [
-            'countryOptions' => $this->countryService->selectOptions(),
-        ]);
-    }
+        $viewModel = new CountryViewModel;
 
-    public function create(): RedirectResponse
-    {
-        return redirect()->route('cities.index');
-    }
-
-    public function edit(City $city): string
-    {
-        return view('country::cities.partials.edit', [
-            'city' => $city->load('country'),
-            'countryOptions' => $this->countryService->selectOptions(),
-        ])->render();
-    }
-
-    public function selectOptions(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'country_id' => ['required', 'integer', 'exists:countries,id'],
-        ]);
-
-        return response()->json(
-            $this->cityService->selectOptionsByCountryId((int) $validated['country_id'])
-        );
+        return view('country::cities.index', compact('viewModel'));
     }
 
     public function store(CityStoreRequest $request): JsonResponse
@@ -62,7 +46,17 @@ class CityController extends Controller
         $dto = CityDto::fromRequest($request);
         $city = $this->cityService->save($dto);
 
-        return AjaxResponse::success($city);
+        return AjaxResponse::success(__('country::messages.city_created_successfully'), $city);
+    }
+
+    public function edit(City $city): string
+    {
+        $viewModel = new CountryViewModel;
+
+        return view('country::cities.partials.edit', [
+            'city' => $city->load('country'),
+            'viewModel' => $viewModel,
+        ])->render();
     }
 
     public function update(CityUpdateRequest $request, City $city): JsonResponse
@@ -70,20 +64,32 @@ class CityController extends Controller
         $dto = CityDto::fromRequest($request);
         $city = $this->cityService->update($city, $dto);
 
-        return AjaxResponse::success($city);
+        return AjaxResponse::success(__('country::messages.city_updated_successfully'), $city);
     }
 
     public function destroy(City $city): JsonResponse
     {
         $status = $this->cityService->delete($city);
 
-        return $status ? AjaxResponse::success() : AjaxResponse::error();
+        return $status
+            ? AjaxResponse::success(__('country::messages.city_deleted_successfully'))
+            : AjaxResponse::error();
     }
 
     public function toggleActivate(City $city): JsonResponse
     {
         $city = $this->cityService->toggleActivate($city);
+        $message = $city->is_active
+            ? __('country::messages.city_activated_successfully')
+            : __('country::messages.city_deactivated_successfully');
 
-        return AjaxResponse::success($city);
+        return AjaxResponse::success($message, $city);
+    }
+
+    public function ajaxCity(Request $request): string
+    {
+        $cities = $this->cityService->findBy('country_id', $request['country_id'], ['id', 'title']);
+
+        return view('country::cities.partials.ajax', compact('cities'))->render();
     }
 }

@@ -43,4 +43,11 @@ class CountryServiceProvider extends ModuleServiceProvider
     // {
     //     $schedule->command('inspire')->hourly();
     // }
+
+    public function boot(): void
+    {
+        parent::boot();
+
+        $this->loadTranslationsFrom(module_path($this->name, 'resources/lang'), $this->nameLower);
+    }
 }
