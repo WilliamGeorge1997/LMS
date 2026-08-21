@@ -5,6 +5,7 @@ namespace Modules\Tenant\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Modules\Admin\Enums\Role;
+use Modules\Admin\Models\Admin;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,6 +20,7 @@ class EnsureCentralSuperAdminWithTenant
             return $next($request);
         }
 
+        /** @var Admin $admin */
         $admin = auth('admin')->user();
 
         if ($admin && ! $admin->hasRole(Role::SUPER_ADMIN->value)) {
