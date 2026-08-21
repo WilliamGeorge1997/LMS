@@ -14,6 +14,8 @@ Route::domain($central)
         Route::post('books/{book}', [BookController::class, 'update'])->name('books.update');
         Route::patch('books/{book}/toggle-activate', [BookController::class, 'toggleActivate'])->name('books.toggle-activate');
 
+        Route::get('book-codes/export', [BookCodeController::class, 'export'])->name('book-codes.export');
+
         Route::resource('book-codes', BookCodeController::class)->only(['index', 'store', 'destroy']);
         Route::patch('book-codes/{book_code}/toggle-activate', [BookCodeController::class, 'toggleActivate'])
             ->name('book-codes.toggle-activate');

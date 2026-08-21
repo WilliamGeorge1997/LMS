@@ -37,7 +37,7 @@ class BookCodeStoreRequest extends FormRequest
             ],
             'duration' => ['required', 'integer', 'min:1', 'max:120'],
             'type' => ['required', Rule::enum(BookCodeType::class)],
-            'quantity' => ['nullable', 'integer', 'min:1', 'max:500'],
+            'quantity' => ['nullable', 'integer', 'min:1', 'max:10000'],
             'tenant_id' => ['required', 'string', 'exists:tenants,id'],
         ];
     }

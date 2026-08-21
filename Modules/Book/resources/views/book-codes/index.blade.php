@@ -31,6 +31,10 @@
             </div>
 
             <div class="d-flex align-items-center gap-2 gap-lg-3">
+                <a href="{{ request()->routeIs('tenant.*') ? route('tenant.book-codes.export') : route('book-codes.export') }}" class="btn btn-sm fw-bold btn-success" onclick="this.classList.add('disabled'); setTimeout(() => this.classList.remove('disabled'), 5000);">
+                    <i class="ki-duotone ki-file-down fs-2"><span class="path1"></span><span class="path2"></span></i>
+                    Export Excel
+                </a>
                 <a href="#create-collapse" class="btn btn-sm fw-bold btn-primary create-open-btn" data-bs-toggle="collapse"
                     data-bs-target="#create-collapse" aria-expanded="false" aria-controls="create-collapse">
                     {{ __('book::buttons.create_code') }}

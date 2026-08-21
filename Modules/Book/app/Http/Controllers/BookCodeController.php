@@ -13,6 +13,8 @@ use Modules\Book\Models\BookCode;
 use Modules\Book\Services\BookCodeService;
 use Modules\Book\ViewModel\BookViewModel;
 use Modules\Common\Helpers\AjaxResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use Modules\Book\Exports\BookCodesExport;
 
 class BookCodeController extends Controller implements HasMiddleware
 {
@@ -38,6 +40,11 @@ class BookCodeController extends Controller implements HasMiddleware
         $viewModel = new BookViewModel;
 
         return view('book::book-codes.index', compact('viewModel'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new BookCodesExport, 'book-codes.xlsx');
     }
 
     public function store(BookCodeStoreRequest $request): JsonResponse

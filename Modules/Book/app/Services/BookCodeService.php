@@ -62,7 +62,9 @@ class BookCodeService
         }
 
         DB::transaction(function () use ($rows) {
-            BookCode::insert($rows);
+            foreach (array_chunk($rows, 1000) as $chunk) {
+                BookCode::insert($chunk);
+            }
         });
     }
 
