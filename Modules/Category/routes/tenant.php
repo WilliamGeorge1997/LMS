@@ -8,8 +8,8 @@ use Stancl\Tenancy\Middleware\ScopeSessions;
 
 $central = config('tenancy.central_domains')[0];
 
-Route::domain('{tenant}.' . $central)
-    ->middleware([
+// Route::domain('{tenant}.' . $central)
+Route::middleware([
         InitializeTenancyBySubdomain::class,
         PreventAccessFromCentralDomains::class,
         ScopeSessions::class,
