@@ -16,7 +16,7 @@ Route::domain('{tenant}.' . $central)
     ])
     ->prefix('admin')
     ->group(function () {
-        Route::resource('publishers', PublisherController::class)->except(['show', 'edit', 'update']);
+        Route::resource('publishers', PublisherController::class)->except(['show', 'update']);
         Route::post('publishers/{publisher}', [PublisherController::class, 'update']);
         Route::patch('publishers/{publisher}/toggle-activate', [PublisherController::class, 'toggleActivate']);
     });

@@ -19,7 +19,7 @@ Route::domain('{tenant}.' . $central)
         Route::get('schools/ajax_city', [SchoolController::class, 'ajaxCity']);
         Route::get('schools/ajax_region', [SchoolController::class, 'ajaxRegion']);
 
-        Route::resource('schools', SchoolController::class)->except(['show', 'edit', 'update']);
+        Route::resource('schools', SchoolController::class)->except(['show', 'update']);
         Route::get('schools/{school}/edit', [SchoolController::class, 'edit']);
         Route::post('schools/{school}', [SchoolController::class, 'update']);
         Route::patch('schools/{school}/toggle-activate', [SchoolController::class, 'toggleActivate']);
