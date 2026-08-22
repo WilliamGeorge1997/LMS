@@ -22,4 +22,8 @@ Route::domain('{tenant}.' . $central)
         Route::patch('books/{book}/toggle-activate', [BookController::class, 'toggleActivate']);
 
         Route::get('book-codes/export', [BookCodeController::class, 'export'])->name('tenant.book-codes.export');
+
+        Route::resource('book-codes', BookCodeController::class)->only(['index', 'store', 'destroy']);
+        Route::patch('book-codes/{book_code}/toggle-activate', [BookCodeController::class, 'toggleActivate'])
+            ->name('book-codes.toggle-activate');
     });

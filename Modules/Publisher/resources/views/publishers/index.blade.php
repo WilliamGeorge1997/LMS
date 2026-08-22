@@ -80,7 +80,9 @@
                         </th>
                         <th class="min-w-125px">{{ __('publisher::attributes.name_en') }}</th>
                         <th class="min-w-125px">{{ __('publisher::attributes.name_ar') }}</th>
-                        <th class="min-w-125px">{{ __('publisher::attributes.tenant') }}</th>
+                        @if ($is_super_admin)
+                            <th class="min-w-125px">{{ __('publisher::attributes.tenant') }}</th>
+                        @endif
                         <th class="min-w-125px">{{ __('publisher::attributes.is_active') }}</th>
                         <th class="min-w-125px">{{ __('publisher::attributes.created_at') }}</th>
                         <th class="text-end min-w-100px">{{ __('publisher::attributes.actions') }}</th>
