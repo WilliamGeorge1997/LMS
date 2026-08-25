@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Admin\Enums\Role;
+use Modules\Book\Enums\BookCodeType;
+use Modules\User\Models\User;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class BookCode extends Model
@@ -16,6 +18,7 @@ class BookCode extends Model
     protected $fillable = [
         'book_id',
         'tenant_id',
+        'user_id',
         'code',
         'duration',
         'type',
@@ -24,6 +27,17 @@ class BookCode extends Model
         'from',
         'to',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'type' => BookCodeType::class,
+            'is_active' => 'boolean',
+            'is_used' => 'boolean',
+            'from' => 'date',
+            'to' => 'date',
+        ];
+    }
 
     protected function serializeDate(\DateTimeInterface $date): string
     {
@@ -40,5 +54,10 @@ class BookCode extends Model
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

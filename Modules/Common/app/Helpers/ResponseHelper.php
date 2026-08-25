@@ -4,15 +4,48 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-if (!function_exists('jsonResponse')) {
-    function jsonResponse(
-        bool $status = false,
+use Illuminate\Http\JsonResponse;
+
+if (!function_exists('apiResponse')) {
+    function apiResponse(
+        bool $status,
         ?string $message = null,
-        null|array|Collection|JsonResource|Model $data = null,
+        mixed $data = null,
         string $status_string = "ok"
-    ) {
-        $response = ['status' => $status, 'message' => $message, 'data' => $data];
+    ): JsonResponse {
+        $response = [
+            'status'  => $status,
+            'message' => $message,
+            $status ? 'data' : 'errors' => $data,
+        ];
+
+        if (! $status && $status_string === 'ok') {
+            $status_string = 'bad_request';
+        }
+
         return response()->json($response, getStatusCode($status_string));
+    }
+}
+
+if (!function_exists('return_msg')) {
+    function return_msg(
+        bool $status,
+        ?string $message = null,
+        mixed $data = null,
+        string $status_string = "ok"
+    ): JsonResponse {
+        return apiResponse($status, $message, $data, $status_string);
+    }
+}
+
+if (!function_exists('returnMsg')) {
+    function returnMsg(
+        bool $status,
+        ?string $message = null,
+        mixed $data = null,
+        string $status_string = "ok"
+    ): JsonResponse {
+        return apiResponse($status, $message, $data, $status_string);
     }
 }
 

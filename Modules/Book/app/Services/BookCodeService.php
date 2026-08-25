@@ -3,8 +3,10 @@
 namespace Modules\Book\Services;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Modules\Book\DTOs\BookCodeDto;
 use Modules\Book\Models\BookCode;
+use Modules\User\Models\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -76,6 +78,63 @@ class BookCodeService
     public function toggleActivate(BookCode $bookCode): BookCode
     {
         $bookCode->update(['is_active' => $bookCode->is_active ? 0 : 1]);
+
+        return $bookCode->fresh();
+    }
+
+    public function findBy(string $column, mixed $value, bool $lock = false): ?BookCode
+    {
+        $query = BookCode::where($column, $value);
+
+        if ($lock) {
+            $query->lockForUpdate();
+        }
+
+        return $query->first();
+    }
+
+    public function check(string $code, string $userType): BookCode
+    {
+        $bookCode = $this->findBy('code', $code, lock: true);
+
+        if (! $bookCode) {
+            throw ValidationException::withMessages([
+                'code' => [__('user::message.invalid_code')],
+            ]);
+        }
+
+        if ($bookCode->is_used) {
+            throw ValidationException::withMessages([
+                'code' => [__('user::message.code_used')],
+            ]);
+        }
+
+        if (! $bookCode->is_active) {
+            throw ValidationException::withMessages([
+                'code' => [__('user::message.code_inactive')],
+            ]);
+        }
+
+        if ($bookCode->type?->value && $bookCode->type->value !== $userType) {
+            throw ValidationException::withMessages([
+                'code' => [__('user::message.type_mismatch')],
+            ]);
+        }
+
+        return $bookCode;
+    }
+
+    public function redeem(BookCode $bookCode, User $user): BookCode
+    {
+        $now = now();
+
+        $bookCode->update([
+            'user_id'   => $user->id,
+            'is_used'   => true,
+            'is_active' => false,
+            'from'      => $now->toDateString(),
+            'to'        => $now->copy()->addMonths((int) $bookCode->duration)->toDateString(),
+        ]);
 
         return $bookCode->fresh();
     }
