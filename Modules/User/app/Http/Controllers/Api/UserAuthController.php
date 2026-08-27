@@ -8,11 +8,16 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Modules\Book\Services\BookCodeService;
 use Modules\User\DTOs\UserDto;
+use Modules\User\Emails\ForgetPasswordMail;
+use Modules\User\Http\Requests\ForgetPasswordRequest;
+use Modules\User\Http\Requests\NewPasswordRequest;
 use Modules\User\Http\Requests\UserLoginRequest;
 use Modules\User\Http\Requests\UserRegisterRequest;
+use Modules\User\Http\Requests\VerifyForgetPasswordRequest;
 use Modules\User\Models\User;
 
 class UserAuthController extends Controller implements HasMiddleware
@@ -27,7 +32,7 @@ class UserAuthController extends Controller implements HasMiddleware
     public function register(UserRegisterRequest $request, BookCodeService $bookCodeService): JsonResponse
     {
         $dto = UserDto::fromRequest($request);
-
+        
         try {
             $user = DB::transaction(function () use ($dto, $bookCodeService) {
                 $bookCode = $bookCodeService->check($dto->code, $dto->type);
@@ -38,11 +43,10 @@ class UserAuthController extends Controller implements HasMiddleware
 
                 return $user;
             });
+            return apiResponse(true, __('user::message.registered'), $user, 'created');
         } catch (ValidationException $e) {
             return apiResponse(false, 'Validation errors', $e->errors(), 'validation_error');
         }
-
-        return apiResponse(true, __('user::message.registered'), $user, 'created');
     }
 
 
@@ -80,6 +84,48 @@ class UserAuthController extends Controller implements HasMiddleware
 
         return apiResponse(true, __('user::message.logout'));
     }
+
+    public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
+    {
+        $email = $request->validated('email');
+        /**@var User $user */
+        $user = User::where('email', $email)->first();
+        
+        $verifyCode = rand(100000, 999999);
+        $user->update(['verify_code' => $verifyCode]);
+
+        // Send email via queue
+        Mail::to($email)->send((new ForgetPasswordMail($verifyCode))->onConnection('database'));
+
+        return apiResponse(true, 'Message Sent, please check your email');
+    }
+
+    public function verifyForgetPassword(VerifyForgetPasswordRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        /**@var User $user */
+        $user = User::where('email', $data['email'])->first();
+
+        if ($user && $user->verify_code == $data['otp']) {
+            return apiResponse(true, 'Valid OTP');
+        }
+
+        return apiResponse(false, 'Wrong OTP', null, 'unauthorized');
+    }
+
+    public function newPassword(NewPasswordRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        /**@var User $user */
+        $user = User::where('email', $data['email'])->first();
+
+        $user->update([
+            'password' => Hash::make($data['password']),
+        ]);
+
+        return apiResponse(true, 'Password Changed Successfully');
+    }
+
 
 
     // Helper

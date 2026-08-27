@@ -83,7 +83,7 @@ class User extends Authenticatable
     {
         $query->where('is_active', true);
     }
-    
+
     /**
      * Scope a query to only include teachers.
      */
@@ -162,5 +162,11 @@ class User extends Authenticatable
     public function books(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'book_codes');
+    }
+
+    public function activeBooks(): BelongsToMany
+    {
+        return $this->books()->wherePivot('is_active', true)
+            ->wherePivot('to', '>=', now()->toDateString());
     }
 }

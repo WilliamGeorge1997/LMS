@@ -37,7 +37,7 @@ readonly class UserDto
             cityId: (int) $request->validated('city_id'),
             regionId: (int) $request->validated('region_id'),
             image: $request->file('image'),
-            verifyCode: (string) random_int(100000, 999999),
+            verifyCode: (string) rand(100000, 999999),
         );
     }
     

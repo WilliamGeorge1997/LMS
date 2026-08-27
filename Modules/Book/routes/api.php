@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Book\Http\Controllers\BookController;
+use Modules\Book\Http\Controllers\Api\BookController;
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('books', BookController::class)->names('book');
-});
+Route::get('my-books', [BookController::class, 'myBooks'])->name('my-books');

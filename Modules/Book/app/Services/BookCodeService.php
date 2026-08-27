@@ -131,7 +131,6 @@ class BookCodeService
         $bookCode->update([
             'user_id'   => $user->id,
             'is_used'   => true,
-            'is_active' => false,
             'from'      => $now->toDateString(),
             'to'        => $now->copy()->addMonths((int) $bookCode->duration)->toDateString(),
         ]);
