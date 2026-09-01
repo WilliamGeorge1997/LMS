@@ -177,9 +177,13 @@
                             (parts[0][0] + parts[1][0]).toUpperCase() :
                             (fullName[0] || 'B').toUpperCase();
 
+                        var symbolContent = row.cover ? 
+                            `<div class="symbol-label"><img src="${row.cover}" alt="cover" class="w-100 h-100 object-fit-cover" /></div>` :
+                            `<div class="symbol-label fs-5 fw-bold bg-light-primary text-primary">${initials}</div>`;
+
                         return `<div class="d-flex align-items-center">
                                 <div class="symbol symbol-circle symbol-40px overflow-hidden me-3">
-                                    <div class="symbol-label fs-5 fw-bold bg-light-primary text-primary">${initials}</div>
+                                    ${symbolContent}
                                 </div>
                                 <div class="d-flex flex-column">
                                     <span class="text-gray-800 fw-bold fs-6 mb-1">${fullName}</span>

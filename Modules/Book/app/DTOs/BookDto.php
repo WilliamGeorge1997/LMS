@@ -2,6 +2,7 @@
 
 namespace Modules\Book\DTOs;
 
+use Illuminate\Http\UploadedFile;
 use Modules\Book\Http\Requests\BookStoreRequest;
 use Modules\Book\Http\Requests\BookUpdateRequest;
 
@@ -18,6 +19,7 @@ class BookDto
         public readonly int $level_id,
         public readonly ?string $tenant_id,
         public readonly bool $is_active,
+        public readonly ?UploadedFile $cover = null,
     ) {}
 
     public static function fromRequest(BookStoreRequest|BookUpdateRequest $request): self
@@ -33,6 +35,7 @@ class BookDto
             level_id: $request->input('level_id'),
             tenant_id: $request->input('tenant_id'),
             is_active: $request->has('is_active') ? 1 : 0,
+            cover: $request->file('cover'),
         );
     }
 
@@ -56,6 +59,10 @@ class BookDto
 
         if (! is_null($this->tenant_id)) {
             $data['tenant_id'] = $this->tenant_id;
+        }
+
+        if (is_null($this->cover)) {
+            unset($data['cover']);
         }
 
         return $data;

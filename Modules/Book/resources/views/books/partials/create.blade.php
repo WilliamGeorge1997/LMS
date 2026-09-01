@@ -3,7 +3,7 @@
         <h3 class="card-title fw-bold fs-5 m-0">{{ __('book::buttons.create') }}</h3>
     </div>
     <div class="card-body pt-0">
-        <form id="create-form" action="{{ url('/admin/books') }}" method="POST">
+        <form id="create-form" action="{{ url('/admin/books') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row g-6">
 
@@ -40,6 +40,13 @@
                     <input type="text" name="isbn" class="form-control form-control-solid"
                         placeholder="{{ __('book::placeholders.enter_isbn') }}" autocomplete="off" />
                     <div class="invalid-feedback d-block" data-error="isbn"></div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="create-cover" class="form-label">{{ __('book::attributes.cover') }}</label>
+                    <input id="create-cover" type="file" name="cover" class="form-control form-control-solid"
+                        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+                    <div class="invalid-feedback d-block" data-error="cover"></div>
                 </div>
 
                 <div class="col-md-4">

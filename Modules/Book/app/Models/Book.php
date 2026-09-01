@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 use Modules\Admin\Enums\Role;
+use Modules\Book\Models\BookCode;
 use Modules\Category\Models\Category;
 use Modules\Level\Models\Level;
 use Modules\Publisher\Models\Publisher;
@@ -30,6 +32,8 @@ class Book extends Model
         'level_id',
         'tenant_id',
         'is_active',
+        'cover',
+        'path',
     ];
 
     protected $translatable = ['title', 'description'];
@@ -50,6 +54,29 @@ class Book extends Model
             $query->where('tenant_id', session('admin_tenant_id'));
         });
     }
+
+    public function getCoverAttribute(?string $value): ?string
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
+
+        return Storage::disk('public')->url('uploads/' . $tenantPath . 'cover/' . $value);
+    }
+
+    public function getPathAttribute(?string $value): ?string
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
+        
+        return Storage::disk('public')->url('uploads/' . $tenantPath . 'books/' . $value . '/index.html');
+    }
+
 
     public function publisher(): BelongsTo
     {

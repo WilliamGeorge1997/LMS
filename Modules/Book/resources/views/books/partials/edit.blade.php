@@ -7,7 +7,7 @@
 <tr class="edit-inline-row" data-edit-form-id="{{ $book->id }}">
     <td class="d-none" aria-hidden="true">
         <form id="{{ $formId }}" action="{{ url('/admin/books/' . $book->id) }}" method="POST"
-            class="edit-inline-form">
+            class="edit-inline-form" enctype="multipart/form-data">
             @csrf
         </form>
     </td>
@@ -122,8 +122,19 @@
 <tr class="edit-extra-row" data-extra-edit-form-for="{{ $book->id }}">
     <td colspan="{{ $colspan }}" class="p-0 border-0">
         <div class="additional-fields-panel rounded-2 p-5 m-2">
-            <h6 class="fw-bold text-gray-800 mb-4">{{ __('book::attributes.description') }}</h6>
+            <h6 class="fw-bold text-gray-800 mb-4">{{ __('book::attributes.additional_details') }}</h6>
             <div class="row g-4">
+                <div class="col-md-12">
+                    <label class="form-label">{{ __('book::attributes.cover') }}</label>
+                    <input form="{{ $formId }}" type="file" name="cover" class="form-control form-control-solid form-control-sm"
+                        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+                    @if($book->cover)
+                        <div class="mt-2">
+                            <img src="{{ $book->cover }}" alt="Cover" class="img-thumbnail w-50px h-50px object-fit-cover rounded" />
+                        </div>
+                    @endif
+                    <div class="invalid-feedback d-block" data-error="cover"></div>
+                </div>
                 <div class="col-md-6">
                     <label class="form-label">{{ __('book::attributes.description_en') }}</label>
                     <textarea form="{{ $formId }}" name="description_en" rows="3"

@@ -36,6 +36,7 @@ class BookStoreRequest extends FormRequest
             'level_id' => ['required', 'integer', 'exists:levels,id'],
             'tenant_id' => ['required', 'string', 'exists:tenants,id'],
             'is_active' => ['nullable', 'boolean'],
+            'cover' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
         ];
     }
 

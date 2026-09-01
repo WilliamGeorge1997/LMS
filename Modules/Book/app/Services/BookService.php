@@ -4,11 +4,16 @@ namespace Modules\Book\Services;
 
 use Modules\Book\DTOs\BookDto;
 use Modules\Book\Models\Book;
+use Modules\Common\Traits\UploaderTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Yajra\DataTables\Facades\DataTables;
 
 class BookService
 {
+    use UploaderTrait;
+
+    private string $uploadFolder = 'cover';
+
     public function findAll(array $data)
     {
         $query = Book::query()->latest('id');
@@ -29,6 +34,7 @@ class BookService
                 'tenant_id',
                 'is_active',
                 'created_at',
+                'cover',
             ])
             ->with([
                 'publisher:id,name',
@@ -69,18 +75,36 @@ class BookService
 
     public function save(BookDto $dto): Book
     {
-        return Book::create($dto->toArray());
+        $data = $dto->toArray();
+        if ($dto->cover) {
+            $data['cover'] = $this->uploadImage($dto->cover, $this->uploadFolder);
+        }
+
+        return Book::create($data);
     }
 
     public function update(Book $book, BookDto $dto): Book
     {
-        $book->update($dto->toArray());
+        $data = $dto->toArray();
+        if ($dto->cover) {
+            if ($book->getRawOriginal('cover')) {
+                $this->deleteFile($this->uploadFolder, $book->getRawOriginal('cover'));
+            }
+
+            $data['cover'] = $this->uploadImage($dto->cover, $this->uploadFolder);
+        }
+
+        $book->update($data);
 
         return $book->fresh();
     }
 
     public function delete(Book $book): bool
     {
+        if ($book->getRawOriginal('cover')) {
+            $this->deleteFile($this->uploadFolder, $book->getRawOriginal('cover'));
+        }
+
         return (bool) $book->delete();
     }
 

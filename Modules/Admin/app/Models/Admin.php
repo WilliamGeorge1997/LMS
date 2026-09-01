@@ -39,6 +39,8 @@ class Admin extends Authenticable
             return null;
         }
 
-        return Storage::disk('public')->url('uploads/admin/' . $value);
+        $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
+        
+        return Storage::disk('public')->url('uploads/' . $tenantPath . 'admin/' . $value);
     }
 }

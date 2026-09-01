@@ -23,6 +23,7 @@ class BookUpdateRequest extends FormRequest
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'level_id' => ['required', 'integer', 'exists:levels,id'],
             'is_active' => ['nullable', 'boolean'],
+            'cover' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
         ];
     }
 
