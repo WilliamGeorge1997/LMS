@@ -16,7 +16,7 @@ class BookController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            'auth:sanctum',
+            'auth:user',
         ];
     }
 
@@ -25,7 +25,7 @@ class BookController extends Controller implements HasMiddleware
 
     public function myBooks(Request $request): JsonResponse
     {
-        $books = $this->bookService->findBy($request->user());
+        $books = $this->bookService->findByUser($request->user());
 
         return apiResponse(true, 'Books retrieved successfully', $books);
     }

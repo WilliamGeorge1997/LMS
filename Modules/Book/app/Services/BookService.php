@@ -4,7 +4,9 @@ namespace Modules\Book\Services;
 
 use Modules\Book\DTOs\BookDto;
 use Modules\Book\Models\Book;
+use Modules\Book\Models\BookCode;
 use Modules\Common\Traits\UploaderTrait;
+use Modules\User\Models\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -113,5 +115,22 @@ class BookService
         $book->update(['is_active' => !$book->is_active]);
 
         return $book->fresh();
+    }
+
+    //For API
+    public function findByUser(User $user)
+    {
+        $bookCodes = BookCode::query()
+            ->with(['book' => function ($query) {
+                $query->active();
+            }])
+            ->where('user_id', $user->id)
+            ->where('is_used', true)
+            ->where('is_active', true)
+            ->where('from', '<=', now()->toDateString())
+            ->where('to', '>=', now()->toDateString())
+            ->get();
+
+        return $bookCodes->whereNotNull('book')->unique('book_id')->pluck('book')->values();
     }
 }
