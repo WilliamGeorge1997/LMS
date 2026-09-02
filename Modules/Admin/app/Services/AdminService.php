@@ -54,7 +54,7 @@ class AdminService
     {
         $data = $dto->toArray();
         if ($image) {
-            $data['image'] = $this->uploadImage($image, $this->uploadFolder);
+            $data['image'] = $this->uploadImage($image, $this->uploadFolder, tenantId: $dto->tenant_id);
         }
 
         $admin = Admin::create($data);
@@ -68,10 +68,10 @@ class AdminService
         $data = $dto->toArray();
         if ($image) {
             if ($admin->image) {
-                $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'));
+                $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'), tenantId: $admin->tenant_id);
             }
 
-            $data['image'] = $this->uploadImage($image, $this->uploadFolder);
+            $data['image'] = $this->uploadImage($image, $this->uploadFolder, tenantId: $dto->tenant_id);
         }
 
         $admin->update($data);
@@ -83,7 +83,7 @@ class AdminService
     public function delete(Admin $admin): bool
     {
         if ($admin->image) {
-            $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'));
+            $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'), tenantId: $admin->tenant_id);
         }
 
         return (bool) $admin->delete();

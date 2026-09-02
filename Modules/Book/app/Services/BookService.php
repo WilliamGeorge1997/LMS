@@ -77,7 +77,7 @@ class BookService
     {
         $data = $dto->toArray();
         if ($dto->cover) {
-            $data['cover'] = $this->uploadImage($dto->cover, $this->uploadFolder);
+            $data['cover'] = $this->uploadImage($dto->cover, $this->uploadFolder, tenantId: $dto->tenant_id);
         }
 
         return Book::create($data);
@@ -88,10 +88,10 @@ class BookService
         $data = $dto->toArray();
         if ($dto->cover) {
             if ($book->getRawOriginal('cover')) {
-                $this->deleteFile($this->uploadFolder, $book->getRawOriginal('cover'));
+                $this->deleteFile($this->uploadFolder, $book->getRawOriginal('cover'), tenantId: $book->tenant_id);
             }
 
-            $data['cover'] = $this->uploadImage($dto->cover, $this->uploadFolder);
+            $data['cover'] = $this->uploadImage($dto->cover, $this->uploadFolder, tenantId: $dto->tenant_id);
         }
 
         $book->update($data);
@@ -102,7 +102,7 @@ class BookService
     public function delete(Book $book): bool
     {
         if ($book->getRawOriginal('cover')) {
-            $this->deleteFile($this->uploadFolder, $book->getRawOriginal('cover'));
+            $this->deleteFile($this->uploadFolder, $book->getRawOriginal('cover'), tenantId: $book->tenant_id);
         }
 
         return (bool) $book->delete();
