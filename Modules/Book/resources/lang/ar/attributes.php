@@ -14,6 +14,8 @@ return [
     'publisher_id' => 'الناشر',
     'category_id' => 'الفئة',
     'level_id' => 'المستوى',
+    'cover' => 'الغلاف',
+    'additional_details' => 'تفاصيل إضافية',
     'is_active' => 'الحالة',
     'created_at' => 'تاريخ الإنشاء',
     'actions' => 'الإجراءات',

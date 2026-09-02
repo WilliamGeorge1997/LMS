@@ -12,7 +12,7 @@ class BookService
 {
     use UploaderTrait;
 
-    private string $uploadFolder = 'cover';
+    private string $uploadFolder = 'book/cover';
 
     public function findAll(array $data)
     {
@@ -91,7 +91,7 @@ class BookService
                 $this->deleteFile($this->uploadFolder, $book->getRawOriginal('cover'), tenantId: $book->tenant_id);
             }
 
-            $data['cover'] = $this->uploadImage($dto->cover, $this->uploadFolder, tenantId: $dto->tenant_id);
+            $data['cover'] = $this->uploadImage($dto->cover, $this->uploadFolder, tenantId: $book->tenant_id);
         }
 
         $book->update($data);

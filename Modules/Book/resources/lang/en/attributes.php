@@ -14,6 +14,8 @@ return [
     'publisher_id' => 'Publisher',
     'category_id' => 'Category',
     'level_id' => 'Level',
+    'cover' => 'Cover',
+    'additional_details' => 'Additional Details',
     'is_active' => 'Active',
     'created_at' => 'Created At',
     'actions' => 'Actions',

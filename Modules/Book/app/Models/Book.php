@@ -63,7 +63,7 @@ class Book extends Model
 
         $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
 
-        return Storage::disk('public')->url('uploads/' . $tenantPath . 'cover/' . $value);
+        return Storage::disk('public')->url('uploads/' . $tenantPath . 'book/cover/' . $value);
     }
 
     public function getPathAttribute(?string $value): ?string
@@ -73,8 +73,8 @@ class Book extends Model
         }
 
         $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
-        
-        return Storage::disk('public')->url('uploads/' . $tenantPath . 'books/' . $value . '/index.html');
+
+        return Storage::disk('public')->url('uploads/' . $tenantPath . 'book/' . $value . '/index.html');
     }
 
 
