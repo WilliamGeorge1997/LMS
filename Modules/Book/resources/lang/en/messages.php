@@ -15,6 +15,7 @@ return [
     'code_deleted_successfully' => 'Access code deleted successfully',
     'code_activated_successfully' => 'Access code activated successfully',
     'code_deactivated_successfully' => 'Access code deactivated successfully',
+    'code_redeemed_successfully' => 'Access code redeemed successfully',
     'delete_code_confirm' => 'Are you sure you want to delete this access code?',
     'no_codes_found' => 'No access codes found.',
 ];

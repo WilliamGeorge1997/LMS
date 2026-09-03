@@ -11,6 +11,8 @@
     @endif
 @endsection
 
+@php($is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN))
+
 @section('toolbar')
     <div id="create-toolbar-area">
         <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack my-3">
@@ -76,6 +78,9 @@
                         <th class="min-w-125px">{{ __('country::attributes.title_ar') }}</th>
                         <th class="min-w-125px">{{ __('country::attributes.country_id') }}</th>
                         <th class="min-w-125px">{{ __('country::attributes.city_id') }}</th>
+                        @if ($is_super_admin)
+                            <th class="min-w-125px">{{ __('country::attributes.tenant') }}</th>
+                        @endif
                         <th class="min-w-125px">{{ __('country::attributes.is_active') }}</th>
                         <th class="min-w-125px">{{ __('country::attributes.created_at') }}</th>
                         <th class="text-end min-w-100px">{{ __('country::attributes.actions') }}</th>
@@ -123,6 +128,11 @@
                 {
                     data: 'city.title'
                 },
+                @if ($is_super_admin)
+                    {
+                        data: 'tenant.name'
+                    },
+                @endif
                 {
                     data: 'is_active'
                 },
@@ -179,8 +189,18 @@
                         return '<span class="badge badge-light-primary fw-bold">' + (data ? data.en + ' - ' + data.ar : '') + '</span>';
                     }
                 },
+                @if ($is_super_admin)
+                    {
+                        targets: 6,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            return '<span class="fw-bold text-gray-800">' + (data ? (data.en ? data.en + ' - ' + data.ar : data) : '') + '</span>';
+                        }
+                    },
+                @endif
                 {
-                    targets: 6,
+                    targets: -3,
                     orderable: false,
                     searchable: false,
                     render: function(data, t, row) {
@@ -192,7 +212,7 @@
                     }
                 },
                 {
-                    targets: 7,
+                    targets: -2,
                     orderable: true,
                     searchable: false,
                     render: function(data) {
@@ -200,7 +220,7 @@
                     }
                 },
                 {
-                    targets: 8,
+                    targets: -1,
                     orderable: false,
                     searchable: false,
                     className: 'text-end',

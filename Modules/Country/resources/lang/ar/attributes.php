@@ -15,6 +15,7 @@ return [
     'country_id' => 'الدولة',
     'city_id' => 'المدينة',
     'is_active' => 'الحالة',
+    'tenant' => 'المستأجر',
     'created_at' => 'تاريخ الإنشاء',
     'actions' => 'الإجراءات',
 ];

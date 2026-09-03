@@ -12,8 +12,9 @@ class CityService
     public function dataTable(): JsonResponse
     {
         $query = City::query()
-            ->select(['id', 'title', 'country_id', 'is_active', 'created_at'])
-            ->with(['country:id,title']);
+            ->select(['id', 'title', 'country_id', 'tenant_id', 'is_active', 'created_at'])
+            ->with(['country:id,title', 'tenant:id,name'])
+            ->latest('id');
 
         return DataTables::eloquent($query)
             ->addColumn('title_en', function (City $city) {
@@ -27,7 +28,12 @@ class CityService
 
     public function findBy(string $key, string $value, array $columns = ['*'])
     {
-        return City::query()->active()->where($key, $value)->orderBy('id')->get($columns);
+        return City::query()->active()->byTenant()->where($key, $value)->orderBy('id')->get($columns);
+    }
+
+    public function findByTenant(array $columns = ['*'])
+    {
+        return City::query()->active()->byTenant()->orderBy('id')->get($columns);
     }
 
     public function save(CityDto $dto): City

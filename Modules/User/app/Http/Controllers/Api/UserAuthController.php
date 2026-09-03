@@ -21,7 +21,7 @@ use Modules\User\Http\Requests\VerifyForgetPasswordRequest;
 use Modules\User\Models\User;
 
 
-#[Middleware('auth:user', only: ['logout'] ) ]
+#[Middleware('auth:user', only: ['logout'])]
 class UserAuthController extends Controller
 {
     public static function middleware(): array

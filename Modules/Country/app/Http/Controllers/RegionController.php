@@ -21,7 +21,7 @@ class RegionController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:' . Role::SUPER_ADMIN->value,
+            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
             'set.locale',
         ];
     }
@@ -54,7 +54,7 @@ class RegionController extends Controller implements HasMiddleware
         $viewModel = new CountryViewModel;
 
         return view('country::regions.partials.edit', [
-            'region' => $region->load('city.country'),
+            'region' => $region->load(['city.country', 'tenant:id,name']),
             'viewModel' => $viewModel,
         ])->render();
     }

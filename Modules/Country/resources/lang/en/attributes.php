@@ -15,6 +15,7 @@ return [
     'country_id' => 'Country',
     'city_id' => 'City',
     'is_active' => 'Active',
+    'tenant' => 'Tenant',
     'created_at' => 'Created At',
     'actions' => 'Actions',
 ];

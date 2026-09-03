@@ -21,7 +21,7 @@ class CityController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:' . Role::SUPER_ADMIN->value,
+            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
             'set.locale',
         ];
     }
@@ -54,7 +54,7 @@ class CityController extends Controller implements HasMiddleware
         $viewModel = new CountryViewModel;
 
         return view('country::cities.partials.edit', [
-            'city' => $city->load('country'),
+            'city' => $city->load(['country', 'tenant:id,name']),
             'viewModel' => $viewModel,
         ])->render();
     }

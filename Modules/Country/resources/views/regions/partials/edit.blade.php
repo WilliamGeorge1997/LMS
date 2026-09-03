@@ -1,4 +1,5 @@
 @php
+    $is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN);
     $countryId = $region->city?->country_id;
     $formId = 'edit-form-' . $region->id;
 @endphp
@@ -59,6 +60,15 @@
         </select>
         <div class="invalid-feedback d-block" data-error="city_id"></div>
     </td>
+
+    @if ($is_super_admin)
+        <td>
+            <span class="text-gray-700 fw-semibold">
+                {{ $region->tenant?->getTranslation('name', 'en') ?? '' }}
+                - {{ $region->tenant?->getTranslation('name', 'ar') ?? '' }}
+            </span>
+        </td>
+    @endif
 
     <td>
         <label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">

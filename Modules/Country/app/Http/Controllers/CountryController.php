@@ -20,7 +20,7 @@ class CountryController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:' . Role::SUPER_ADMIN->value,
+            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
             'set.locale',
         ];
     }
@@ -48,7 +48,9 @@ class CountryController extends Controller implements HasMiddleware
 
     public function edit(Country $country): string
     {
-        return view('country::countries.partials.edit', ['country' => $country])->render();
+        return view('country::countries.partials.edit', [
+            'country' => $country->load('tenant:id,name'),
+        ])->render();
     }
 
     public function update(CountryUpdateRequest $request, Country $country): JsonResponse

@@ -11,6 +11,8 @@
     @endif
 @endsection
 
+@php($is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN))
+
 @section('toolbar')
     <div id="create-toolbar-area">
         <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack my-3">
@@ -74,6 +76,9 @@
                         </th>
                         <th class="min-w-125px">{{ __('country::attributes.title_en') }}</th>
                         <th class="min-w-125px">{{ __('country::attributes.title_ar') }}</th>
+                        @if ($is_super_admin)
+                            <th class="min-w-125px">{{ __('country::attributes.tenant') }}</th>
+                        @endif
                         <th class="min-w-125px">{{ __('country::attributes.is_active') }}</th>
                         <th class="min-w-125px">{{ __('country::attributes.created_at') }}</th>
                         <th class="text-end min-w-100px">{{ __('country::attributes.actions') }}</th>
@@ -115,6 +120,11 @@
                 {
                     data: 'title_ar'
                 },
+                @if ($is_super_admin)
+                    {
+                        data: 'tenant.name'
+                    },
+                @endif
                 {
                     data: 'is_active'
                 },
@@ -155,8 +165,18 @@
                         return '<span class="fw-bold text-gray-800">' + (data || '') + '</span>';
                     }
                 },
+                @if ($is_super_admin)
+                    {
+                        targets: 4,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data) {
+                            return '<span class="fw-bold text-gray-800">' + (data ? (data.en ? data.en + ' - ' + data.ar : data) : '') + '</span>';
+                        }
+                    },
+                @endif
                 {
-                    targets: 4,
+                    targets: -3,
                     orderable: false,
                     searchable: false,
                     render: function(data, t, row) {
@@ -168,7 +188,7 @@
                     }
                 },
                 {
-                    targets: 5,
+                    targets: -2,
                     orderable: true,
                     searchable: false,
                     render: function(data) {
@@ -176,7 +196,7 @@
                     }
                 },
                 {
-                    targets: 6,
+                    targets: -1,
                     orderable: false,
                     searchable: false,
                     className: 'text-end',

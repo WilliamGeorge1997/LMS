@@ -12,7 +12,9 @@ class CountryService
     public function dataTable(): JsonResponse
     {
         $query = Country::query()
-            ->select(['id', 'title', 'is_active', 'created_at']);
+            ->select(['id', 'title', 'tenant_id', 'is_active', 'created_at'])
+            ->with(['tenant:id,name'])
+            ->latest('id');
 
         return DataTables::eloquent($query)
             ->addColumn('title_en', function (Country $country) {
@@ -27,6 +29,11 @@ class CountryService
     public function active()
     {
         return Country::query()->active()->orderBy('id')->get(['id', 'title']);
+    }
+
+    public function findByTenant(array $columns = ['*'])
+    {
+        return Country::query()->active()->byTenant()->orderBy('id')->get($columns);
     }
 
     public function save(CountryDto $dto): Country

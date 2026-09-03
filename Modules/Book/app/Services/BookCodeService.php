@@ -22,6 +22,8 @@ class BookCodeService
                 'id',
                 'book_id',
                 'tenant_id',
+                'user_id',
+                'school_id',
                 'code',
                 'duration',
                 'type',
@@ -31,7 +33,7 @@ class BookCodeService
                 'to',
                 'created_at',
             ])
-            ->with(['book:id,title', 'tenant:id,name'])
+            ->with(['book:id,title', 'tenant:id,name', 'school:id,title', 'user:id,name'])
             ->latest('id');
 
         return DataTables::eloquent($query)
@@ -130,6 +132,7 @@ class BookCodeService
 
         $bookCode->update([
             'user_id'   => $user->id,
+            'school_id' => $user->school_id,
             'is_used'   => true,
             'from'      => $now->toDateString(),
             'to'        => $now->copy()->addMonths((int) $bookCode->duration)->toDateString(),

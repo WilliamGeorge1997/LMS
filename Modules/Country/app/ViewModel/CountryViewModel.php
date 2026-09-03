@@ -9,7 +9,7 @@ class CountryViewModel
 {
     public function countries()
     {
-        return (new CountryService)->active();
+        return (new CountryService)->findByTenant(['id', 'title']);
     }
 
     public function citiesByCountry(int $countryId)

@@ -229,7 +229,6 @@
 
 
 
-                    @if ($is_super_admin)
                         <!--begin:Menu item-->
                         <div data-kt-menu-trigger="click"
                             class="menu-item menu-accordion @if ($request->routeIs('countries.index', 'cities.index', 'regions.index')) here show @endif">
@@ -274,7 +273,6 @@
                             </div>
                         </div>
                         <!--end:Menu item-->
-                    @endif
 
 
 

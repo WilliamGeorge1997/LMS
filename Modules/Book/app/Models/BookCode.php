@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Admin\Enums\Role;
 use Modules\Book\Enums\BookCodeType;
+use Modules\School\Models\School;
 use Modules\User\Models\User;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
@@ -19,6 +20,7 @@ class BookCode extends Model
         'book_id',
         'tenant_id',
         'user_id',
+        'school_id',
         'code',
         'duration',
         'type',
@@ -59,5 +61,10 @@ class BookCode extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function school(): BelongsTo
+    {
+        return $this->belongsTo(School::class);
     }
 }

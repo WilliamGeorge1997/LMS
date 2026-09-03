@@ -1,4 +1,7 @@
-@php($formId = 'edit-form-' . $country->id)
+@php
+    $is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN);
+    $formId = 'edit-form-' . $country->id;
+@endphp
 
 <tr class="edit-inline-row" data-edit-form-id="{{ $country->id }}">
     <td class="d-none" aria-hidden="true">
@@ -29,6 +32,15 @@
             placeholder="{{ __('country::placeholders.enter_title_ar') }}" />
         <div class="invalid-feedback d-block" data-error="title_ar"></div>
     </td>
+
+    @if ($is_super_admin)
+        <td>
+            <span class="text-gray-700 fw-semibold">
+                {{ $country->tenant?->getTranslation('name', 'en') ?? '' }}
+                - {{ $country->tenant?->getTranslation('name', 'ar') ?? '' }}
+            </span>
+        </td>
+    @endif
 
     <td>
         <label class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
