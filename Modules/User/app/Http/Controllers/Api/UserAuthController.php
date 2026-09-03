@@ -1,15 +1,15 @@
 <?php
 
-namespace Modules\User\Http\Controllers;
+namespace Modules\User\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
 use Modules\Book\Services\BookCodeService;
 use Modules\User\DTOs\UserDto;
 use Modules\User\Emails\ForgetPasswordMail;
@@ -20,7 +20,9 @@ use Modules\User\Http\Requests\UserRegisterRequest;
 use Modules\User\Http\Requests\VerifyForgetPasswordRequest;
 use Modules\User\Models\User;
 
-class UserAuthController extends Controller implements HasMiddleware
+
+#[Middleware('auth:user')]
+class UserAuthController extends Controller
 {
     public static function middleware(): array
     {
@@ -32,7 +34,7 @@ class UserAuthController extends Controller implements HasMiddleware
     public function register(UserRegisterRequest $request, BookCodeService $bookCodeService): JsonResponse
     {
         $dto = UserDto::fromRequest($request);
-        
+
         try {
             $user = DB::transaction(function () use ($dto, $bookCodeService) {
                 $bookCode = $bookCodeService->check($dto->code, $dto->type);
@@ -72,7 +74,7 @@ class UserAuthController extends Controller implements HasMiddleware
         }
 
         $user->tokens()->delete();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('user_token')->plainTextToken;
 
         return $this->respondWithToken($token, $user);
     }
@@ -80,7 +82,13 @@ class UserAuthController extends Controller implements HasMiddleware
 
     public function logout(): JsonResponse
     {
-        auth('user')->user()->currentAccessToken()->delete();
+        /**@var User $user */
+        $user = auth('user')->user();
+
+        /**@var PersonalAccessToken $token */
+        $token = $user->currentAccessToken();
+        $token->delete();
+
 
         return apiResponse(true, __('user::message.logout'));
     }
@@ -90,7 +98,7 @@ class UserAuthController extends Controller implements HasMiddleware
         $email = $request->validated('email');
         /**@var User $user */
         $user = User::where('email', $email)->first();
-        
+
         $verifyCode = rand(100000, 999999);
         $user->update(['verify_code' => $verifyCode]);
 
