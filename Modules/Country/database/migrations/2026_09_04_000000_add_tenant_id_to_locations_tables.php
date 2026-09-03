@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Tenant\Models\Tenant;
 
 return new class extends Migration
 {
@@ -12,18 +13,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('countries', function (Blueprint $table) {
-            $table->string('tenant_id')->after('id');
-            $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
+            $table->foreignIdFor(Tenant::class)->after('title')->index()->constrained()->cascadeOnDelete();
         });
 
         Schema::table('cities', function (Blueprint $table) {
-            $table->string('tenant_id')->after('id');
-            $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
+            $table->foreignIdFor(Tenant::class)->after('title')->index()->constrained()->cascadeOnDelete();
         });
 
         Schema::table('regions', function (Blueprint $table) {
-            $table->string('tenant_id')->after('id');
-            $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
+            $table->foreignIdFor(Tenant::class)->after('title')->index()->constrained()->cascadeOnDelete();
         });
     }
 
@@ -33,18 +31,15 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('regions', function (Blueprint $table) {
-            $table->dropForeign(['tenant_id']);
-            $table->dropColumn('tenant_id');
+            $table->dropConstrainedForeignIdFor(Tenant::class);
         });
 
         Schema::table('cities', function (Blueprint $table) {
-            $table->dropForeign(['tenant_id']);
-            $table->dropColumn('tenant_id');
+            $table->dropConstrainedForeignIdFor(Tenant::class);
         });
 
         Schema::table('countries', function (Blueprint $table) {
-            $table->dropForeign(['tenant_id']);
-            $table->dropColumn('tenant_id');
+            $table->dropConstrainedForeignIdFor(Tenant::class);
         });
     }
 };
