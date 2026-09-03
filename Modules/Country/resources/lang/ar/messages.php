@@ -24,4 +24,8 @@ return [
     'region_deleted_successfully' => 'تم حذف المنطقة بنجاح',
     'region_activated_successfully' => 'تم تفعيل المنطقة بنجاح',
     'region_deactivated_successfully' => 'تم إلغاء تفعيل المنطقة بنجاح',
+
+    'countries_retrieved_successfully' => 'تم استرجاع الدول بنجاح',
+    'cities_retrieved_successfully' => 'تم استرجاع المدن بنجاح',
+    'zones_retrieved_successfully' => 'تم استرجاع المناطق بنجاح',
 ];

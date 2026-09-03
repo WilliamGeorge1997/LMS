@@ -30,7 +30,7 @@ class RegionService
             ->toJson();
     }
 
-    public function findBy(string $key, string $value, array $columns = ['*'])
+    public function findBy(string $key, string|int $value, array $columns = ['*'])
     {
         return Region::query()->active()->byTenant()->where($key, $value)->orderBy('id')->get($columns);
     }

@@ -24,4 +24,8 @@ return [
     'region_deleted_successfully' => 'Region deleted successfully',
     'region_activated_successfully' => 'Region activated successfully',
     'region_deactivated_successfully' => 'Region deactivated successfully',
+
+    'countries_retrieved_successfully' => 'Countries retrieved successfully',
+    'cities_retrieved_successfully' => 'Cities retrieved successfully',
+    'zones_retrieved_successfully' => 'Zones retrieved successfully',
 ];

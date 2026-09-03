@@ -26,7 +26,7 @@ class CityService
             ->toJson();
     }
 
-    public function findBy(string $key, string $value, array $columns = ['*'])
+    public function findBy(string $key, string|int $value, array $columns = ['*'])
     {
         return City::query()->active()->byTenant()->where($key, $value)->orderBy('id')->get($columns);
     }
