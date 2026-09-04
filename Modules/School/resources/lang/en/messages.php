@@ -6,4 +6,5 @@ return [
     'deleted_successfully' => 'School deleted successfully',
     'activated_successfully' => 'School activated successfully',
     'deactivated_successfully' => 'School deactivated successfully',
+    'schools_retrieved_successfully' => 'Schools retrieved successfully',
 ];

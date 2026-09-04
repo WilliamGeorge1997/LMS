@@ -46,7 +46,7 @@ class School extends Model
 
     public function scopeByTenant(Builder $query): Builder
     {
-        return $query->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
+        return $query->when(auth('admin')->check() && auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
             $query->where('tenant_id', session('admin_tenant_id'));
         });
     }

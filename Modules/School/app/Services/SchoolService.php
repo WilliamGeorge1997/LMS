@@ -43,6 +43,28 @@ class SchoolService
             ->toJson();
     }
 
+    public function findBy(string $key, string|int $value, array $columns = ['id', 'title', 'phone', 'email', 'country_id', 'city_id', 'region_id'])
+    {
+        return School::query()->active()->byTenant()->where($key, $value)->orderBy('id')->get($columns);
+    }
+
+    public function findByTenant(array $columns = ['id', 'title', 'phone', 'email', 'country_id', 'city_id', 'region_id'])
+    {
+        return School::query()->active()->byTenant()->orderBy('id')->get($columns);
+    }
+
+    public function active(?int $countryId = null, ?int $cityId = null, ?int $regionId = null, array $columns = ['id', 'title', 'phone', 'email', 'country_id', 'city_id', 'region_id'])
+    {
+        return School::query()
+            ->active()
+            ->byTenant()
+            ->when($countryId, fn ($query) => $query->where('country_id', $countryId))
+            ->when($cityId, fn ($query) => $query->where('city_id', $cityId))
+            ->when($regionId, fn ($query) => $query->where('region_id', $regionId))
+            ->orderBy('id')
+            ->get($columns);
+    }
+
     public function save(SchoolDto $dto): School
     {
         return School::create($dto->toArray());

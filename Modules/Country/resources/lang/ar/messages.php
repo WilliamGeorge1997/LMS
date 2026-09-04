@@ -27,5 +27,5 @@ return [
 
     'countries_retrieved_successfully' => 'تم استرجاع الدول بنجاح',
     'cities_retrieved_successfully' => 'تم استرجاع المدن بنجاح',
-    'zones_retrieved_successfully' => 'تم استرجاع المناطق بنجاح',
+    'regions_retrieved_successfully' => 'تم استرجاع المناطق بنجاح',
 ];

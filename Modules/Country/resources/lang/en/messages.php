@@ -27,5 +27,5 @@ return [
 
     'countries_retrieved_successfully' => 'Countries retrieved successfully',
     'cities_retrieved_successfully' => 'Cities retrieved successfully',
-    'zones_retrieved_successfully' => 'Zones retrieved successfully',
+    'regions_retrieved_successfully' => 'Regions retrieved successfully',
 ];

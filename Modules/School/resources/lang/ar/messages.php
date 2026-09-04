@@ -6,4 +6,5 @@ return [
     'deleted_successfully' => 'تم حذف المدرسة بنجاح',
     'activated_successfully' => 'تم تفعيل المدرسة بنجاح',
     'deactivated_successfully' => 'تم إلغاء تفعيل المدرسة بنجاح',
+    'schools_retrieved_successfully' => 'تم استرجاع المدارس بنجاح',
 ];

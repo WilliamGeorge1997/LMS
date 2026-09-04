@@ -1,8 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\School\Http\Controllers\SchoolController;
+use Modules\School\Http\Controllers\Api\SchoolController;
+use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('schools', SchoolController::class)->names('school');
+Route::middleware([
+    InitializeTenancyBySubdomain::class,
+    PreventAccessFromCentralDomains::class,
+])->group(function () {
+    Route::get('schools', [SchoolController::class, 'index'])->name('schools');
 });

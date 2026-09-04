@@ -50,9 +50,4 @@ class City extends Model
     {
         return $this->hasMany(Region::class);
     }
-
-    public function zones(): HasMany
-    {
-        return $this->regions();
-    }
 }
