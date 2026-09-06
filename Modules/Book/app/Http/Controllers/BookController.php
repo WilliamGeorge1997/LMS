@@ -10,6 +10,7 @@ use Modules\Admin\Enums\Role;
 use Modules\Book\DTOs\BookDto;
 use Modules\Book\Http\Requests\BookStoreRequest;
 use Modules\Book\Http\Requests\BookUpdateRequest;
+use Modules\Book\Http\Requests\BookUploadRequest;
 use Modules\Book\Models\Book;
 use Modules\Book\Services\BookService;
 use Modules\Book\ViewModel\BookViewModel;
@@ -84,5 +85,16 @@ class BookController extends Controller implements HasMiddleware
             : __('book::messages.deactivated_successfully');
 
         return AjaxResponse::success($message, $book);
+    }
+
+    public function uploadChunk(BookUploadRequest $request, Book $book)
+    {
+        $result = $this->bookService->processBookUpload($request, $book);
+
+        if (isset($result['error'])) {
+            return AjaxResponse::error('Upload failed', 'bad_request');
+        }
+
+        return AjaxResponse::success('Chunk processed', $result, 'ok');
     }
 }

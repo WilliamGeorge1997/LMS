@@ -13,6 +13,7 @@ Route::domain($central)
         Route::resource('books', BookController::class)->except(['show', 'update']);
         Route::post('books/{book}', [BookController::class, 'update'])->name('books.update');
         Route::patch('books/{book}/toggle-activate', [BookController::class, 'toggleActivate'])->name('books.toggle-activate');
+        Route::post('books/{book}/upload-chunk', [BookController::class, 'uploadChunk'])->name('books.upload-chunk');
 
         Route::get('book-codes/export', [BookCodeController::class, 'export'])->name('book-codes.export');
 
