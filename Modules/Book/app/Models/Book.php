@@ -38,6 +38,8 @@ class Book extends Model
 
     protected $translatable = ['title', 'description'];
 
+    protected $appends = ['download'];
+
     protected function serializeDate(\DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i A');
@@ -74,7 +76,20 @@ class Book extends Model
 
         $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
 
-        return Storage::disk('public')->url('uploads/' . $tenantPath . 'book/' . $value . '/index.html');
+        return Storage::disk('public')->url('uploads/' . $tenantPath . 'book/' . $value);
+    }
+
+    public function getDownloadAttribute(): ?string
+    {
+        $value = $this->attributes['path'] ?? null;
+
+        if (empty($value)) {
+            return null;
+        }
+
+        $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
+
+        return Storage::disk('public')->url('uploads/' . $tenantPath . 'book/download/' . $value . '.zip');
     }
 
 
