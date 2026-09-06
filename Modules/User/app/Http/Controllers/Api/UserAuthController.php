@@ -22,19 +22,12 @@ use Modules\User\Http\Requests\VerifyForgetPasswordRequest;
 use Modules\User\Models\User;
 
 
-#[Middleware('auth:user', only: ['logout'])]
+#[Middleware('auth:user', only: ['logout', 'editProfile'])]
 class UserAuthController extends Controller
 {
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('auth:sanctum', only: ['logout']),
-        ];
-    }
-
     public function register(UserRegisterRequest $request, BookCodeService $bookCodeService): JsonResponse
     {
-        $dto = UserDto::fromRequest($request);
+        $dto = UserDto::fromRegisterRequest($request);
 
         try {
             $user = DB::transaction(function () use ($dto, $bookCodeService) {
@@ -135,8 +128,16 @@ class UserAuthController extends Controller
         return apiResponse(true, 'Password Changed Successfully');
     }
 
-    public function editProfile(EditProfileRequest $request){
+    public function editProfile(EditProfileRequest $request): JsonResponse
+    {
+        $dto = UserDto::fromEditProfileRequest($request);
         
+        /** @var User $user */
+        $user = auth('user')->user();
+        
+        $user->update($dto->toArray());
+        
+        return apiResponse(true, __('user::message.profile_updated'), $user->fresh());
     }
 
 

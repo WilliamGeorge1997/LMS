@@ -14,6 +14,7 @@ Route::prefix('auth')->group(function () {
     Route::post('verify-forget-password', [UserAuthController::class, 'verifyForgetPassword']);
     Route::post('new-password', [UserAuthController::class, 'newPassword']);
 });
+Route::post('edit-profile', [UserAuthController::class, 'editProfile']);
 
 Route::apiResource('users', UserController::class)->names('user');
 

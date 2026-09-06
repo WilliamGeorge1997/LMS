@@ -2,8 +2,9 @@
 
 namespace Modules\User\DTOs;
 
-use Illuminate\Http\UploadedFile;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use Modules\User\Http\Requests\EditProfileRequest;
 use Modules\User\Http\Requests\UserRegisterRequest;
 
 readonly class UserDto
@@ -12,48 +13,71 @@ readonly class UserDto
         public string $name,
         public string $email,
         public string $username,
-        public string $password,
-        public string $type,
-        public string $code,
         public int $schoolId,
         public int $countryId,
         public int $cityId,
         public int $regionId,
-        public ?UploadedFile $image = null,
+        public ?string $password = null,
+        public ?string $type = null,
+        public ?string $code = null,
         public ?string $verifyCode = null,
     ) {}
 
-    public static function fromRequest(UserRegisterRequest $request): self
+    public static function fromRegisterRequest(UserRegisterRequest $request): self
+    {
+        return self::buildFromRequest($request, true);
+    }
+
+    public static function fromEditProfileRequest(EditProfileRequest $request): self
+    {
+        return self::buildFromRequest($request, false);
+    }
+
+    private static function buildFromRequest(FormRequest $request, bool $isRegister): self
     {
         return new self(
             name: $request->validated('name'),
             email: $request->validated('email'),
             username: $request->validated('username'),
-            password: $request->validated('password'),
-            type: $request->validated('type'),
-            code: $request->validated('code'),
             schoolId: (int) $request->validated('school_id'),
             countryId: (int) $request->validated('country_id'),
             cityId: (int) $request->validated('city_id'),
             regionId: (int) $request->validated('region_id'),
-            image: $request->file('image'),
-            verifyCode: (string) rand(100000, 999999),
+            password: $request->validated('password'),
+            type: $isRegister ? $request->validated('type') : null,
+            code: $isRegister ? $request->validated('code') : null,
+            verifyCode: $isRegister ? (string) rand(100000, 999999) : null,
         );
     }
     
     public function toArray(): array
     {
-        return [
+        $data = [
             'name' => $this->name,
             'email' => $this->email,
             'username' => $this->username,
-            'password' => Hash::make($this->password),
-            'type' => $this->type,
             'school_id' => $this->schoolId,
             'country_id' => $this->countryId,
             'city_id' => $this->cityId,
             'region_id' => $this->regionId,
-            'verify_code' => $this->verifyCode,
         ];
+
+        if ($this->password) {
+            $data['password'] = Hash::make($this->password);
+        }
+
+        if ($this->type) {
+            $data['type'] = $this->type;
+        }
+
+        if ($this->code) {
+            $data['code'] = $this->code;
+        }
+
+        if ($this->verifyCode) {
+            $data['verify_code'] = $this->verifyCode;
+        }
+
+        return $data;
     }
 }
