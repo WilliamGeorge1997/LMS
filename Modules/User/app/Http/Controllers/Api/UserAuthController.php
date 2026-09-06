@@ -13,6 +13,7 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Modules\Book\Services\BookCodeService;
 use Modules\User\DTOs\UserDto;
 use Modules\User\Emails\ForgetPasswordMail;
+use Modules\User\Http\Requests\EditProfileRequest;
 use Modules\User\Http\Requests\ForgetPasswordRequest;
 use Modules\User\Http\Requests\NewPasswordRequest;
 use Modules\User\Http\Requests\UserLoginRequest;
@@ -132,6 +133,10 @@ class UserAuthController extends Controller
         ]);
 
         return apiResponse(true, 'Password Changed Successfully');
+    }
+
+    public function editProfile(EditProfileRequest $request){
+        
     }
 
 

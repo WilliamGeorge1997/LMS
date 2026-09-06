@@ -2,27 +2,24 @@
 
 namespace Modules\User\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rules\Enum;
-use Modules\User\Enums\UserType;
 use Override;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
-class UserRegisterRequest extends FormRequest
+class EditProfileRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
      */
     public function rules(): array
     {
+        $userId = auth('user')->id();
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'username' => ['required', 'string', 'max:255', 'unique:users,username'],
-            'password' => ['required', 'string'],
-            'type' => ['required', new Enum(UserType::class)],
-            'code' => ['required', 'string'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email' . $userId],
+            'username' => ['required', 'string', 'max:255', 'unique:users,username' . $userId],
+            'password' => ['nullable', 'string', 'confirmed'],
             'school_id' => ['required', 'exists:schools,id'],
             'country_id' => ['required', 'exists:countries,id'],
             'city_id' => ['required', 'exists:cities,id'],
@@ -47,6 +44,7 @@ class UserRegisterRequest extends FormRequest
             'password' => __('user::attributes.password'),
             'type' => __('user::attributes.type'),
             'code' => __('user::attributes.code'),
+            'image' => __('user::attributes.image'),
             'school_id' => __('user::attributes.school_id'),
             'country_id' => __('user::attributes.country_id'),
             'city_id' => __('user::attributes.city_id'),

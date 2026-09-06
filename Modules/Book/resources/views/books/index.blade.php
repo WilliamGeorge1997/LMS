@@ -2,104 +2,108 @@
 @section('title', config('app.name') . ' - ' . __('book::attributes.books_list'))
 
 @section('css')
-    @if (app()->getLocale() === 'ar')
-        <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet"
-            type="text/css" />
-    @else
-        <link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
-            type="text/css" />
-    @endif
+@if (app()->getLocale() === 'ar')
+<link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet"
+    type="text/css" />
+@else
+<link href="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet"
+    type="text/css" />
+@endif
 @endsection
 
 @php($is_super_admin = auth('admin')->user()->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN))
 
 @section('toolbar')
-    <div id="create-toolbar-area">
-        <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack my-3">
-            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                    {{ __('book::attributes.books') }}
-                </h1>
-                <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
-                    <li class="breadcrumb-item text-muted">
-                        <a href="index.html" class="text-muted text-hover-primary">{{ __('book::attributes.books') }}</a>
-                    </li>
-                    <li class="breadcrumb-item"><span class="bullet bg-gray-500 w-5px h-2px"></span></li>
-                    <li class="breadcrumb-item text-muted">{{ __('book::attributes.books') }}</li>
-                </ul>
-            </div>
-
-            <div class="d-flex align-items-center gap-2 gap-lg-3">
-                <a href="#create-collapse" class="btn btn-sm fw-bold btn-primary create-open-btn" data-bs-toggle="collapse"
-                    data-bs-target="#create-collapse" aria-expanded="false" aria-controls="create-collapse">
-                    {{ __('book::buttons.create') }}
-                </a>
-                <a href="#create-collapse" class="btn btn-sm fw-bold btn-danger create-close-btn d-none"
-                    data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true"
-                    aria-controls="create-collapse">
-                    × {{ __('book::buttons.cancel') }}
-                </a>
-            </div>
+<div id="create-toolbar-area">
+    <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack my-3">
+        <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+            <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
+                {{ __('book::attributes.books') }}
+            </h1>
+            <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+                <li class="breadcrumb-item text-muted">
+                    <a href="index.html" class="text-muted text-hover-primary">{{ __('book::attributes.books') }}</a>
+                </li>
+                <li class="breadcrumb-item"><span class="bullet bg-gray-500 w-5px h-2px"></span></li>
+                <li class="breadcrumb-item text-muted">{{ __('book::attributes.books') }}</li>
+            </ul>
         </div>
 
-        <div class="app-container container-fluid mb-7">
-            <div id="create-collapse" class="collapse">
-                @include('book::books.partials.create')
-            </div>
+        <div class="d-flex align-items-center gap-2 gap-lg-3">
+            <a href="#create-collapse" class="btn btn-sm fw-bold btn-primary create-open-btn" data-bs-toggle="collapse"
+                data-bs-target="#create-collapse" aria-expanded="false" aria-controls="create-collapse">
+                {{ __('book::buttons.create') }}
+            </a>
+            <a href="#create-collapse" class="btn btn-sm fw-bold btn-danger create-close-btn d-none"
+                data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true"
+                aria-controls="create-collapse">
+                × {{ __('book::buttons.cancel') }}
+            </a>
         </div>
     </div>
+
+    <div class="app-container container-fluid mb-7">
+        <div id="create-collapse" class="collapse">
+            @include('book::books.partials.create')
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('content')
-    <div class="card">
-        <div class="card-header border-0 pt-6">
-            <div class="card-title">
-                <div class="d-flex align-items-center position-relative my-1">
-                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
-                        <span class="path1"></span><span class="path2"></span>
-                    </i>
-                    <input type="text" id="table-search" class="form-control form-control-solid w-250px ps-13"
-                        placeholder="{{ __('book::placeholders.search_books') }}" />
-                </div>
+<div class="card">
+    <div class="card-header border-0 pt-6">
+        <div class="card-title">
+            <div class="d-flex align-items-center position-relative my-1">
+                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                    <span class="path1"></span><span class="path2"></span>
+                </i>
+                <input type="text" id="table-search" class="form-control form-control-solid w-250px ps-13"
+                    placeholder="{{ __('book::placeholders.search_books') }}" />
             </div>
         </div>
-
-        <div class="card-body py-4">
-            <table id="kt_datatable" class="table align-middle table-row-dashed fs-6 gy-5">
-                <thead>
-                    <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                        <th></th>
-                        <th class="w-10px pe-2">
-                            <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                <input class="form-check-input" type="checkbox" data-kt-check="true"
-                                    data-kt-check-target="#kt_datatable .row-checkbox" value="1" />
-                            </div>
-                        </th>
-                        <th class="min-w-125px">{{ __('book::attributes.title_en') }}</th>
-                        <th class="min-w-125px">{{ __('book::attributes.title_ar') }}</th>
-                        <th class="min-w-100px">{{ __('book::attributes.isbn') }}</th>
-                        <th class="min-w-125px">{{ __('book::attributes.publisher_id') }}</th>
-                        <th class="min-w-125px">{{ __('book::attributes.category_id') }}</th>
-                        <th class="min-w-125px">{{ __('book::attributes.level_id') }}</th>
-                        @if ($is_super_admin)
-                            <th class="min-w-125px">{{ __('publisher::attributes.tenant') }}</th>
-                        @endif
-                        <th class="min-w-125px">{{ __('book::attributes.is_active') }}</th>
-                        <th class="min-w-125px">{{ __('book::attributes.created_at') }}</th>
-                        <th class="text-end min-w-100px">{{ __('book::attributes.actions') }}</th>
-                    </tr>
-                </thead>
-                <tbody class="text-gray-600 fw-semibold"></tbody>
-            </table>
-        </div>
     </div>
+
+    <div class="card-body py-4">
+        <table id="kt_datatable" class="table align-middle table-row-dashed fs-6 gy-5">
+            <thead>
+                <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                    <th></th>
+                    <th class="w-10px pe-2">
+                        <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                            <input class="form-check-input" type="checkbox" data-kt-check="true"
+                                data-kt-check-target="#kt_datatable .row-checkbox" value="1" />
+                        </div>
+                    </th>
+                    <th class="min-w-125px">{{ __('book::attributes.title_en') }}</th>
+                    <th class="min-w-125px">{{ __('book::attributes.title_ar') }}</th>
+                    <th class="min-w-100px">{{ __('book::attributes.isbn') }}</th>
+                    <th class="min-w-125px">{{ __('book::attributes.publisher_id') }}</th>
+                    <th class="min-w-125px">{{ __('book::attributes.category_id') }}</th>
+                    <th class="min-w-125px">{{ __('book::attributes.level_id') }}</th>
+                    @if ($is_super_admin)
+                    <th class="min-w-125px">{{ __('publisher::attributes.tenant') }}</th>
+                    @endif
+                    <th class="min-w-125px">{{ __('book::attributes.is_active') }}</th>
+                    <th class="min-w-125px">{{ __('book::attributes.created_at') }}</th>
+                    <th class="text-end min-w-100px">{{ __('book::attributes.actions') }}</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-600 fw-semibold"></tbody>
+        </table>
+    </div>
+</div>
+
+@include('book::books.partials.upload-modal')
 @endsection
 
 @section('js')
-    <script src="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('dashboard/assets/js/custom/plugins/actions.js') }}"></script>
-    <script>
-        "use strict";
+<script src="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/custom/plugins/resumable.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/custom/plugins/chunk-uploader.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/custom/plugins/actions.js') }}"></script>
+<script>
+    "use strict";
 
         var dt = $('#kt_datatable').DataTable({
             serverSide: true,
@@ -294,5 +298,48 @@
         Actions.initDelete(dt, "{{ url('/admin/books') }}/:id");
         Actions.initToggle("{{ url('/admin/books') }}/:id/toggle-activate");
         Actions.initDepends();
-    </script>
+
+        var currentUploader = null;
+
+        $(document).on('click', '.upload-content-btn', function() {
+            var bookId = $(this).data('id');
+            $('#upload-book-id').val(bookId);
+            
+            $('#upload-progress-container').addClass('d-none');
+            $('#upload-dropzone').find('.current-file-badge').remove();
+            
+            if (currentUploader) {
+                currentUploader.cancel();
+            }
+            
+            currentUploader = ChunkUploader.init({
+                url: "{{ url('/admin/books') }}/" + bookId + "/upload-chunk",
+                dropZone: '#upload-dropzone',
+                browseBtn: '#upload-browse-btn',
+                progressContainer: '#upload-progress-container',
+                progressBar: '#upload-progress-container .progress-bar',
+                statusText: '#upload-progress-container .upload-status',
+                onFileAdded: function(file) {
+                    $('#upload-progress-container .upload-status').text('Uploading ' + file.fileName + '...');
+                    $('#upload-progress-container .progress-bar').css('width', '0%').removeClass('bg-success bg-danger').addClass('bg-primary');
+                },
+                onSuccess: function(file, response) {
+                    $('#upload-progress-container .progress-bar').removeClass('bg-primary').addClass('bg-success');
+                    $('#upload-progress-container .upload-status').text('Upload complete: ' + file.fileName);
+                    $('#upload-dropzone').append('<span class="badge badge-success current-file-badge mt-2">ZIP uploaded ✓</span>');
+                    
+                    setTimeout(function() {
+                        $('#upload-modal').modal('hide');
+                        dt.ajax.reload(null, false);
+                    }, 1500);
+                },
+                onError: function(file, message) {
+                    $('#upload-progress-container .progress-bar').removeClass('bg-primary').addClass('bg-danger');
+                    $('#upload-progress-container .upload-status').text('Error uploading file.');
+                }
+            });
+
+            $('#upload-modal').modal('show');
+        });
+</script>
 @endsection

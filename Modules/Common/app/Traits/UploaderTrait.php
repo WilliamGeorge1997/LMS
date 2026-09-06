@@ -2,8 +2,11 @@
 
 namespace Modules\Common\Traits;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Pion\Laravel\ChunkUpload\Handler\ResumableJSUploadHandler;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
@@ -79,5 +82,22 @@ trait UploaderTrait
     private function generateFileName(UploadedFile $file): string
     {
         return uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
+    }
+
+    public function handleChunkUpload(Request $request, string $inputName = 'file'): UploadedFile|int|false
+    {
+        $receiver = new FileReceiver($inputName, $request, ResumableJSUploadHandler::class);
+        
+        if ($receiver->isUploaded() === false) {
+            return false;
+        }
+
+        $save = $receiver->receive();
+
+        if ($save->isFinished()) {
+            return $save->getFile();
+        }
+
+        return $save->handler()->getPercentageDone();
     }
 }
