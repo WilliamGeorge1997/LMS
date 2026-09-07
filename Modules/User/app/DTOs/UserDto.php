@@ -43,7 +43,7 @@ readonly class UserDto
             countryId: (int) $request->validated('country_id'),
             cityId: (int) $request->validated('city_id'),
             regionId: (int) $request->validated('region_id'),
-            password: $request->validated('password'),
+            password: $isRegister ? $request->validated('password') : $request->validated('new_password'),
             type: $isRegister ? $request->validated('type') : null,
             code: $isRegister ? $request->validated('code') : null,
             verifyCode: $isRegister ? (string) rand(100000, 999999) : null,

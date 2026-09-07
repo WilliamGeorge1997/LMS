@@ -37,6 +37,34 @@ window.Actions = {
         });
     },
 
+    // ── Single Form ───────────────────────────────────────────────────────────
+
+    initForm: function (formSelector, submitSelector) {
+        $(formSelector).on('submit', function (e) {
+            e.preventDefault();
+            var $form = $(this);
+            Actions._clearErrors($form);
+            var $submit = $(submitSelector).attr('data-kt-indicator', 'on').prop('disabled', true);
+            
+            $.ajax({
+                url: $form.attr('action'),
+                method: $form.attr('method') || 'POST',
+                data: Actions._formData($form, $form),
+                processData: false,
+                contentType: false
+            })
+                .done(function () {
+                    Actions._success();
+                })
+                .fail(function (xhr) {
+                    Actions._handleFail(xhr, $form);
+                })
+                .always(function () {
+                    $submit.removeAttr('data-kt-indicator').prop('disabled', false);
+                });
+        });
+    },
+
     // ── Edit ──────────────────────────────────────────────────────────────────
 
     initEdit: function (dataTable, editUrl) {

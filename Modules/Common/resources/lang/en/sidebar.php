@@ -8,4 +8,5 @@ return [
    'countries' => 'Countries',
    'cities' => 'Cities',
    'regions' => 'Regions',
+   'settings' => 'Settings',
 ];

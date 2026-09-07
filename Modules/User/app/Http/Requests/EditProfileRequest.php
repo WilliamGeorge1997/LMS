@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Override;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rule;
 
 class EditProfileRequest extends FormRequest
 {
@@ -17,9 +18,10 @@ class EditProfileRequest extends FormRequest
         $userId = auth('user')->id();
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email' . $userId],
-            'username' => ['required', 'string', 'max:255', 'unique:users,username' . $userId],
-            'password' => ['nullable', 'string', 'confirmed'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($userId)],
+            'old_password' => ['nullable', 'required_with:new_password', 'current_password:user'],
+            'new_password' => ['nullable', 'string', 'confirmed'],
             'school_id' => ['required', 'exists:schools,id'],
             'country_id' => ['required', 'exists:countries,id'],
             'city_id' => ['required', 'exists:cities,id'],
@@ -41,7 +43,8 @@ class EditProfileRequest extends FormRequest
             'name' => __('user::attributes.name'),
             'email' => __('user::attributes.email'),
             'username' => __('user::attributes.username'),
-            'password' => __('user::attributes.password'),
+            'old_password' => __('user::attributes.old_password'),
+            'new_password' => __('user::attributes.new_password'),
             'type' => __('user::attributes.type'),
             'code' => __('user::attributes.code'),
             'image' => __('user::attributes.image'),

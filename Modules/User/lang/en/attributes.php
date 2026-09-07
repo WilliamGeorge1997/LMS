@@ -5,6 +5,8 @@ return [
     'email' => 'Email',
     'username' => 'Username',
     'password' => 'Password',
+    'old_password' => 'Old Password',
+    'new_password' => 'New Password',
     'type' => 'User Type',
     'school_id' => 'School',
     'country_id' => 'Country',

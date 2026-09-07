@@ -8,4 +8,5 @@ return [
    'countries' => 'الدول',
    'cities' => 'المدن',
    'regions' => 'المناطق',
+   'settings' => 'الإعدادات',
 ];
