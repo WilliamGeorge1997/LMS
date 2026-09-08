@@ -94,7 +94,7 @@
     </div>
 </div>
 
-@include('book::books.partials.upload-modal')
+{{-- @include('book::books.partials.upload-modal') --}}
 @endsection
 
 @section('js')
