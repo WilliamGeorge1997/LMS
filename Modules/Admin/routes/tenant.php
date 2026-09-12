@@ -23,7 +23,8 @@ Route::middleware([
 
         Route::get('dashboard', [AdminController::class, 'dashboard']);
 
-        Route::resource('admins', AdminController::class)->except(['show', 'update']);
+        Route::resource('admins', AdminController::class)->except(['show', 'update', 'destroy']);
+        Route::post('admins/{admin}/destroy', [AdminController::class, 'destroy'])->name('admins.destroy');
         Route::post('admins/{admin}', [AdminController::class, 'update']);
-        Route::patch('admins/{admin}/toggle-activate', [AdminController::class, 'toggleActivate']);
+        Route::post('admins/{admin}/toggle-activate', [AdminController::class, 'toggleActivate']);
     });

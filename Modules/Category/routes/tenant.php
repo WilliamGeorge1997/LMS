@@ -17,7 +17,8 @@ Route::middleware([
     ->prefix('admin')
     ->group(function () {
         Route::get('categories/ajax_category', [CategoryController::class, 'ajaxCategory']);
-        Route::resource('categories', CategoryController::class)->except(['show', 'update']);
+        Route::resource('categories', CategoryController::class)->except(['show', 'update', 'destroy']);
+        Route::post('categories/{category}/destroy', [CategoryController::class, 'destroy'])->name('categories.destroy');
         Route::post('categories/{category}', [CategoryController::class, 'update']);
-        Route::patch('categories/{category}/toggle-activate', [CategoryController::class, 'toggleActivate']);
+        Route::post('categories/{category}/toggle-activate', [CategoryController::class, 'toggleActivate']);
     });

@@ -11,7 +11,8 @@ Route::domain($central)
     ->group(function () {
         Route::post('tenants/set', [TenantController::class, 'set'])->name('tenants.set');
 
-        Route::resource('tenants', TenantController::class)->except(['show']);
+        Route::resource('tenants', TenantController::class)->except(['show', 'destroy']);
+        Route::post('tenants/{tenant}/destroy', [TenantController::class, 'destroy'])->name('tenants.destroy');
         Route::post('tenants/{tenant}', [TenantController::class, 'update'])->name('tenants.update');
-        Route::patch('tenants/{tenant}/toggle-activate', [TenantController::class, 'toggleActivate'])->name('tenants.toggle-activate');
+        Route::post('tenants/{tenant}/toggle-activate', [TenantController::class, 'toggleActivate'])->name('tenants.toggle-activate');
     });

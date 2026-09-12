@@ -12,7 +12,8 @@ Route::domain($central)
         Route::get('schools/ajax_city', [SchoolController::class, 'ajaxCity'])->name('schools.ajax_city');
         Route::get('schools/ajax_region', [SchoolController::class, 'ajaxRegion'])->name('schools.ajax_region');
 
-        Route::resource('schools', SchoolController::class)->except(['show', 'update']);
+        Route::resource('schools', SchoolController::class)->except(['show', 'update', 'destroy']);
+        Route::post('schools/{school}/destroy', [SchoolController::class, 'destroy'])->name('schools.destroy');
         Route::post('schools/{school}', [SchoolController::class, 'update'])->name('schools.update');
-        Route::patch('schools/{school}/toggle-activate', [SchoolController::class, 'toggleActivate'])->name('schools.toggle-activate');
+        Route::post('schools/{school}/toggle-activate', [SchoolController::class, 'toggleActivate'])->name('schools.toggle-activate');
     });

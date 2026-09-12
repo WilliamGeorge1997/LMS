@@ -137,12 +137,7 @@ window.Actions = {
             $checkbox.prop('disabled', true);
             $.ajax({ 
                 url: url, 
-                method: 'POST',
-                headers: {
-                    'X-HTTP-Method-Override': 'PATCH',
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: { _method: 'PATCH' }
+                method: 'POST'
             })
                 .done(function () {
                     Actions._success();
@@ -179,7 +174,7 @@ window.Actions = {
     initDelete: function (dataTable, deleteUrl, confirmMsg) {
         $(document).on('click', '.delete-btn', function () {
             var $tr = $(this).closest('tr');
-            var url = deleteUrl.replace(':id', $(this).data('id'));
+            var url = deleteUrl.replace(':id', $(this).data('id')) + '/destroy';
             Swal.fire({
                 title: confirmMsg || 'Are you sure?',
                 text: confirmMsg || 'Are you sure you want to delete this item?',
@@ -191,12 +186,7 @@ window.Actions = {
                 if (result.isConfirmed) {
                     $.ajax({ 
                         url: url, 
-                        method: 'POST',
-                        headers: {
-                            'X-HTTP-Method-Override': 'DELETE',
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: { _method: 'DELETE' }
+                        method: 'POST'
                     })
                         .done(function () {
                             dataTable.row($tr).remove().draw(false);
