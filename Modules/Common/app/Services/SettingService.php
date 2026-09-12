@@ -18,9 +18,10 @@ class SettingService
      */
     public function findByTenantId(?string $tenantId): ?Setting
     {
-        if (!$tenantId) {
+        if (! $tenantId) {
             return null;
         }
+
         return Setting::where('tenant_id', $tenantId)->first();
     }
 

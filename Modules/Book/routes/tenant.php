@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Book\Http\Controllers\BookController;
 use Modules\Book\Http\Controllers\BookCodeController;
+use Modules\Book\Http\Controllers\BookController;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Stancl\Tenancy\Middleware\ScopeSessions;
@@ -11,10 +11,10 @@ $central = config('tenancy.central_domains')[0];
 
 // Route::domain('{tenant}.' . $central)
 Route::middleware([
-        InitializeTenancyBySubdomain::class,
-        PreventAccessFromCentralDomains::class,
-        ScopeSessions::class,
-    ])
+    InitializeTenancyBySubdomain::class,
+    PreventAccessFromCentralDomains::class,
+    ScopeSessions::class,
+])
     ->prefix('admin')
     ->group(function () {
         Route::resource('books', BookController::class)->except(['show', 'update']);

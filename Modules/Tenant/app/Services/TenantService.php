@@ -43,6 +43,7 @@ class TenantService
     {
         return Tenant::findOrFail($id, $columns);
     }
+
     public function save(TenantDto $dto): Tenant
     {
         $tenant = Tenant::create($dto->toArray());
@@ -70,7 +71,7 @@ class TenantService
 
     public function toggleActivate(Tenant $tenant): Tenant
     {
-        $tenant->update(['is_active' => !$tenant->is_active]);
+        $tenant->update(['is_active' => ! $tenant->is_active]);
 
         return $tenant->fresh(['domains']);
     }

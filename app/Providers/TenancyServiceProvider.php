@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Modules\Common\Models\Setting;
+use Spatie\Permission\PermissionRegistrar;
 use Stancl\JobPipeline\JobPipeline;
 use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Jobs;
@@ -21,7 +24,7 @@ class TenancyServiceProvider extends ServiceProvider
     public function events()
     {
         return [
-                // Tenant events
+            // Tenant events
             Events\CreatingTenant::class => [],
             Events\TenantCreated::class => [
                 // JobPipeline::make([
@@ -49,7 +52,7 @@ class TenancyServiceProvider extends ServiceProvider
                 // })->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
             ],
 
-                // Domain events
+            // Domain events
             Events\CreatingDomain::class => [],
             Events\DomainCreated::class => [],
             Events\SavingDomain::class => [],
@@ -59,14 +62,14 @@ class TenancyServiceProvider extends ServiceProvider
             Events\DeletingDomain::class => [],
             Events\DomainDeleted::class => [],
 
-                // Database events
-                // Events\DatabaseCreated::class => [],
-                // Events\DatabaseMigrated::class => [],
-                // Events\DatabaseSeeded::class => [],
-                // Events\DatabaseRolledBack::class => [],
-                // Events\DatabaseDeleted::class => [],
+            // Database events
+            // Events\DatabaseCreated::class => [],
+            // Events\DatabaseMigrated::class => [],
+            // Events\DatabaseSeeded::class => [],
+            // Events\DatabaseRolledBack::class => [],
+            // Events\DatabaseDeleted::class => [],
 
-                // Tenancy events
+            // Tenancy events
             Events\InitializingTenancy::class => [],
             Events\TenancyInitialized::class => [
                 Listeners\BootstrapTenancy::class,
@@ -76,27 +79,27 @@ class TenancyServiceProvider extends ServiceProvider
             Events\TenancyEnded::class => [
                 Listeners\RevertToCentralContext::class,
                 function (Events\TenancyEnded $event) {
-                    $permissionRegistrar = app(\Spatie\Permission\PermissionRegistrar::class);
+                    $permissionRegistrar = app(PermissionRegistrar::class);
                     $permissionRegistrar->cacheKey = 'spatie.permission.cache';
-                }
+                },
             ],
 
             Events\BootstrappingTenancy::class => [],
             Events\TenancyBootstrapped::class => [
                 function (Events\TenancyBootstrapped $event) {
-                    $permissionRegistrar = app(\Spatie\Permission\PermissionRegistrar::class);
-                    $permissionRegistrar->cacheKey = 'spatie.permission.cache.tenant.' . $event->tenancy->tenant->getTenantKey();
-                }
+                    $permissionRegistrar = app(PermissionRegistrar::class);
+                    $permissionRegistrar->cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->getTenantKey();
+                },
             ],
             Events\RevertingToCentralContext::class => [],
             Events\RevertedToCentralContext::class => [],
 
-                // Resource syncing
+            // Resource syncing
             Events\SyncedResourceSaved::class => [
                 Listeners\UpdateSyncedResource::class,
             ],
 
-                // Fired only when a synced resource is changed in a different DB than the origin DB (to avoid infinite loops)
+            // Fired only when a synced resource is changed in a different DB than the origin DB (to avoid infinite loops)
             Events\SyncedResourceChangedInForeignDatabase::class => [],
         ];
     }
@@ -114,7 +117,7 @@ class TenancyServiceProvider extends ServiceProvider
         $this->makeTenancyMiddlewareHighestPriority();
 
         Event::listen(Events\TenancyInitialized::class, function (Events\TenancyInitialized $event) {
-            $setting = \Modules\Common\Models\Setting::where('tenant_id', $event->tenancy->tenant->id)->first();
+            $setting = Setting::where('tenant_id', $event->tenancy->tenant->id)->first();
 
             if ($setting && $setting->mail_email && $setting->mail_password) {
                 config([
@@ -155,7 +158,7 @@ class TenancyServiceProvider extends ServiceProvider
     protected function makeTenancyMiddlewareHighestPriority()
     {
         $tenancyMiddleware = [
-                // Even higher priority than the initialization middleware
+            // Even higher priority than the initialization middleware
             Middleware\PreventAccessFromCentralDomains::class,
 
             Middleware\InitializeTenancyByDomain::class,
@@ -166,7 +169,7 @@ class TenancyServiceProvider extends ServiceProvider
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
+            $this->app[Kernel::class]->prependToMiddlewarePriority($middleware);
         }
     }
 }

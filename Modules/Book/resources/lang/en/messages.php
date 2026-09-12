@@ -10,7 +10,7 @@ return [
     'activated_successfully' => 'Book activated successfully',
     'deactivated_successfully' => 'Book deactivated successfully',
 
-    //Access codes
+    // Access codes
     'codes_generated_successfully' => ':count access code(s) generated successfully',
     'code_deleted_successfully' => 'Access code deleted successfully',
     'code_activated_successfully' => 'Access code activated successfully',

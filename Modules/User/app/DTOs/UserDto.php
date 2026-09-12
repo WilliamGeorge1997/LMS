@@ -51,7 +51,7 @@ readonly class UserDto
             isActive: $isRegister ? false : null,
         );
     }
-    
+
     public function toArray(): array
     {
         $data = [

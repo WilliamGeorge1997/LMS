@@ -1,7 +1,7 @@
 <?php
 
 return [
-    //Title
+    // Title
     'updated' => 'Updated',
     'error' => 'Error',
     'something_went_wrong' => 'Something went wrong. Please try again.',
@@ -9,5 +9,5 @@ return [
     'updated_successfully' => 'Publisher details updated successfully',
     'deleted_succesffully' => 'Publisher deleted successfully',
     'activated_successfully' => 'Publisher activated successfully',
-    'deactivated_successfully' => 'Publisher deactivated successfully'
+    'deactivated_successfully' => 'Publisher deactivated successfully',
 ];

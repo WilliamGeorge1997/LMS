@@ -11,7 +11,7 @@ class BookStoreRequest extends FormRequest
     {
         $admin = auth('admin')->user();
 
-        if (!$admin->hasRole(Role::SUPER_ADMIN->value)) {
+        if (! $admin->hasRole(Role::SUPER_ADMIN->value)) {
             $this->merge([
                 'tenant_id' => $admin->tenant_id,
             ]);

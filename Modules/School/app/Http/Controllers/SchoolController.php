@@ -23,7 +23,7 @@ class SchoolController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
+            'role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value,
             'set.locale',
         ];
     }
@@ -32,8 +32,7 @@ class SchoolController extends Controller implements HasMiddleware
         private readonly SchoolService $schoolService,
         private readonly CityService $cityService,
         private readonly RegionService $regionService,
-    ) {
-    }
+    ) {}
 
     public function index(Request $request)
     {

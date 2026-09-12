@@ -1,7 +1,7 @@
 <?php
 
 return [
-    //Buttons
+    // Buttons
     'create' => 'Create Publisher',
     'submit' => 'Submit',
     'cancel' => 'Cancel',

@@ -1,0 +1,1080 @@
+[
+    {
+        "name_en": "Green Valley School",
+        "name_ar": "مدرسة جرين فالي",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Modern Infinity Language School",
+        "name_ar": "مدرسة مودرن إنفينيتي للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Sheikh Zayed"
+    },
+    {
+        "name_en": "Future Schools \"Arabic Section\"",
+        "name_ar": "مدارس فيوتشر – القسم العربي",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Faisal"
+    },
+    {
+        "name_en": "New Vision Language School",
+        "name_ar": "مدرسة نيو فيجن للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "15th of May"
+    },
+    {
+        "name_en": "El-Amal Language School",
+        "name_ar": "مدرسة الأمل للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Maadi"
+    },
+    {
+        "name_en": "Lycee El-Horreya Bab El-Louk",
+        "name_ar": "ليسيه الحرية باب اللوق",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Downtown"
+    },
+    {
+        "name_en": "Masters Language School",
+        "name_ar": "مدرسة ماسترز للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Al-Andalusia Language School",
+        "name_ar": "مدرسة الأندلسية للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Manor House Language School",
+        "name_ar": "مدرسة مانور هاوس للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "5th Settlement"
+    },
+    {
+        "name_en": "Al-Hossary Azhar Language Institute",
+        "name_ar": "معهد الحصري الأزهري للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Pioneers International School",
+        "name_ar": "مدرسة الرواد الدولية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Al-Safwa Language School",
+        "name_ar": "مدرسة الصفوة للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "King Mariout"
+    },
+    {
+        "name_en": "The International School Of Kenana",
+        "name_ar": "المدرسة الدولية بالكنانة",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Ismailia Desert Road"
+    },
+    {
+        "name_en": "Saint Paul Language School",
+        "name_ar": "مدرسة سانت بول للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Shubra"
+    },
+    {
+        "name_en": "Arafa Language School",
+        "name_ar": "مدرسة عرفة للغات",
+        "country": "Egypt",
+        "city": "Monufia",
+        "region": "Shebin Al Koum"
+    },
+    {
+        "name_en": "Al-Ghad Language School",
+        "name_ar": "مدرسة الغد للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "El Mandara"
+    },
+    {
+        "name_en": "Holy Family Schools",
+        "name_ar": "مدارس العائلة المقدسة",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Downtown"
+    },
+    {
+        "name_en": "City Language School",
+        "name_ar": "مدرسة سيتي للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Dokki"
+    },
+    {
+        "name_en": "City Language School",
+        "name_ar": "مدرسة سيتي للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Hossam El-Din Integrated School",
+        "name_ar": "مدرسة حسام الدين المتكاملة",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Hadayek Al Ahram"
+    },
+    {
+        "name_en": "Saint Anne School",
+        "name_ar": "مدرسة سانت آن",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Downtown"
+    },
+    {
+        "name_en": "Al-Mostakbal Private School",
+        "name_ar": "مدرسة المستقبل الخاصة",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Faisal"
+    },
+    {
+        "name_en": "Skills Language School",
+        "name_ar": "مدرسة سكيلز للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Al Haram"
+    },
+    {
+        "name_en": "Khodair Private School",
+        "name_ar": "مدرسة خضير الخاصة",
+        "country": "Egypt",
+        "city": "Monufia",
+        "region": "Shebin Al Koum"
+    },
+    {
+        "name_en": "Stars Language School",
+        "name_ar": "مدرسة ستارز للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Maadi"
+    },
+    {
+        "name_en": "Smart Vision Language School",
+        "name_ar": "مدرسة سمارت فيجن للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "6th of October Qawmiyaha School",
+        "name_ar": "مدرسة السادس من أكتوبر القومية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Al-Riada Language School",
+        "name_ar": "مدرسة الريادة للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "Smouha"
+    },
+    {
+        "name_en": "MENA Language School",
+        "name_ar": "مدرسة مينا للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "El Shorouk"
+    },
+    {
+        "name_en": "Future Integration School",
+        "name_ar": "مدرسة المستقبل للتكامل",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Al Haram"
+    },
+    {
+        "name_en": "Sunrise Language School",
+        "name_ar": "مدرسة صن رايز للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Heliopolis"
+    },
+    {
+        "name_en": "Continental Palace Language School",
+        "name_ar": "مدرسة كونتيننتال بالاس للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Hadayek Al Ahram"
+    },
+    {
+        "name_en": "Al-Resala Language School",
+        "name_ar": "مدرسة الرسالة للغات",
+        "country": "Egypt",
+        "city": "Port Said",
+        "region": "Port Fouad"
+    },
+    {
+        "name_en": "Al-Quds Language School",
+        "name_ar": "مدرسة القدس للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "Asafra"
+    },
+    {
+        "name_en": "Royal International School",
+        "name_ar": "مدرسة رويال الدولية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Lycee Al-Haram School",
+        "name_ar": "مدرسة ليسيه الهرم",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Al Haram"
+    },
+    {
+        "name_en": "Islamic Youth Schools",
+        "name_ar": "مدارس الشباب الإسلامية",
+        "country": "Egypt",
+        "city": "Qalyubia",
+        "region": "Benha"
+    },
+    {
+        "name_en": "Al-Sadat City Language School",
+        "name_ar": "مدرسة السادات سيتي للغات",
+        "country": "Egypt",
+        "city": "Monufia",
+        "region": "Sadat City"
+    },
+    {
+        "name_en": "Wadi Degla School",
+        "name_ar": "مدرسة وادي دجلة",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Maadi"
+    },
+    {
+        "name_en": "Abeteios Greek School",
+        "name_ar": "مدرسة أبيتيوس اليونانية",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Hadayek Al Qubbah"
+    },
+    {
+        "name_en": "Al-Huda Azhar Language Institute",
+        "name_ar": "معهد الهدى الأزهري للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Al-Nozha Language School \"Boys\"",
+        "name_ar": "مدرسة النزهة للغات – بنين",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Heliopolis"
+    },
+    {
+        "name_en": "Al-Nozha Language School \"Girls\"",
+        "name_ar": "مدرسة النزهة للغات – بنات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Heliopolis"
+    },
+    {
+        "name_en": "Al-Nozha Language School \"Boys\"",
+        "name_ar": "مدرسة النزهة للغات – بنين",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Ismailia Desert Road"
+    },
+    {
+        "name_en": "Al-Nozha Language School \"Girls\"",
+        "name_ar": "مدرسة النزهة للغات – بنات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Ismailia Desert Road"
+    },
+    {
+        "name_en": "Aal Khatab Language School",
+        "name_ar": "مدرسة آل خطاب للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Imbaba"
+    },
+    {
+        "name_en": "New Ramsis College",
+        "name_ar": "كلية رمسيس الجديدة",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Downtown"
+    },
+    {
+        "name_en": "Modern Narmer Language School",
+        "name_ar": "مدرسة نارمر الحديثة للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Dokki"
+    },
+    {
+        "name_en": "Badr Al-Islam Language School",
+        "name_ar": "مدرسة بدر الإسلام للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Nasr City"
+    },
+    {
+        "name_en": "Al Bashaer International School",
+        "name_ar": "مدرسة البشائر الدولية",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Maadi"
+    },
+    {
+        "name_en": "Al-Faisalia Islamic School For Girls",
+        "name_ar": "مدرسة الفيصلية الإسلامية للبنات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Al-Mostakbal School \"Arabic Section\"",
+        "name_ar": "مدرسة المستقبل – القسم العربي",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Faisal"
+    },
+    {
+        "name_en": "Al-Ra'ed International School",
+        "name_ar": "مدرسة الرائد الدولية",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Ismailia Desert Road"
+    },
+    {
+        "name_en": "Aton Language School",
+        "name_ar": "مدرسة آتون للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Mokattam"
+    },
+    {
+        "name_en": "Dream Language School",
+        "name_ar": "مدرسة دريم للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "El Tabiah Road"
+    },
+    {
+        "name_en": "Eternity Language School",
+        "name_ar": "مدرسة إتيرنيتي للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Sheikh Zayed"
+    },
+    {
+        "name_en": "Misr Language School",
+        "name_ar": "مدرسة مصر للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Al Haram"
+    },
+    {
+        "name_en": "Patriarchate School",
+        "name_ar": "المدرسة البطريركية",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Downtown"
+    },
+    {
+        "name_en": "Smart City International School",
+        "name_ar": "مدرسة سمارت سيتي الدولية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Kafr Hakim"
+    },
+    {
+        "name_en": "Sunrise Language School",
+        "name_ar": "مدرسة صن رايز للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "El Shorouk"
+    },
+    {
+        "name_en": "College De La Salle",
+        "name_ar": "كلية دي لاسال",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Downtown"
+    },
+    {
+        "name_en": "El Shorouk Language School",
+        "name_ar": "مدرسة الشروق للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Maadi"
+    },
+    {
+        "name_en": "Alsun Modern School",
+        "name_ar": "مدرسة الألسن الحديثة",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Nasr City"
+    },
+    {
+        "name_en": "El Farouk Private School",
+        "name_ar": "مدرسة الفاروق الخاصة",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Al Haram"
+    },
+    {
+        "name_en": "El Giza El Qawmia",
+        "name_ar": "مدرسة الجيزة القومية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Giza"
+    },
+    {
+        "name_en": "El Nile El Qawmia School",
+        "name_ar": "مدرسة النيل القومية",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "El Manial"
+    },
+    {
+        "name_en": "St. Fatima Language School",
+        "name_ar": "مدرسة سانت فاتيما للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Abbassia"
+    },
+    {
+        "name_en": "St. Fatima Language School Prep",
+        "name_ar": "مدرسة سانت فاتيما للغات – الإعدادي",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Abbassia"
+    },
+    {
+        "name_en": "Al-Ferdaws Private School",
+        "name_ar": "مدرسة الفردوس الخاصة",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Dar El Salam"
+    },
+    {
+        "name_en": "Al-Waha International School",
+        "name_ar": "مدرسة الواحة الدولية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Al Haram"
+    },
+    {
+        "name_en": "Futures Language School",
+        "name_ar": "مدرسة فيوتشرز للغات",
+        "country": "Egypt",
+        "city": "Hurghada",
+        "region": "Hurghada"
+    },
+    {
+        "name_en": "New Islamic Language School",
+        "name_ar": "مدرسة نيو إسلاميك للغات",
+        "country": "Egypt",
+        "city": "Suez",
+        "region": "Port Tawfik"
+    },
+    {
+        "name_en": "Orouba Language School",
+        "name_ar": "مدرسة العروبة للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Dokki"
+    },
+    {
+        "name_en": "Paradise Language School",
+        "name_ar": "مدرسة باراديس للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Katameya"
+    },
+    {
+        "name_en": "Pearls of Modern School",
+        "name_ar": "مدرسة بيرلز أوف مودرن",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "El Shorouk"
+    },
+    {
+        "name_en": "Private School Azizia",
+        "name_ar": "مدرسة العزيزية الخاصة",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Al Haram"
+    },
+    {
+        "name_en": "Sakkara Language School",
+        "name_ar": "مدرسة سقارة للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Al Haram"
+    },
+    {
+        "name_en": "Spatiss Modern Academy",
+        "name_ar": "أكاديمية سباتيس الحديثة",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Hadayek Al Ahram"
+    },
+    {
+        "name_en": "YLS Language School",
+        "name_ar": "مدرسة واي إل إس للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "New Cairo"
+    },
+    {
+        "name_en": "Egypt Language School",
+        "name_ar": "مدرسة إيجيبت للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Hadayek Al Ahram"
+    },
+    {
+        "name_en": "Cairo Manara School",
+        "name_ar": "مدرسة منارة القاهرة",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Nasr City"
+    },
+    {
+        "name_en": "Al-Manhal Language School",
+        "name_ar": "مدرسة المنهل للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Nasr City"
+    },
+    {
+        "name_en": "Manaret El Eman Language School",
+        "name_ar": "مدرسة منارة الإيمان للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Nasr City"
+    },
+    {
+        "name_en": "Sahara Language School",
+        "name_ar": "مدرسة الصحراء للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Downtown"
+    },
+    {
+        "name_en": "Almanar Language School",
+        "name_ar": "مدرسة المنار للغات",
+        "country": "Egypt",
+        "city": "New Administrative Capital",
+        "region": "Zayed District"
+    },
+    {
+        "name_en": "Patriarchal College",
+        "name_ar": "الكلية البطريركية",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Heliopolis"
+    },
+    {
+        "name_en": "Patriarchal College",
+        "name_ar": "الكلية البطريركية",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Ramses Street"
+    },
+    {
+        "name_en": "Patriarchal College: Coeducational School",
+        "name_ar": "الكلية البطريركية – مدرسة مختلطة",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "New Heliopolis"
+    },
+    {
+        "name_en": "Grand Language School",
+        "name_ar": "مدرسة جراند للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "Asafra"
+    },
+    {
+        "name_en": "Sakr Language School",
+        "name_ar": "مدرسة صقر للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "El Seyouf"
+    },
+    {
+        "name_en": "Wise Stars Language School",
+        "name_ar": "مدرسة وايز ستارز للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "Asafra"
+    },
+    {
+        "name_en": "Future Rise Language School",
+        "name_ar": "مدرسة فيوتشر رايز للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Maadi"
+    },
+    {
+        "name_en": "Privilege Language School",
+        "name_ar": "مدرسة بريفيليج للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Maadi"
+    },
+    {
+        "name_en": "Sheraton Heliopolis Language School",
+        "name_ar": "مدرسة شيراتون مصر الجديدة للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Heliopolis"
+    },
+    {
+        "name_en": "Brilliant Mind Language School",
+        "name_ar": "مدرسة برليانت مايند للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Mokattam"
+    },
+    {
+        "name_en": "Al-Bokhary Azharian Institute",
+        "name_ar": "معهد البخاري الأزهري",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "5th Settlement"
+    },
+    {
+        "name_en": "Zohor 15th of May Language School",
+        "name_ar": "مدرسة زهور 15 مايو للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "15th of May"
+    },
+    {
+        "name_en": "Ekhnaton Language School",
+        "name_ar": "مدرسة إخناتون للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "5th Settlement"
+    },
+    {
+        "name_en": "Pioneers International School",
+        "name_ar": "مدرسة الرواد الدولية",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Ismailia Desert Road"
+    },
+    {
+        "name_en": "Aal Yasser School",
+        "name_ar": "مدرسة آل ياسر",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "5th Settlement"
+    },
+    {
+        "name_en": "Patriarchal School",
+        "name_ar": "المدرسة البطريركية",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Downtown"
+    },
+    {
+        "name_en": "St. Fatima School",
+        "name_ar": "مدرسة سانت فاتيما",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Downtown"
+    },
+    {
+        "name_en": "Rowad Al-Mostaqbal School",
+        "name_ar": "مدرسة رواد المستقبل",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "15th of May"
+    },
+    {
+        "name_en": "Manaret El-Eman Schools",
+        "name_ar": "مدارس منارة الإيمان",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Nasr City"
+    },
+    {
+        "name_en": "Queen International School",
+        "name_ar": "مدرسة كوين الدولية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Faisal"
+    },
+    {
+        "name_en": "Spatiss Language School",
+        "name_ar": "مدرسة سباتيس للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Hadayek Al Ahram"
+    },
+    {
+        "name_en": "Al-Awael Syrian School",
+        "name_ar": "مدرسة الأوائل السورية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Zewail Smart School",
+        "name_ar": "مدرسة زويل الذكية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Zee Academy",
+        "name_ar": "أكاديمية زي",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Samir Goher Schools",
+        "name_ar": "مدارس سمير جوهر",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Imbaba"
+    },
+    {
+        "name_en": "Capital Language School",
+        "name_ar": "مدرسة كابيتال للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Hadayek Al Ahram"
+    },
+    {
+        "name_en": "Manarat El-Bayan Schools",
+        "name_ar": "مدارس منارات البيان",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Obour"
+    },
+    {
+        "name_en": "New Castle International School",
+        "name_ar": "مدرسة نيو كاسل الدولية",
+        "country": "Egypt",
+        "city": "New Administrative Capital",
+        "region": "New Capital"
+    },
+    {
+        "name_en": "Port Said International Academy",
+        "name_ar": "أكاديمية بورسعيد الدولية",
+        "country": "Egypt",
+        "city": "Port Said",
+        "region": "Port Said"
+    },
+    {
+        "name_en": "Nile Language School",
+        "name_ar": "مدرسة النيل للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "El Ras El Soda"
+    },
+    {
+        "name_en": "Al-Gamhouriya Language School",
+        "name_ar": "مدرسة الجمهورية للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Hadayek Al Zaytoun"
+    },
+    {
+        "name_en": "Sahara Language School",
+        "name_ar": "مدرسة الصحراء للغات",
+        "country": "Egypt",
+        "city": "New Administrative Capital",
+        "region": "New Capital"
+    },
+    {
+        "name_en": "Manarat Ismailia Schools",
+        "name_ar": "مدارس منارات الإسماعيلية",
+        "country": "Egypt",
+        "city": "Ismailia",
+        "region": "Ismailia"
+    },
+    {
+        "name_en": "Misr Language School",
+        "name_ar": "مدرسة مصر للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Remaya Square"
+    },
+    {
+        "name_en": "Gianaclis School",
+        "name_ar": "مدرسة جناكليس",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "Gianaclis"
+    },
+    {
+        "name_en": "Al-Mansour Language School",
+        "name_ar": "مدرسة المنصور للغات",
+        "country": "Egypt",
+        "city": "Sharqia",
+        "region": "Abu-Kabir"
+    },
+    {
+        "name_en": "Royal Language School",
+        "name_ar": "مدرسة رويال للغات",
+        "country": "Egypt",
+        "city": "Fayoum",
+        "region": "Fayoum"
+    },
+    {
+        "name_en": "Genius Language School",
+        "name_ar": "مدرسة جينيوس للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Mansouriya"
+    },
+    {
+        "name_en": "Talant Language School",
+        "name_ar": "مدرسة تالنت للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Mansouriya"
+    },
+    {
+        "name_en": "Al-Hayah Language School",
+        "name_ar": "مدرسة الحياة للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Mansouriya"
+    },
+    {
+        "name_en": "St. Fatima Language School",
+        "name_ar": "مدرسة سانت فاتيما للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Nasr City"
+    },
+    {
+        "name_en": "Genius Language School",
+        "name_ar": "مدرسة جينيوس للغات",
+        "country": "Egypt",
+        "city": "Gharbia",
+        "region": "Tanta"
+    },
+    {
+        "name_en": "Royal Language School",
+        "name_ar": "مدرسة رويال للغات",
+        "country": "Egypt",
+        "city": "Gharbia",
+        "region": "Tanta"
+    },
+    {
+        "name_en": "Blue Sky Language School",
+        "name_ar": "مدرسة بلو سكاي للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "Alexandria"
+    },
+    {
+        "name_en": "Princess Language School",
+        "name_ar": "مدرسة برنسيس للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "Alexandria"
+    },
+    {
+        "name_en": "Al-Helaliya Language School",
+        "name_ar": "مدرسة الهلالية للغات",
+        "country": "Egypt",
+        "city": "Alexandria",
+        "region": "El Seyouf"
+    },
+    {
+        "name_en": "Pearls Language School",
+        "name_ar": "مدرسة بيرلز للغات",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "El Shorouk"
+    },
+    {
+        "name_en": "College De La Salle School",
+        "name_ar": "مدرسة كلية دي لاسال",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Downtown"
+    },
+    {
+        "name_en": "Integrated Thebes School",
+        "name_ar": "مدرسة طيبة المتكاملة",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Ismailia Desert Road"
+    },
+    {
+        "name_en": "Manaret Al-Eman School",
+        "name_ar": "مدرسة منارة الإيمان",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Nasr City"
+    },
+    {
+        "name_en": "Al-Kamal Azharian Institute",
+        "name_ar": "معهد الكمال الأزهري",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "New Cairo"
+    },
+    {
+        "name_en": "Seven Pillars School",
+        "name_ar": "مدرسة الأعمدة السبعة",
+        "country": "Egypt",
+        "city": "New Administrative Capital",
+        "region": "New Capital"
+    },
+    {
+        "name_en": "Al-Sayda Khadiga School",
+        "name_ar": "مدرسة السيدة خديجة",
+        "country": "Egypt",
+        "city": "Cairo",
+        "region": "Sheraton"
+    },
+    {
+        "name_en": "Modern Thebes School",
+        "name_ar": "مدرسة طيبة الحديثة",
+        "country": "Egypt",
+        "city": "Dakahlia",
+        "region": "Mansoura"
+    },
+    {
+        "name_en": "New Mansoura American School",
+        "name_ar": "مدرسة المنصورة الأمريكية الجديدة",
+        "country": "Egypt",
+        "city": "Dakahlia",
+        "region": "Mansoura"
+    },
+    {
+        "name_en": "Al-Safwa Language School",
+        "name_ar": "مدرسة الصفوة للغات",
+        "country": "Egypt",
+        "city": "Dakahlia",
+        "region": "Mansoura"
+    },
+    {
+        "name_en": "Mansoura College School",
+        "name_ar": "مدرسة كلية المنصورة",
+        "country": "Egypt",
+        "city": "Dakahlia",
+        "region": "Mansoura"
+    },
+    {
+        "name_en": "Delta National School",
+        "name_ar": "مدرسة دلتا الوطنية",
+        "country": "Egypt",
+        "city": "Dakahlia",
+        "region": "Mansoura"
+    },
+    {
+        "name_en": "Royal Language School",
+        "name_ar": "مدرسة رويال للغات",
+        "country": "Egypt",
+        "city": "Dakahlia",
+        "region": "Mansoura"
+    },
+    {
+        "name_en": "Notre Dame Des Apotres School",
+        "name_ar": "مدرسة نوتردام ديزابوتر",
+        "country": "Egypt",
+        "city": "Damietta",
+        "region": "Ras Al-Bar"
+    },
+    {
+        "name_en": "Bright Vision School",
+        "name_ar": "مدرسة برايت فيجن",
+        "country": "Egypt",
+        "city": "Fayoum",
+        "region": "Fayoum"
+    },
+    {
+        "name_en": "Genius International School",
+        "name_ar": "مدرسة جينيوس الدولية",
+        "country": "Egypt",
+        "city": "Gharbia",
+        "region": "Tanta"
+    },
+    {
+        "name_en": "Nefertari School",
+        "name_ar": "مدرسة نفرتاري",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Fanarah Language School",
+        "name_ar": "مدرسة فنارة للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Arkan Future School",
+        "name_ar": "مدرسة أركان المستقبل",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Epic International School",
+        "name_ar": "مدرسة إيبيك الدولية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "6th of October"
+    },
+    {
+        "name_en": "Smart Village School",
+        "name_ar": "مدرسة القرية الذكية",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Alexandria Desert Road"
+    },
+    {
+        "name_en": "Al-Orouba Language School",
+        "name_ar": "مدرسة العروبة للغات",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Dokki"
+    },
+    {
+        "name_en": "Royal House School",
+        "name_ar": "مدرسة رويال هاوس",
+        "country": "Egypt",
+        "city": "Giza",
+        "region": "Shubra Munt"
+    }
+]

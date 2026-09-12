@@ -6,14 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Modules\Admin\Enums\Role;
 use Modules\Book\DTOs\BookDto;
-use ZipArchive;
 use Modules\Book\Models\Book;
 use Modules\Book\Models\BookCode;
 use Modules\Common\Traits\UploaderTrait;
 use Modules\User\Models\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Yajra\DataTables\Facades\DataTables;
+use ZipArchive;
 
 class BookService
 {
@@ -121,7 +122,7 @@ class BookService
 
     public function toggleActivate(Book $book): Book
     {
-        $book->update(['is_active' => !$book->is_active]);
+        $book->update(['is_active' => ! $book->is_active]);
 
         return $book->fresh();
     }
@@ -139,10 +140,10 @@ class BookService
         }
 
         $admin = auth('admin')->user();
-        $tenantId = $admin && $admin->hasRole(\Modules\Admin\Enums\Role::SUPER_ADMIN->value) ? session('admin_tenant_id') : ($admin ? $admin->tenant_id : null);
-        
+        $tenantId = $admin && $admin->hasRole(Role::SUPER_ADMIN->value) ? session('admin_tenant_id') : ($admin ? $admin->tenant_id : null);
+
         $this->extractAndSaveZip($uploadResult, $book, $tenantId);
-        
+
         return ['path' => $book->path];
     }
 
@@ -152,11 +153,11 @@ class BookService
             $this->deleteBookPath($book->getRawOriginal('path'), $tenantId);
         }
 
-        $uniqueId = uniqid() . '_' . time();
-        $tenantPath = $tenantId ? $tenantId . '/' : 'central/';
+        $uniqueId = uniqid().'_'.time();
+        $tenantPath = $tenantId ? $tenantId.'/' : 'central/';
         $downloadDir = "uploads/{$tenantPath}book/download";
-        
-        if (!Storage::disk('public')->exists($downloadDir)) {
+
+        if (! Storage::disk('public')->exists($downloadDir)) {
             Storage::disk('public')->makeDirectory($downloadDir);
         }
 
@@ -167,7 +168,7 @@ class BookService
         File::makeDirectory($extractDir, 0777, true);
 
         $zip = new ZipArchive;
-        if ($zip->open($finalZipPath) === TRUE) {
+        if ($zip->open($finalZipPath) === true) {
             $zip->extractTo($extractDir);
             $zip->close();
         }
@@ -177,7 +178,7 @@ class BookService
 
     private function deleteBookPath(string $path, ?string $tenantId): void
     {
-        $tenantPath = $tenantId ? $tenantId . '/' : 'central/';
+        $tenantPath = $tenantId ? $tenantId.'/' : 'central/';
         $downloadZip = "uploads/{$tenantPath}book/download/{$path}.zip";
         if (Storage::disk('public')->exists($downloadZip)) {
             Storage::disk('public')->delete($downloadZip);
@@ -189,7 +190,7 @@ class BookService
         }
     }
 
-    //For API
+    // For API
     public function findByUser(User $user)
     {
         $bookCodes = BookCode::query()

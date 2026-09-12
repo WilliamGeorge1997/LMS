@@ -6,15 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Maatwebsite\Excel\Facades\Excel;
 use Modules\Admin\Enums\Role;
 use Modules\Book\DTOs\BookCodeDto;
+use Modules\Book\Exports\BookCodesExport;
 use Modules\Book\Http\Requests\BookCodeStoreRequest;
 use Modules\Book\Models\BookCode;
 use Modules\Book\Services\BookCodeService;
 use Modules\Book\ViewModel\BookViewModel;
 use Modules\Common\Helpers\AjaxResponse;
-use Maatwebsite\Excel\Facades\Excel;
-use Modules\Book\Exports\BookCodesExport;
 
 class BookCodeController extends Controller implements HasMiddleware
 {
@@ -22,14 +22,12 @@ class BookCodeController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
+            'role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value,
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly BookCodeService $bookCodeService)
-    {
-    }
+    public function __construct(private readonly BookCodeService $bookCodeService) {}
 
     public function index(Request $request)
     {

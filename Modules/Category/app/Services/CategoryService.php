@@ -72,7 +72,7 @@ class CategoryService
 
     public function toggleActivate(Category $category): Category
     {
-        $category->update(['is_active' => !$category->is_active]);
+        $category->update(['is_active' => ! $category->is_active]);
 
         return $category->fresh();
     }

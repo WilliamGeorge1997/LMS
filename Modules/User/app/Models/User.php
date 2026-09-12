@@ -21,7 +21,7 @@ use Modules\User\Enums\UserType;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -51,7 +51,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'verify_code'
+        'verify_code',
     ];
 
     /**

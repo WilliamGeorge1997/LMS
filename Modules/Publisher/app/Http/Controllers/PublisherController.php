@@ -20,14 +20,12 @@ class PublisherController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
+            'role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value,
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly PublisherService $publisherService)
-    {
-    }
+    public function __construct(private readonly PublisherService $publisherService) {}
 
     /**
      * Display a listing of the resource.
@@ -95,6 +93,7 @@ class PublisherController extends Controller implements HasMiddleware
     public function byManager(int $manager_id)
     {
         $publishers = $this->publisherService->findBy('manager_id', $manager_id, ['id', 'name']);
+
         return AjaxResponse::success(data: $publishers);
     }
 }

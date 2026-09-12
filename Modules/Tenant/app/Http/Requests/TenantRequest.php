@@ -4,6 +4,7 @@ namespace Modules\Tenant\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Modules\Tenant\Models\Tenant;
 
 class TenantRequest extends FormRequest
 {
@@ -18,7 +19,7 @@ class TenantRequest extends FormRequest
 
     public function rules(): array
     {
-        /** @var \Modules\Tenant\Models\Tenant|null $tenant */
+        /** @var Tenant|null $tenant */
         $tenant = $this->route('tenant');
         $domainId = $tenant?->domains()->value('id');
 

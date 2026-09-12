@@ -1,11 +1,11 @@
 <?php
 
 return [
-    //Title
+    // Title
     'publishers' => 'الناشرين',
     'publishers_list' => 'قائمة الناشرين',
 
-    //Attributes
+    // Attributes
     'name' => 'الاسم',
     'manager' => 'المدير',
     'is_active' => 'الحالة',

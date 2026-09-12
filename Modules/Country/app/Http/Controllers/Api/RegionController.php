@@ -9,9 +9,7 @@ use Modules\Country\Services\RegionService;
 
 class RegionController extends Controller
 {
-    public function __construct(private readonly RegionService $regionService)
-    {
-    }
+    public function __construct(private readonly RegionService $regionService) {}
 
     public function index(City $city): JsonResponse
     {

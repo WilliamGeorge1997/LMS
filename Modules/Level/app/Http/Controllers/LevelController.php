@@ -21,14 +21,12 @@ class LevelController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
+            'role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value,
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly LevelService $levelService)
-    {
-    }
+    public function __construct(private readonly LevelService $levelService) {}
 
     public function index(Request $request)
     {

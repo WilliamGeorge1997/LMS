@@ -21,7 +21,7 @@ class PublisherService
         $query = Publisher::query()
             ->select(['id', 'name', 'tenant_id', 'is_active', 'created_at'])
             ->with([
-                'tenant:id,name'
+                'tenant:id,name',
             ])->latest('id');
 
         return DataTables::eloquent($query)
@@ -38,7 +38,6 @@ class PublisherService
     {
         return Publisher::query()->active()->where($key, $value)->get($columns);
     }
-
 
     public function active()
     {
@@ -74,7 +73,7 @@ class PublisherService
 
     public function toggleActivate(Publisher $publisher): Publisher
     {
-        $publisher->update(['is_active' => !$publisher->is_active]);
+        $publisher->update(['is_active' => ! $publisher->is_active]);
 
         return $publisher->fresh();
     }

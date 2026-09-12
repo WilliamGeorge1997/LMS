@@ -8,6 +8,6 @@ class CategoryViewModel
 {
     public function publishersByTenant()
     {
-        return (new PublisherService())->findByTenant();
+        return (new PublisherService)->findByTenant();
     }
 }

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Admin\Enums\Role;
-use Modules\Country\Models\City;
 use Spatie\Translatable\HasTranslations;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
@@ -19,13 +18,13 @@ class Region extends Model
 
     public array $translatable = ['title'];
 
-    //Date Serialization
+    // Date Serialization
     protected function serializeDate(\DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i A');
     }
 
-    //Scopes
+    // Scopes
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
@@ -38,7 +37,7 @@ class Region extends Model
         });
     }
 
-    //Relations
+    // Relations
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);

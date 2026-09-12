@@ -26,7 +26,7 @@ class PublisherDto
 
     public function toArray(): array
     {
-        $data =  [
+        $data = [
             'name' => [
                 'ar' => $this->name_ar,
                 'en' => $this->name_en,

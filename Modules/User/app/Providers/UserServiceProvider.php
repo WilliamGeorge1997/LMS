@@ -2,8 +2,8 @@
 
 namespace Modules\User\Providers;
 
-use Nwidart\Modules\Support\ModuleServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
+use Nwidart\Modules\Support\ModuleServiceProvider;
 
 class UserServiceProvider extends ModuleServiceProvider
 {
@@ -36,8 +36,8 @@ class UserServiceProvider extends ModuleServiceProvider
 
     /**
      * Define module schedules.
-     * 
-     * @param $schedule
+     *
+     * @param  $schedule
      */
     // protected function configureSchedules(Schedule $schedule): void
     // {
@@ -47,7 +47,7 @@ class UserServiceProvider extends ModuleServiceProvider
     protected function registerTranslations(): void
     {
         $path = module_path($this->name, 'lang');
-        
+
         $this->loadTranslationsFrom($path, $this->nameLower);
         $this->loadJsonTranslationsFrom($path);
     }

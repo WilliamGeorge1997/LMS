@@ -11,7 +11,6 @@ use Override;
 
 class BookController extends Controller implements HasMiddleware
 {
-
     #[Override]
     public static function middleware(): array
     {
@@ -21,7 +20,6 @@ class BookController extends Controller implements HasMiddleware
     }
 
     public function __construct(private readonly BookService $bookService) {}
-
 
     public function myBooks(Request $request): JsonResponse
     {

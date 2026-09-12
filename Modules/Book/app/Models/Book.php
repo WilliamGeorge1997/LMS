@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 use Modules\Admin\Enums\Role;
-use Modules\Book\Models\BookCode;
 use Modules\Category\Models\Category;
 use Modules\Level\Models\Level;
 use Modules\Publisher\Models\Publisher;
@@ -63,9 +62,9 @@ class Book extends Model
             return null;
         }
 
-        $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
+        $tenantPath = $this->tenant_id ? $this->tenant_id.'/' : 'central/';
 
-        return Storage::disk('public')->url('uploads/' . $tenantPath . 'book/cover/' . $value);
+        return Storage::disk('public')->url('uploads/'.$tenantPath.'book/cover/'.$value);
     }
 
     public function getPathAttribute(?string $value): ?string
@@ -74,9 +73,9 @@ class Book extends Model
             return null;
         }
 
-        $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
+        $tenantPath = $this->tenant_id ? $this->tenant_id.'/' : 'central/';
 
-        return Storage::disk('public')->url('uploads/' . $tenantPath . 'book/' . $value);
+        return Storage::disk('public')->url('uploads/'.$tenantPath.'book/'.$value);
     }
 
     public function getDownloadAttribute(): ?string
@@ -87,11 +86,10 @@ class Book extends Model
             return null;
         }
 
-        $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
+        $tenantPath = $this->tenant_id ? $this->tenant_id.'/' : 'central/';
 
-        return Storage::disk('public')->url('uploads/' . $tenantPath . 'book/download/' . $value . '.zip');
+        return Storage::disk('public')->url('uploads/'.$tenantPath.'book/download/'.$value.'.zip');
     }
-
 
     public function publisher(): BelongsTo
     {

@@ -1,11 +1,11 @@
 <?php
 
 return [
-    //Title
+    // Title
     'publishers' => 'Publishers',
     'publishers_list' => 'Publishers List',
 
-    //Attributes
+    // Attributes
     'name_en' => 'Name (English)',
     'name_ar' => 'Name (Arabic)',
     'tenant' => 'Tenant',

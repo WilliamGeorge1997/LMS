@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Book\Enums\BookCodeType;
 use Modules\Book\Models\Book;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('book_codes', function (Blueprint $table) {
