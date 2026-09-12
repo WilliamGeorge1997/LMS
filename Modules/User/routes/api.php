@@ -8,6 +8,7 @@ use Modules\User\Http\Controllers\UserController;
 Route::prefix('auth')->group(function () {
     Route::post('register', [UserAuthController::class, 'register']);
     Route::post('login', [UserAuthController::class, 'login']);
+    Route::post('verify', [UserAuthController::class, 'verify']);
     Route::post('logout', [UserAuthController::class, 'logout']);
     
     Route::post('forget-password', [UserAuthController::class, 'forgetPassword']);

@@ -13,7 +13,7 @@ readonly class UserDto
         public string $name,
         public string $email,
         public string $username,
-        public int $schoolId,
+        public ?int $schoolId,
         public int $countryId,
         public int $cityId,
         public int $regionId,
@@ -21,6 +21,7 @@ readonly class UserDto
         public ?string $type = null,
         public ?string $code = null,
         public ?string $verifyCode = null,
+        public ?bool $isActive = null,
     ) {}
 
     public static function fromRegisterRequest(UserRegisterRequest $request): self
@@ -39,7 +40,7 @@ readonly class UserDto
             name: $request->validated('name'),
             email: $request->validated('email'),
             username: $request->validated('username'),
-            schoolId: (int) $request->validated('school_id'),
+            schoolId: $request->validated('school_id'),
             countryId: (int) $request->validated('country_id'),
             cityId: (int) $request->validated('city_id'),
             regionId: (int) $request->validated('region_id'),
@@ -47,6 +48,7 @@ readonly class UserDto
             type: $isRegister ? $request->validated('type') : null,
             code: $isRegister ? $request->validated('code') : null,
             verifyCode: $isRegister ? (string) rand(100000, 999999) : null,
+            isActive: $isRegister ? false : null,
         );
     }
     
@@ -56,11 +58,14 @@ readonly class UserDto
             'name' => $this->name,
             'email' => $this->email,
             'username' => $this->username,
-            'school_id' => $this->schoolId,
             'country_id' => $this->countryId,
             'city_id' => $this->cityId,
             'region_id' => $this->regionId,
         ];
+
+        if ($this->schoolId !== null) {
+            $data['school_id'] = $this->schoolId;
+        }
 
         if ($this->password) {
             $data['password'] = Hash::make($this->password);
@@ -76,6 +81,10 @@ readonly class UserDto
 
         if ($this->verifyCode) {
             $data['verify_code'] = $this->verifyCode;
+        }
+
+        if ($this->isActive !== null) {
+            $data['is_active'] = $this->isActive;
         }
 
         return $data;

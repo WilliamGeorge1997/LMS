@@ -19,6 +19,7 @@ use Modules\User\Http\Requests\NewPasswordRequest;
 use Modules\User\Http\Requests\UserLoginRequest;
 use Modules\User\Http\Requests\UserRegisterRequest;
 use Modules\User\Http\Requests\VerifyForgetPasswordRequest;
+use Modules\User\Http\Requests\VerifyRequest;
 use Modules\User\Models\User;
 
 
@@ -71,6 +72,22 @@ class UserAuthController extends Controller
         $token = $user->createToken('user_token')->plainTextToken;
 
         return $this->respondWithToken($token, $user);
+    }
+
+    public function verify(VerifyRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        /**@var User $user */
+        $user = User::where('email', $data['email'])->first();
+
+        if ($user && $user->verify_code == $data['otp']) {
+            $user->update([
+                'is_active' => true,
+            ]);
+            return apiResponse(true, 'Valid OTP, Your account has been activated successfully.');
+        }
+
+        return apiResponse(false, 'Wrong OTP', null, 'unauthorized');
     }
 
 
@@ -131,12 +148,12 @@ class UserAuthController extends Controller
     public function editProfile(EditProfileRequest $request): JsonResponse
     {
         $dto = UserDto::fromEditProfileRequest($request);
-        
+
         /** @var User $user */
         $user = auth('user')->user();
-        
+
         $user->update($dto->toArray());
-        
+
         return apiResponse(true, __('user::message.profile_updated'), $user->fresh());
     }
 
