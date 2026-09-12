@@ -30,7 +30,6 @@ class SchoolService
                 'region:id,title',
                 'tenant:id,name',
             ])
-            ->byTenant()
             ->latest('id');
 
         return DataTables::eloquent($query)

@@ -138,6 +138,10 @@ window.Actions = {
             $.ajax({ 
                 url: url, 
                 method: 'POST',
+                headers: {
+                    'X-HTTP-Method-Override': 'PATCH',
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 data: { _method: 'PATCH' }
             })
                 .done(function () {
@@ -188,6 +192,10 @@ window.Actions = {
                     $.ajax({ 
                         url: url, 
                         method: 'POST',
+                        headers: {
+                            'X-HTTP-Method-Override': 'DELETE',
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
                         data: { _method: 'DELETE' }
                     })
                         .done(function () {
