@@ -2,9 +2,8 @@
 
 namespace Modules\School\Providers;
 
-use Illuminate\Console\Scheduling\Schedule;
-use Modules\School\Console\Commands\ImportTenantSchoolsCommand;
 use Nwidart\Modules\Support\ModuleServiceProvider;
+use Illuminate\Console\Scheduling\Schedule;
 
 class SchoolServiceProvider extends ModuleServiceProvider
 {
@@ -23,9 +22,7 @@ class SchoolServiceProvider extends ModuleServiceProvider
      *
      * @var string[]
      */
-    protected array $commands = [
-        ImportTenantSchoolsCommand::class,
-    ];
+    // protected array $commands = [];
 
     /**
      * Provider classes to register.
@@ -39,8 +36,8 @@ class SchoolServiceProvider extends ModuleServiceProvider
 
     /**
      * Define module schedules.
-     *
-     * @param  $schedule
+     * 
+     * @param $schedule
      */
     // protected function configureSchedules(Schedule $schedule): void
     // {
