@@ -135,7 +135,11 @@ window.Actions = {
             var checked = $checkbox.prop('checked');
             var url = toggleUrl.replace(':id', $checkbox.data('id'));
             $checkbox.prop('disabled', true);
-            $.ajax({ url: url, method: 'PATCH' })
+            $.ajax({ 
+                url: url, 
+                method: 'POST',
+                data: { _method: 'PATCH' }
+            })
                 .done(function () {
                     Actions._success();
                 })
@@ -181,7 +185,11 @@ window.Actions = {
                 cancelButtonText: 'Cancel'
             }).then(function (result) {
                 if (result.isConfirmed) {
-                    $.ajax({ url: url, method: 'DELETE' })
+                    $.ajax({ 
+                        url: url, 
+                        method: 'POST',
+                        data: { _method: 'DELETE' }
+                    })
                         .done(function () {
                             dataTable.row($tr).remove().draw(false);
                             Actions._success();
