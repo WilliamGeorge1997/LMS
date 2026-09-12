@@ -20,6 +20,8 @@ class Setting extends Model
         'tenant_id',
         'app_version',
         'app_path',
+        'mail_email',
+        'mail_password',
     ];
 
     public function tenant(): BelongsTo

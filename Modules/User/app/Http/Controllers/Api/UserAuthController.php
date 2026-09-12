@@ -13,6 +13,7 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Modules\Book\Services\BookCodeService;
 use Modules\User\DTOs\UserDto;
 use Modules\User\Emails\ForgetPasswordMail;
+use Modules\User\Emails\RegisterMail;
 use Modules\User\Http\Requests\EditProfileRequest;
 use Modules\User\Http\Requests\ForgetPasswordRequest;
 use Modules\User\Http\Requests\NewPasswordRequest;
@@ -40,6 +41,11 @@ class UserAuthController extends Controller
 
                 return $user;
             });
+
+            if ($user->verify_code) {
+                Mail::to($user->email)->send((new RegisterMail($user->verify_code))->onConnection('database'));
+            }
+
             return apiResponse(true, __('user::message.registered'), $user, 'created');
         } catch (ValidationException $e) {
             return apiResponse(false, 'Validation errors', $e->errors(), 'validation_error');

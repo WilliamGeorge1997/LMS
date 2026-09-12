@@ -112,6 +112,21 @@ class TenancyServiceProvider extends ServiceProvider
         $this->mapRoutes();
 
         $this->makeTenancyMiddlewareHighestPriority();
+
+        Event::listen(Events\TenancyInitialized::class, function (Events\TenancyInitialized $event) {
+            $setting = \Modules\Common\Models\Setting::where('tenant_id', $event->tenancy->tenant->id)->first();
+
+            if ($setting && $setting->mail_email && $setting->mail_password) {
+                config([
+                    'mail.mailers.smtp.username' => $setting->mail_email,
+                    'mail.mailers.smtp.password' => $setting->mail_password,
+                    'mail.from.address' => $setting->mail_email,
+                    'mail.from.name' => $event->tenancy->tenant->name,
+                ]);
+
+                app()->forgetInstance('mail.manager');
+            }
+        });
     }
 
     protected function bootEvents()

@@ -53,13 +53,13 @@
                     <div class="col-md-6">
                         <label class="form-label">{{ __('common::attributes.mail_email') ?? 'Gmail Address' }}</label>
                         <input type="email" name="mail_email" class="form-control form-control-solid"
-                            value="{{ $tenant?->mail_email }}" placeholder="example@gmail.com" autocomplete="off" />
+                            value="{{ $setting?->mail_email }}" placeholder="example@gmail.com" autocomplete="off" />
                         <div class="invalid-feedback d-block" data-error="mail_email"></div>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">{{ __('common::attributes.mail_password') ?? 'Gmail App Password' }}</label>
-                        <input type="password" name="mail_password" class="form-control form-control-solid"
+                        <input type="password" name="mail_password" value="{{ $setting?->mail_password }}" class="form-control form-control-solid"
                             placeholder="Leave blank to keep current password" autocomplete="new-password" />
                         <div class="invalid-feedback d-block" data-error="mail_password"></div>
                     </div>
