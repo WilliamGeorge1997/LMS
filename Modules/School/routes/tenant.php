@@ -19,9 +19,9 @@ Route::middleware([
         Route::get('schools/ajax_city', [SchoolController::class, 'ajaxCity']);
         Route::get('schools/ajax_region', [SchoolController::class, 'ajaxRegion']);
 
-        Route::resource('schools', SchoolController::class)->except(['show', 'update', 'destroy']);
-        Route::post('schools/{school}/destroy', [SchoolController::class, 'destroy'])->name('schools.destroy');
+        Route::resource('schools', SchoolController::class)->except(['show', 'update']);
+
         Route::get('schools/{school}/edit', [SchoolController::class, 'edit']);
         Route::post('schools/{school}', [SchoolController::class, 'update']);
-        Route::post('schools/{school}/toggle-activate', [SchoolController::class, 'toggleActivate']);
+        Route::patch('schools/{school}/toggle-activate', [SchoolController::class, 'toggleActivate']);
     });

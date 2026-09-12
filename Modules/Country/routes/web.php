@@ -13,18 +13,15 @@ Route::domain($central)
     ->group(function () {
         Route::get('cities/ajax_city', [CityController::class, 'ajaxCity'])->name('cities.ajax_city');
 
-        Route::resource('countries', CountryController::class)->except(['show', 'update', 'destroy']);
-        Route::post('countries/{country}/destroy', [CountryController::class, 'destroy'])->name('countries.destroy');
+        Route::resource('countries', CountryController::class)->except(['show', 'update']);
         Route::post('countries/{country}', [CountryController::class, 'update'])->name('countries.update');
-        Route::post('countries/{country}/toggle-activate', [CountryController::class, 'toggleActivate'])->name('countries.toggle-activate');
+        Route::patch('countries/{country}/toggle-activate', [CountryController::class, 'toggleActivate'])->name('countries.toggle-activate');
 
-        Route::resource('cities', CityController::class)->except(['show', 'update', 'destroy']);
-        Route::post('cities/{city}/destroy', [CityController::class, 'destroy'])->name('cities.destroy');
+        Route::resource('cities', CityController::class)->except(['show', 'update']);
         Route::post('cities/{city}', [CityController::class, 'update'])->name('cities.update');
-        Route::post('cities/{city}/toggle-activate', [CityController::class, 'toggleActivate'])->name('cities.toggle-activate');
+        Route::patch('cities/{city}/toggle-activate', [CityController::class, 'toggleActivate'])->name('cities.toggle-activate');
 
-        Route::resource('regions', RegionController::class)->except(['show', 'update', 'destroy']);
-        Route::post('regions/{region}/destroy', [RegionController::class, 'destroy'])->name('regions.destroy');
+        Route::resource('regions', RegionController::class)->except(['show', 'update']);
         Route::post('regions/{region}', [RegionController::class, 'update'])->name('regions.update');
-        Route::post('regions/{region}/toggle-activate', [RegionController::class, 'toggleActivate'])->name('regions.toggle-activate');
+        Route::patch('regions/{region}/toggle-activate', [RegionController::class, 'toggleActivate'])->name('regions.toggle-activate');
     });

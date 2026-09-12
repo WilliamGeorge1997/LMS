@@ -16,8 +16,7 @@ Route::middleware([
     ])
     ->prefix('admin')
     ->group(function () {
-        Route::resource('publishers', PublisherController::class)->except(['show', 'update', 'destroy']);
-        Route::post('publishers/{publisher}/destroy', [PublisherController::class, 'destroy'])->name('publishers.destroy');
+        Route::resource('publishers', PublisherController::class)->except(['show', 'update']);
         Route::post('publishers/{publisher}', [PublisherController::class, 'update']);
-        Route::post('publishers/{publisher}/toggle-activate', [PublisherController::class, 'toggleActivate']);
+        Route::patch('publishers/{publisher}/toggle-activate', [PublisherController::class, 'toggleActivate']);
     });

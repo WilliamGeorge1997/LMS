@@ -10,8 +10,7 @@ Route::domain($central)
     ->prefix('admin')
     ->group(function () {
         Route::get('levels/ajax_level', [LevelController::class, 'ajaxLevel']);
-        Route::resource('levels', LevelController::class)->except(['show', 'update', 'destroy']);
-        Route::post('levels/{level}/destroy', [LevelController::class, 'destroy'])->name('levels.destroy');
+        Route::resource('levels', LevelController::class)->except(['show', 'update']);
         Route::post('levels/{level}', [LevelController::class, 'update'])->name('levels.update');
-        Route::post('levels/{level}/toggle-activate', [LevelController::class, 'toggleActivate'])->name('levels.toggle-activate');
+        Route::patch('levels/{level}/toggle-activate', [LevelController::class, 'toggleActivate'])->name('levels.toggle-activate');
     });

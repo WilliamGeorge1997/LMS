@@ -16,8 +16,7 @@ Route::domain($central)
 
         Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-        Route::resource('admins', AdminController::class)->except(['show', 'update', 'destroy']);
-        Route::post('admins/{admin}/destroy', [AdminController::class, 'destroy'])->name('admins.destroy');
+        Route::resource('admins', AdminController::class)->except(['show', 'update']);
         Route::post('admins/{admin}', [AdminController::class, 'update'])->name('admins.update');
-        Route::post('admins/{admin}/toggle-activate', [AdminController::class, 'toggleActivate'])->name('admins.toggle-activate');
+        Route::patch('admins/{admin}/toggle-activate', [AdminController::class, 'toggleActivate'])->name('admins.toggle-activate');
     });
