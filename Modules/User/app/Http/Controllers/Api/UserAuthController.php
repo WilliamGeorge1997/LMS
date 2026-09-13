@@ -24,7 +24,6 @@ use Modules\User\Http\Requests\VerifyForgetPasswordRequest;
 use Modules\User\Http\Requests\VerifyRequest;
 use Modules\User\Models\User;
 
-
 #[Middleware('auth:user', only: ['logout', 'editProfile'])]
 class UserAuthController extends Controller
 {
@@ -53,13 +52,12 @@ class UserAuthController extends Controller
         }
     }
 
-
     public function login(UserLoginRequest $request): JsonResponse
     {
         $login = $request->validated('login');
         $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        /**@var User $user */
+        /** @var User $user */
         $user = User::where($field, $login)->first();
 
         if (! $user || ! Hash::check($request->validated('password'), $user->password)) {
@@ -84,13 +82,14 @@ class UserAuthController extends Controller
     public function verify(VerifyRequest $request): JsonResponse
     {
         $data = $request->validated();
-        /**@var User $user */
+        /** @var User $user */
         $user = User::where('email', $data['email'])->first();
 
         if ($user && $user->verify_code == $data['otp']) {
             $user->update([
                 'is_active' => true,
             ]);
+
             return apiResponse(true, 'Valid OTP, Your account has been activated successfully.');
         }
 
@@ -117,13 +116,12 @@ class UserAuthController extends Controller
 
     public function logout(): JsonResponse
     {
-        /**@var User $user */
+        /** @var User $user */
         $user = auth('user')->user();
 
-        /**@var PersonalAccessToken $token */
+        /** @var PersonalAccessToken $token */
         $token = $user->currentAccessToken();
         $token->delete();
-
 
         return apiResponse(true, __('user::message.logout'));
     }
@@ -131,7 +129,7 @@ class UserAuthController extends Controller
     public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
     {
         $email = $request->validated('email');
-        /**@var User $user */
+        /** @var User $user */
         $user = User::where('email', $email)->first();
 
         $verifyCode = rand(100000, 999999);
@@ -146,7 +144,7 @@ class UserAuthController extends Controller
     public function verifyForgetPassword(VerifyForgetPasswordRequest $request): JsonResponse
     {
         $data = $request->validated();
-        /**@var User $user */
+        /** @var User $user */
         $user = User::where('email', $data['email'])->first();
 
         if ($user && $user->verify_code == $data['otp']) {
@@ -159,7 +157,7 @@ class UserAuthController extends Controller
     public function newPassword(NewPasswordRequest $request): JsonResponse
     {
         $data = $request->validated();
-        /**@var User $user */
+        /** @var User $user */
         $user = User::where('email', $data['email'])->first();
 
         $user->update([
@@ -181,15 +179,13 @@ class UserAuthController extends Controller
         return apiResponse(true, __('user::message.profile_updated'), $user->fresh());
     }
 
-
-
     // Helper
     protected function respondWithToken(string $token, User $user): JsonResponse
     {
         return apiResponse(true, 'Authenticated User', [
             'access_token' => $token,
-            'token_type'   => 'bearer',
-            'user'         => $user,
+            'token_type' => 'bearer',
+            'user' => $user,
         ]);
     }
 }

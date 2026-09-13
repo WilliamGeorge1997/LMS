@@ -11,7 +11,7 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Admin extends Authenticable
 {
-    use HasFactory, HasRoles, BelongsToTenant;
+    use BelongsToTenant, HasFactory, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -39,8 +39,8 @@ class Admin extends Authenticable
             return null;
         }
 
-        $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
-        
-        return Storage::disk('public')->url('uploads/' . $tenantPath . 'admin/' . $value);
+        $tenantPath = $this->tenant_id ? $this->tenant_id.'/' : 'central/';
+
+        return Storage::disk('public')->url('uploads/'.$tenantPath.'admin/'.$value);
     }
 }

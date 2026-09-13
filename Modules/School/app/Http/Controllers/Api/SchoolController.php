@@ -8,9 +8,7 @@ use Modules\School\Services\SchoolService;
 
 class SchoolController extends Controller
 {
-    public function __construct(private readonly SchoolService $schoolService)
-    {
-    }
+    public function __construct(private readonly SchoolService $schoolService) {}
 
     public function index(): JsonResponse
     {

@@ -12,9 +12,8 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BookCodeService
 {
-    public function __construct(private readonly BookService $bookService)
-    {
-    }
+    public function __construct(private readonly BookService $bookService) {}
+
     public function dataTable(): JsonResponse
     {
         $query = BookCode::query()
@@ -131,11 +130,11 @@ class BookCodeService
         $now = now();
 
         $bookCode->update([
-            'user_id'   => $user->id,
+            'user_id' => $user->id,
             'school_id' => $user->school_id,
-            'is_used'   => true,
-            'from'      => $now->toDateString(),
-            'to'        => $now->copy()->addMonths((int) $bookCode->duration)->toDateString(),
+            'is_used' => true,
+            'from' => $now->toDateString(),
+            'to' => $now->copy()->addMonths((int) $bookCode->duration)->toDateString(),
         ]);
 
         return $bookCode->fresh();

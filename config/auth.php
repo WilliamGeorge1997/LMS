@@ -3,7 +3,6 @@
 use Modules\Admin\Models\Admin;
 use Modules\User\Models\User;
 
-
 return [
 
     /*
@@ -74,7 +73,7 @@ return [
         ],
         'users' => [
             'driver' => 'eloquent',
-            'model' => User::class
+            'model' => User::class,
         ],
 
         // 'users' => [

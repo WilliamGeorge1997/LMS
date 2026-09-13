@@ -3,7 +3,6 @@
 namespace Modules\Publisher\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Modules\Admin\Enums\Role;
 
 class PublisherUpdateRequest extends FormRequest
 {

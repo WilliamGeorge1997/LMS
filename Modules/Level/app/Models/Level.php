@@ -27,7 +27,8 @@ class Level extends Model
     {
         return $date->format('Y-m-d H:i A');
     }
-    //Scopes
+
+    // Scopes
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
@@ -35,15 +36,15 @@ class Level extends Model
 
     public function scopeByTenant(Builder $query): Builder
     {
-        //Scope for super admin
+        // Scope for super admin
         return $query->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
             $query->where('tenant_id', session('admin_tenant_id'));
         });
 
-        //Already scoped for tenant by BelongsToTenant trait
+        // Already scoped for tenant by BelongsToTenant trait
     }
 
-    //Relations
+    // Relations
     public function publisher(): BelongsTo
     {
         return $this->belongsTo(Publisher::class);
@@ -53,6 +54,4 @@ class Level extends Model
     {
         return $this->belongsTo(Category::class);
     }
-
-
 }

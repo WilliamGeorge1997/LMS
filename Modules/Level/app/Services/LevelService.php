@@ -77,7 +77,7 @@ class LevelService
 
     public function toggleActivate(Level $level): Level
     {
-        $level->update(['is_active' => !$level->is_active]);
+        $level->update(['is_active' => ! $level->is_active]);
 
         return $level->fresh();
     }

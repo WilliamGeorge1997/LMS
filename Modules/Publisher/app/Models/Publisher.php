@@ -11,7 +11,7 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Publisher extends Model
 {
-    use HasFactory, HasTranslations, BelongsToTenant;
+    use BelongsToTenant, HasFactory, HasTranslations;
 
     /**
      * The attributes that are mass assignable.
@@ -34,11 +34,11 @@ class Publisher extends Model
 
     public function scopeByTenant(Builder $query): Builder
     {
-        //Scope for super admin
+        // Scope for super admin
         return $query->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
             $query->where('tenant_id', session('admin_tenant_id'));
         });
 
-        //Already scoped for tenant by BelongsToTenant trait
+        // Already scoped for tenant by BelongsToTenant trait
     }
 }

@@ -5,7 +5,6 @@ namespace Modules\Category\DTOs;
 use Modules\Category\Http\Requests\CategoryStoreRequest;
 use Modules\Category\Http\Requests\CategoryUpdateRequest;
 
-
 class CategoryDto
 {
     public function __construct(
@@ -29,7 +28,7 @@ class CategoryDto
 
     public function toArray(): array
     {
-        $data =  [
+        $data = [
             'title' => [
                 'ar' => $this->title_ar,
                 'en' => $this->title_en,

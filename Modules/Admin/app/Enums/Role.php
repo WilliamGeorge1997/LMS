@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Modules\Admin\Enums;
 
 enum Role: string

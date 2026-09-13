@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Category\Models\Category;
 use Modules\Publisher\Models\Publisher;
-use Modules\Tenant\Models\Tenant;
 
 return new class extends Migration
 {

@@ -37,6 +37,7 @@ class UserRegisterRequest extends FormRequest
     {
         return true;
     }
+
     #[Override]
     public function attributes(): array
     {
@@ -58,7 +59,7 @@ class UserRegisterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.unique'    => __('user::message.email_taken'),
+            'email.unique' => __('user::message.email_taken'),
             'username.unique' => __('user::message.username_taken'),
         ];
     }

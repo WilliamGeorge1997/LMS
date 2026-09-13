@@ -11,8 +11,7 @@ class TenantDto
         public readonly string $name_en,
         public readonly string $domain,
         public readonly bool $is_active,
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(TenantRequest $request): self
     {

@@ -21,9 +21,7 @@ class BookCodeController extends Controller implements HasMiddleware
         ];
     }
 
-    public function __construct(private readonly BookCodeService $bookCodeService)
-    {
-    }
+    public function __construct(private readonly BookCodeService $bookCodeService) {}
 
     public function redeem(RedeemCodeRequest $request): JsonResponse
     {

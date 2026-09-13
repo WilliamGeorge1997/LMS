@@ -5,25 +5,27 @@ namespace Modules\Common\Traits;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Pion\Laravel\ChunkUpload\Handler\ResumableJSUploadHandler;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
+use Pion\Laravel\ChunkUpload\Handler\ResumableJSUploadHandler;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 trait UploaderTrait
 {
     private string $disk = 'public';
+
     private string $uploadsFolder = 'uploads';
 
     private function imageManager(): ImageManager
     {
-        return ImageManager::usingDriver(new Driver());
+        return ImageManager::usingDriver(new Driver);
     }
 
     private function buildPath(string $folder, string $fileName, ?string $tenantId = null): string
     {
-        $tenantPath = $tenantId ? $tenantId . '/' : 'central/';
-        return $this->uploadsFolder . '/' . $tenantPath . $folder . '/' . $fileName;
+        $tenantPath = $tenantId ? $tenantId.'/' : 'central/';
+
+        return $this->uploadsFolder.'/'.$tenantPath.$folder.'/'.$fileName;
     }
 
     public function uploadImage(UploadedFile $file, string $folder, ?int $width = null, ?int $height = null, int $quality = 80, ?string $tenantId = null): string
@@ -43,7 +45,7 @@ trait UploaderTrait
     }
 
     /**
-     * @param UploadedFile[] $files
+     * @param  UploadedFile[]  $files
      */
     public function uploadMultipleImages(array $files, string $folder, ?int $width = null, ?int $height = null, int $quality = 80, ?string $tenantId = null): array
     {
@@ -81,13 +83,13 @@ trait UploaderTrait
 
     private function generateFileName(UploadedFile $file): string
     {
-        return uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
+        return uniqid().'_'.time().'.'.$file->getClientOriginalExtension();
     }
 
     public function handleChunkUpload(Request $request, string $inputName = 'file'): UploadedFile|int|false
     {
         $receiver = new FileReceiver($inputName, $request, ResumableJSUploadHandler::class);
-        
+
         if ($receiver->isUploaded() === false) {
             return false;
         }

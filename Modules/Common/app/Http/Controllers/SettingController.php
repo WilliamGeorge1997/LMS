@@ -17,10 +17,11 @@ class SettingController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:' . Role::SUPER_ADMIN->value,
+            'role:'.Role::SUPER_ADMIN->value,
             'set.locale',
         ];
     }
+
     public function __construct(
         private readonly SettingService $settingService
     ) {}

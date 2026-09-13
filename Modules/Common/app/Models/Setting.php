@@ -35,8 +35,8 @@ class Setting extends Model
             return null;
         }
 
-        $tenantPath = $this->tenant_id ? $this->tenant_id . '/' : 'central/';
+        $tenantPath = $this->tenant_id ? $this->tenant_id.'/' : 'central/';
 
-        return Storage::disk('public')->url('uploads/' . $tenantPath . 'settings/app/' . $value);
+        return Storage::disk('public')->url('uploads/'.$tenantPath.'settings/app/'.$value);
     }
 }

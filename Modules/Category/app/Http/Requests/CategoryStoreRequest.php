@@ -18,7 +18,7 @@ class CategoryStoreRequest extends FormRequest
         }
         if ($admin->hasRole(Role::SUPER_ADMIN->value)) {
             $this->merge([
-                'tenant_id' => session('admin_tenant_id')
+                'tenant_id' => session('admin_tenant_id'),
             ]);
         }
     }
@@ -34,14 +34,12 @@ class CategoryStoreRequest extends FormRequest
         ];
     }
 
-
     public function attributes(): array
     {
         return [
             'tenant_id' => 'tenant',
         ];
     }
-
 
     public function authorize(): bool
     {

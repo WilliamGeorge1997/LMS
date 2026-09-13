@@ -7,13 +7,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Admin\Enums\Role;
-use Modules\Common\Helpers\AjaxResponse;
 use Modules\Category\DTOs\CategoryDto;
 use Modules\Category\Http\Requests\CategoryStoreRequest;
 use Modules\Category\Http\Requests\CategoryUpdateRequest;
 use Modules\Category\Models\Category;
 use Modules\Category\Services\CategoryService;
 use Modules\Category\ViewModel\CategoryViewModel;
+use Modules\Common\Helpers\AjaxResponse;
 
 class CategoryController extends Controller implements HasMiddleware
 {
@@ -21,14 +21,12 @@ class CategoryController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
+            'role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value,
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly CategoryService $categoryService)
-    {
-    }
+    public function __construct(private readonly CategoryService $categoryService) {}
 
     public function index(Request $request)
     {
@@ -36,7 +34,7 @@ class CategoryController extends Controller implements HasMiddleware
             return $this->categoryService->dataTable();
         }
 
-        $viewModel = new CategoryViewModel();
+        $viewModel = new CategoryViewModel;
 
         return view('category::categories.index', compact('viewModel'));
     }
@@ -51,7 +49,7 @@ class CategoryController extends Controller implements HasMiddleware
 
     public function edit(Category $category): string
     {
-        $viewModel = new CategoryViewModel();
+        $viewModel = new CategoryViewModel;
 
         return view('category::categories.partials.edit', [
             'category' => $category->load(['publisher', 'tenant']),

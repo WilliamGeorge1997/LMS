@@ -2,10 +2,10 @@
 
 namespace Modules\Common\Helpers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class AjaxResponse
 {

@@ -21,14 +21,12 @@ class RegionController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            'role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value,
+            'role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value,
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly RegionService $regionService)
-    {
-    }
+    public function __construct(private readonly RegionService $regionService) {}
 
     public function index(Request $request)
     {

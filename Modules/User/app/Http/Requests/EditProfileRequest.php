@@ -2,11 +2,11 @@
 
 namespace Modules\User\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Override;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
+use Override;
 
 class EditProfileRequest extends FormRequest
 {
@@ -16,6 +16,7 @@ class EditProfileRequest extends FormRequest
     public function rules(): array
     {
         $userId = auth('user')->id();
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
@@ -36,6 +37,7 @@ class EditProfileRequest extends FormRequest
     {
         return true;
     }
+
     #[Override]
     public function attributes(): array
     {
@@ -59,7 +61,7 @@ class EditProfileRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.unique'    => __('user::message.email_taken'),
+            'email.unique' => __('user::message.email_taken'),
             'username.unique' => __('user::message.username_taken'),
         ];
     }

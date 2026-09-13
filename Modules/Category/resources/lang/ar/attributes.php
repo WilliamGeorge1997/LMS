@@ -1,11 +1,11 @@
 <?php
 
 return [
-    //Title
+    // Title
     'categories' => 'الفئات',
     'categories_list' => 'قائمة الفئات',
 
-    //Attributes
+    // Attributes
     'title' => 'العنوان',
     'title_ar' => 'العنوان (عربي)',
     'title_en' => 'العنوان (انجليزي)',

@@ -2,8 +2,8 @@
 
 namespace Modules\Publisher\Providers;
 
-use Nwidart\Modules\Support\ModuleServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
+use Nwidart\Modules\Support\ModuleServiceProvider;
 
 class PublisherServiceProvider extends ModuleServiceProvider
 {
@@ -36,14 +36,14 @@ class PublisherServiceProvider extends ModuleServiceProvider
 
     /**
      * Define module schedules.
-     * 
-     * @param $schedule
+     *
+     * @param  $schedule
      */
     // protected function configureSchedules(Schedule $schedule): void
     // {
     //     $schedule->command('inspire')->hourly();
     // }
-      public function boot(): void
+    public function boot(): void
     {
         parent::boot();
 

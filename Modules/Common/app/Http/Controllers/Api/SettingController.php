@@ -9,9 +9,7 @@ use Modules\Common\Services\SettingService;
 
 class SettingController extends Controller
 {
-    public function __construct(private readonly SettingService $settingService)
-    {
-    }
+    public function __construct(private readonly SettingService $settingService) {}
 
     public function index(): JsonResponse
     {

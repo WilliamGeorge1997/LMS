@@ -21,7 +21,7 @@ class PublisherStoreRequest extends FormRequest
         }
         if ($admin->hasRole(Role::SUPER_ADMIN->value)) {
             $this->merge([
-                'tenant_id' => session('admin_tenant_id')
+                'tenant_id' => session('admin_tenant_id'),
             ]);
         }
     }

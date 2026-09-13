@@ -13,14 +13,15 @@ use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Category extends Model
 {
-    use HasFactory, HasTranslations, BelongsToTenant;
+    use BelongsToTenant, HasFactory, HasTranslations;
 
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['title','publisher_id', 'tenant_id', 'is_active'];
+    protected $fillable = ['title', 'publisher_id', 'tenant_id', 'is_active'];
 
     protected $translatable = ['title'];
+
     // Date Serialization
     protected function serializeDate(\DateTimeInterface $date): string
     {
@@ -35,12 +36,12 @@ class Category extends Model
 
     public function scopeByTenant(Builder $query): Builder
     {
-        //Scope for super admin
+        // Scope for super admin
         return $query->when(auth('admin')->user()->hasRole(Role::SUPER_ADMIN->value), function ($query) {
             $query->where('tenant_id', session('admin_tenant_id'));
         });
 
-        //Already scoped for tenant by BelongsToTenant trait
+        // Already scoped for tenant by BelongsToTenant trait
     }
 
     // Relations

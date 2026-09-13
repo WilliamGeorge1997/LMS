@@ -15,8 +15,7 @@ class BookCodeDto
         public readonly BookCodeType $type,
         public readonly int $quantity,
         public readonly string $tenant_id,
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(BookCodeStoreRequest $request): self
     {
@@ -63,12 +62,12 @@ class BookCodeDto
     private function generateUniqueCode(string $isbn): string
     {
         $isbn = str_replace(['-', ' '], '', $isbn);
-        $suffix = '-' . $this->type->suffix();
+        $suffix = '-'.$this->type->suffix();
 
         do {
             $tail = substr($isbn, -4);
-            $isbn4 = substr(strtoupper(Str::random(4 - strlen($tail))) . $tail, -4);
-            $code = $isbn4 . strtoupper(Str::random(6)) . $suffix;
+            $isbn4 = substr(strtoupper(Str::random(4 - strlen($tail))).$tail, -4);
+            $code = $isbn4.strtoupper(Str::random(6)).$suffix;
         } while (BookCode::withoutTenancy()->where('code', $code)->exists());
 
         return $code;

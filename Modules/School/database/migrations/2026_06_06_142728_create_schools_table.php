@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Country\Models\City;
 use Modules\Country\Models\Country;
 use Modules\Country\Models\Region;
-use Modules\Tenant\Models\Tenant;
 
 return new class extends Migration
 {

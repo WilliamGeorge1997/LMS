@@ -2,9 +2,9 @@
 
 namespace Modules\Book\Exports;
 
-use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Query\Builder;
 use Maatwebsite\Excel\Columns\Text;
 use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -13,10 +13,10 @@ use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Modules\Book\Models\BookCode;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class BookCodeSheetExport implements Export, FromQuery, WithTitle, WithColumns, WithCustomChunkSize, WithStyles
+class BookCodeSheetExport implements Export, FromQuery, WithColumns, WithCustomChunkSize, WithStyles, WithTitle
 {
     public function __construct(
         private readonly int $bookId,
@@ -43,8 +43,8 @@ class BookCodeSheetExport implements Export, FromQuery, WithTitle, WithColumns, 
                     'bold' => true,
                 ],
                 'fill' => [
-                    'fillType'   => Fill::FILL_SOLID,
-                    'startColor' => ['rgb' => 'E0E0E0']
+                    'fillType' => Fill::FILL_SOLID,
+                    'startColor' => ['rgb' => 'E0E0E0'],
                 ],
             ],
         ];
@@ -53,6 +53,7 @@ class BookCodeSheetExport implements Export, FromQuery, WithTitle, WithColumns, 
     public function title(): string
     {
         $title = str_replace(['*', ':', '?', '[', ']'], '', $this->bookTitle);
+
         return mb_substr($title, 0, 31);
     }
 

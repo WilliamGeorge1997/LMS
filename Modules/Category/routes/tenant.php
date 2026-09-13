@@ -10,10 +10,10 @@ $central = config('tenancy.central_domains')[0];
 
 // Route::domain('{tenant}.' . $central)
 Route::middleware([
-        InitializeTenancyBySubdomain::class,
-        PreventAccessFromCentralDomains::class,
-        ScopeSessions::class,
-    ])
+    InitializeTenancyBySubdomain::class,
+    PreventAccessFromCentralDomains::class,
+    ScopeSessions::class,
+])
     ->prefix('admin')
     ->group(function () {
         Route::get('categories/ajax_category', [CategoryController::class, 'ajaxCategory']);

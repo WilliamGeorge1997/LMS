@@ -3,7 +3,6 @@
 namespace Modules\Category\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Modules\Admin\Enums\Role;
 
 class CategoryUpdateRequest extends FormRequest
 {

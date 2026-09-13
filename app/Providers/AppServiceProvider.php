@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (request()->getHost()) {
-            config(['filesystems.disks.public.url' => request()->getSchemeAndHttpHost() . '/storage']);
+            config(['filesystems.disks.public.url' => request()->getSchemeAndHttpHost().'/storage']);
         }
     }
 }

@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Hash;
 class AdminDto
 {
     public function __construct(
-        public readonly string  $name,
-        public readonly string  $email,
-        public readonly int     $is_active,
-        public readonly string  $role,
+        public readonly string $name,
+        public readonly string $email,
+        public readonly int $is_active,
+        public readonly string $role,
         public readonly ?string $tenant_id = null,
         public readonly ?string $password = null,
     ) {}
@@ -31,8 +31,8 @@ class AdminDto
     public function toArray(): array
     {
         $data = [
-            'name'      => $this->name,
-            'email'     => $this->email,
+            'name' => $this->name,
+            'email' => $this->email,
             'tenant_id' => $this->tenant_id,
             'is_active' => $this->is_active,
         ];

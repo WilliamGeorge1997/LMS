@@ -8,9 +8,7 @@ use Modules\Country\Services\CountryService;
 
 class CountryController extends Controller
 {
-    public function __construct(private readonly CountryService $countryService)
-    {
-    }
+    public function __construct(private readonly CountryService $countryService) {}
 
     public function index(): JsonResponse
     {

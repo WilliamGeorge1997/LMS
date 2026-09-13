@@ -21,15 +21,13 @@ class AdminController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            new Middleware('role:' . Role::SUPER_ADMIN->value, except: ['dashboard']),
-            new Middleware('role:' . Role::SUPER_ADMIN->value . '|' . Role::MANAGER->value, only: ['dashboard']),
+            new Middleware('role:'.Role::SUPER_ADMIN->value, except: ['dashboard']),
+            new Middleware('role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value, only: ['dashboard']),
             'set.locale',
         ];
     }
 
-    public function __construct(private readonly AdminService $adminService)
-    {
-    }
+    public function __construct(private readonly AdminService $adminService) {}
 
     /**
      * Display a listing of the resource.

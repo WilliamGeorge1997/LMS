@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Category\Models\Category;
 use Modules\Level\Models\Level;
 use Modules\Publisher\Models\Publisher;
-use Modules\Tenant\Models\Tenant;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
