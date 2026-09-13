@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\User\Emails;
 
 use Illuminate\Bus\Queueable;
@@ -11,15 +13,7 @@ class ForgetPasswordMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $verifyCode;
-
-    /**
-     * Create a new message instance.
-     */
-    public function __construct($verifyCode)
-    {
-        $this->verifyCode = $verifyCode;
-    }
+    public function __construct(public string|int $verifyCode) {}
 
     /**
      * Build the message.
@@ -27,6 +21,10 @@ class ForgetPasswordMail extends Mailable implements ShouldQueue
     public function build(): self
     {
         return $this->subject('Password Reset Code')
-            ->html("Your verification code is: <strong>{$this->verifyCode}</strong>");
+            ->view('user::emails.forget-password')
+            ->text('user::emails.forget-password-text')
+            ->with([
+                'verifyCode' => $this->verifyCode,
+            ]);
     }
 }
