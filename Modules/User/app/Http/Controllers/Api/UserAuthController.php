@@ -48,7 +48,7 @@ class UserAuthController extends Controller
 
             return apiResponse(true, __('user::message.registered'), $user, 'created');
         } catch (ValidationException $e) {
-            return apiResponse(false, 'Validation errors', $e->errors(), 'validation_error');
+            return apiResponse(false, __('user::message.validation_error'), $e->errors(), 'validation_error');
         }
     }
 
@@ -90,10 +90,10 @@ class UserAuthController extends Controller
                 'is_active' => true,
             ]);
 
-            return apiResponse(true, 'Valid OTP, Your account has been activated successfully.');
+            return apiResponse(true, __('user::message.account_activated'));
         }
 
-        return apiResponse(false, 'Wrong OTP', null, 'unauthorized');
+        return apiResponse(false, __('user::message.wrong_otp'), null, 'unauthorized');
     }
 
     public function resendCode(ResendCodeRequest $request): JsonResponse
@@ -103,7 +103,7 @@ class UserAuthController extends Controller
         $user = User::where('email', $email)->first();
 
         if ($user->is_active) {
-            return apiResponse(false, 'User is already verified.', null, 'bad_request');
+            return apiResponse(false, __('user::message.already_verified'), null, 'bad_request');
         }
 
         $verifyCode = rand(100000, 999999);
@@ -111,7 +111,7 @@ class UserAuthController extends Controller
 
         Mail::to($user->email)->send((new RegisterMail($verifyCode))->onConnection('database'));
 
-        return apiResponse(true, 'Verification code resent successfully.');
+        return apiResponse(true, __('user::message.code_resent'));
     }
 
     public function logout(): JsonResponse
@@ -138,7 +138,7 @@ class UserAuthController extends Controller
         // Send email via queue
         Mail::to($email)->send((new ForgetPasswordMail($verifyCode))->onConnection('database'));
 
-        return apiResponse(true, 'Message Sent, please check your email');
+        return apiResponse(true, __('user::message.password_reset_sent'));
     }
 
     public function verifyForgetPassword(VerifyForgetPasswordRequest $request): JsonResponse
@@ -148,10 +148,10 @@ class UserAuthController extends Controller
         $user = User::where('email', $data['email'])->first();
 
         if ($user && $user->verify_code == $data['otp']) {
-            return apiResponse(true, 'Valid OTP');
+            return apiResponse(true, __('user::message.valid_otp'));
         }
 
-        return apiResponse(false, 'Wrong OTP', null, 'unauthorized');
+        return apiResponse(false, __('user::message.wrong_otp'), null, 'unauthorized');
     }
 
     public function newPassword(NewPasswordRequest $request): JsonResponse
@@ -164,7 +164,7 @@ class UserAuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        return apiResponse(true, 'Password Changed Successfully');
+        return apiResponse(true, __('user::message.password_changed'));
     }
 
     public function editProfile(EditProfileRequest $request): JsonResponse
@@ -182,7 +182,7 @@ class UserAuthController extends Controller
     // Helper
     protected function respondWithToken(string $token, User $user): JsonResponse
     {
-        return apiResponse(true, 'Authenticated User', [
+        return apiResponse(true, __('user::message.authenticated'), [
             'access_token' => $token,
             'token_type' => 'bearer',
             'user' => $user,

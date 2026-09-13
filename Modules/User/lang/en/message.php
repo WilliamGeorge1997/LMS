@@ -13,4 +13,13 @@ return [
     'code_inactive' => 'This access code is currently inactive.',
     'type_mismatch' => 'This access code is not valid for your account type.',
     'profile_updated' => 'Profile updated successfully.',
+    'validation_error' => 'Validation errors',
+    'account_activated' => 'Valid OTP, Your account has been activated successfully.',
+    'wrong_otp' => 'Wrong OTP',
+    'already_verified' => 'User is already verified.',
+    'code_resent' => 'Verification code resent successfully.',
+    'password_reset_sent' => 'Message Sent, please check your email',
+    'valid_otp' => 'Valid OTP',
+    'password_changed' => 'Password Changed Successfully',
+    'authenticated' => 'Authenticated User',
 ];
