@@ -34,6 +34,7 @@ class Book extends Model
         'is_active',
         'cover',
         'path',
+        'version',
     ];
 
     protected $translatable = ['title', 'description'];

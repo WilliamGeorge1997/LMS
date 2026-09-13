@@ -17,6 +17,8 @@ Route::middleware([
         Route::post('verify', [UserAuthController::class, 'verify']);
         Route::post('logout', [UserAuthController::class, 'logout']);
 
+        Route::post('resend-code', [UserAuthController::class, 'resendCode']);
+
         Route::post('forget-password', [UserAuthController::class, 'forgetPassword']);
         Route::post('verify-forget-password', [UserAuthController::class, 'verifyForgetPassword']);
         Route::post('new-password', [UserAuthController::class, 'newPassword']);

@@ -17,6 +17,7 @@ use Modules\User\Emails\RegisterMail;
 use Modules\User\Http\Requests\EditProfileRequest;
 use Modules\User\Http\Requests\ForgetPasswordRequest;
 use Modules\User\Http\Requests\NewPasswordRequest;
+use Modules\User\Http\Requests\ResendCodeRequest;
 use Modules\User\Http\Requests\UserLoginRequest;
 use Modules\User\Http\Requests\UserRegisterRequest;
 use Modules\User\Http\Requests\VerifyForgetPasswordRequest;
@@ -96,6 +97,23 @@ class UserAuthController extends Controller
         return apiResponse(false, 'Wrong OTP', null, 'unauthorized');
     }
 
+    public function resendCode(ResendCodeRequest $request): JsonResponse
+    {
+        $email = $request->validated('email');
+        /**@var User $user */
+        $user = User::where('email', $email)->first();
+
+        if ($user->is_active) {
+            return apiResponse(false, 'User is already verified.', null, 'bad_request');
+        }
+
+        $verifyCode = rand(100000, 999999);
+        $user->update(['verify_code' => $verifyCode]);
+
+        Mail::to($user->email)->send((new RegisterMail($verifyCode))->onConnection('database'));
+
+        return apiResponse(true, 'Verification code resent successfully.');
+    }
 
     public function logout(): JsonResponse
     {

@@ -8,6 +8,7 @@ return [
     'title_ar' => 'العنوان (عربي)',
     'title_en' => 'العنوان (انجليزي)',
     'isbn' => 'الرقم الدولي',
+    'version' => 'الإصدار',
     'description' => 'الوصف',
     'description_ar' => 'الوصف (عربي)',
     'description_en' => 'الوصف (انجليزي)',

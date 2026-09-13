@@ -124,7 +124,7 @@
         <div class="additional-fields-panel rounded-2 p-5 m-2">
             <h6 class="fw-bold text-gray-800 mb-4">{{ __('book::attributes.additional_details') }}</h6>
             <div class="row g-4">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label class="form-label">{{ __('book::attributes.cover') }}</label>
                     <input form="{{ $formId }}" type="file" name="cover" class="form-control form-control-solid form-control-sm"
                         accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
@@ -134,6 +134,12 @@
                         </div>
                     @endif
                     <div class="invalid-feedback d-block" data-error="cover"></div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{{ __('book::attributes.version')}}</label>
+                    <input form="{{ $formId }}" type="text" name="version" class="form-control form-control-solid form-control-sm"
+                        value="{{ $book->version }}" placeholder="e.g. 1.0 or 2024 Edition" />
+                    <div class="invalid-feedback d-block" data-error="version"></div>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">{{ __('book::attributes.description_en') }}</label>

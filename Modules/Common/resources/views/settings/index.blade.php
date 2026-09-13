@@ -59,9 +59,14 @@
 
                     <div class="col-md-6">
                         <label class="form-label">{{ __('common::attributes.mail_password') ?? 'Gmail App Password' }}</label>
-                        <input type="password" name="mail_password" value="{{ $setting?->mail_password }}" class="form-control form-control-solid"
+                        <input type="password" name="mail_password" class="form-control form-control-solid"
                             placeholder="Leave blank to keep current password" autocomplete="new-password" />
                         <div class="invalid-feedback d-block" data-error="mail_password"></div>
+                        @if ($setting?->mail_password)
+                            <div class="mt-1">
+                                <small class="text-success">✔ Password is currently set</small>
+                            </div>
+                        @endif
                     </div>
                 </div>
 

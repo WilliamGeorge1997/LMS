@@ -8,6 +8,7 @@ return [
     'title_ar' => 'Title (Arabic)',
     'title_en' => 'Title (English)',
     'isbn' => 'ISBN',
+    'version' => 'Version',
     'description' => 'Description',
     'description_ar' => 'Description (Arabic)',
     'description_en' => 'Description (English)',

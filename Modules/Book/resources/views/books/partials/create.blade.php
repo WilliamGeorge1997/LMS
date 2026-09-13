@@ -43,6 +43,13 @@
                 </div>
 
                 <div class="col-md-6">
+                    <label class="form-label">{{ __('book::attributes.version')}}</label>
+                    <input type="text" name="version" class="form-control form-control-solid"
+                        placeholder="e.g. 1.0 or 2024 Edition" autocomplete="off" />
+                    <div class="invalid-feedback d-block" data-error="version"></div>
+                </div>
+
+                <div class="col-md-6">
                     <label for="create-cover" class="form-label">{{ __('book::attributes.cover') }}</label>
                     <input id="create-cover" type="file" name="cover" class="form-control form-control-solid"
                         accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />

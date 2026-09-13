@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'registered'   => 'User registered successfully.',
+    'registered'   => 'User registered successfully and verification code has been sent to your email.',
     'login'        => 'Logged in successfully.',
     'logout'       => 'Logged out successfully.',
     'credentials'  => 'Invalid credentials.',

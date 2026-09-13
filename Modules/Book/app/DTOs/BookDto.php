@@ -19,6 +19,7 @@ class BookDto
         public readonly int $level_id,
         public readonly ?string $tenant_id,
         public readonly bool $is_active,
+        public readonly ?string $version = null,
         public readonly ?UploadedFile $cover = null,
     ) {}
 
@@ -35,6 +36,7 @@ class BookDto
             level_id: $request->input('level_id'),
             tenant_id: $request->input('tenant_id'),
             is_active: $request->has('is_active') ? 1 : 0,
+            version: $request->input('version'),
             cover: $request->file('cover'),
         );
     }
@@ -55,6 +57,7 @@ class BookDto
             'category_id' => $this->category_id,
             'level_id' => $this->level_id,
             'is_active' => $this->is_active,
+            'version' => $this->version,
         ];
 
         if (! is_null($this->tenant_id)) {
