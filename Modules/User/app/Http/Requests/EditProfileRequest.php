@@ -23,10 +23,10 @@ class EditProfileRequest extends FormRequest
             'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($userId)],
             'old_password' => ['nullable', 'required_with:new_password', 'current_password:user'],
             'new_password' => ['nullable', 'string', 'confirmed'],
-            'school_id' => ['prohibted'],
-            'country_id' => ['required', 'exists:countries,id'],
-            'city_id' => ['required', 'exists:cities,id'],
-            'region_id' => ['required', 'exists:regions,id'],
+            'school_id' => ['prohibited'],
+            'country_id' => ['nullable', 'exists:countries,id'],
+            'city_id' => ['nullable', 'exists:cities,id'],
+            'region_id' => ['nullable', 'exists:regions,id'],
         ];
     }
 

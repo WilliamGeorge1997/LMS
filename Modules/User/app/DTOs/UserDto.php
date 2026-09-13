@@ -13,10 +13,10 @@ readonly class UserDto
         public string $name,
         public string $email,
         public string $username,
-        public ?int $schoolId,
-        public int $countryId,
-        public int $cityId,
-        public int $regionId,
+        public ?int $schoolId = null,
+        public ?int $countryId = null,
+        public ?int $cityId = null,
+        public ?int $regionId = null,
         public ?string $password = null,
         public ?string $type = null,
         public ?string $code = null,
@@ -41,9 +41,9 @@ readonly class UserDto
             email: $request->validated('email'),
             username: $request->validated('username'),
             schoolId: $request->validated('school_id'),
-            countryId: (int) $request->validated('country_id'),
-            cityId: (int) $request->validated('city_id'),
-            regionId: (int) $request->validated('region_id'),
+            countryId: $request->validated('country_id') !== null ? (int) $request->validated('country_id') : null,
+            cityId: $request->validated('city_id') !== null ? (int) $request->validated('city_id') : null,
+            regionId: $request->validated('region_id') !== null ? (int) $request->validated('region_id') : null,
             password: $isRegister ? $request->validated('password') : $request->validated('new_password'),
             type: $isRegister ? $request->validated('type') : null,
             code: $isRegister ? $request->validated('code') : null,
@@ -58,10 +58,19 @@ readonly class UserDto
             'name' => $this->name,
             'email' => $this->email,
             'username' => $this->username,
-            'country_id' => $this->countryId,
-            'city_id' => $this->cityId,
-            'region_id' => $this->regionId,
         ];
+
+        if ($this->countryId !== null) {
+            $data['country_id'] = $this->countryId;
+        }
+
+        if ($this->cityId !== null) {
+            $data['city_id'] = $this->cityId;
+        }
+
+        if ($this->regionId !== null) {
+            $data['region_id'] = $this->regionId;
+        }
 
         if ($this->schoolId !== null) {
             $data['school_id'] = $this->schoolId;
