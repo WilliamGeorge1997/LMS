@@ -88,7 +88,7 @@ class TenancyServiceProvider extends ServiceProvider
             Events\TenancyBootstrapped::class => [
                 function (Events\TenancyBootstrapped $event) {
                     $permissionRegistrar = app(PermissionRegistrar::class);
-                    $permissionRegistrar->cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->getTenantKey();
+                    $permissionRegistrar->cacheKey = 'spatie.permission.cache.tenant.' . $event->tenancy->tenant->getTenantKey();
                 },
             ],
             Events\RevertingToCentralContext::class => [],
@@ -121,11 +121,6 @@ class TenancyServiceProvider extends ServiceProvider
 
             if ($setting && $setting->mail_email && $setting->mail_password) {
                 config([
-                    'mail.default' => 'smtp',
-                    'mail.mailers.smtp.transport' => 'smtp',
-                    'mail.mailers.smtp.host' => 'smtp.gmail.com',
-                    'mail.mailers.smtp.port' => 587,
-                    'mail.mailers.smtp.encryption' => 'tls',
                     'mail.mailers.smtp.username' => $setting->mail_email,
                     'mail.mailers.smtp.password' => $setting->mail_password,
                     'mail.from.address' => $setting->mail_email,
@@ -134,10 +129,6 @@ class TenancyServiceProvider extends ServiceProvider
 
                 app()->forgetInstance('mail.manager');
             }
-        });
-
-        Event::listen(Events\TenancyEnded::class, function () {
-            app()->forgetInstance('mail.manager');
         });
     }
 
