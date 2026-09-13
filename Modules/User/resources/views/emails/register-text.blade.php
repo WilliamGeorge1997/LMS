@@ -1,5 +1,4 @@
 Account Verification
-{{ tenant('name') ?? tenant()?->name }}
 
 Hello,
 

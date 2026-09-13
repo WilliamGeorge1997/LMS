@@ -20,7 +20,9 @@ class ForgetPasswordMail extends Mailable implements ShouldQueue
      */
     public function build(): self
     {
-        return $this->subject('Password Reset Code')
+        $appName = tenant('name') ?? tenant()?->name ?? 'LMS';
+
+        return $this->subject("Reset your password - {$appName}")
             ->view('user::emails.forget-password')
             ->text('user::emails.forget-password-text')
             ->with([

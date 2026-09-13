@@ -1,5 +1,4 @@
 Password Reset Request
-{{ tenant('name') ?? tenant()?->name }}
 
 Hello,
 
