@@ -25,11 +25,17 @@ readonly class SettingDto
 
     public function toArray(): array
     {
-        return [
+        $data = [
             'app_version' => $this->app_version,
             'app_path' => $this->app_path,
             'mail_email' => $this->mail_email,
             'mail_password' => $this->mail_password,
         ];
+
+        if (is_null($this->mail_password)) {
+            unset($data['mail_password']);
+        }
+
+        return $data;
     }
 }

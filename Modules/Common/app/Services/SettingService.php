@@ -50,6 +50,10 @@ class SettingService
             unset($data['app_path']);
         }
 
+        if (is_null($dto->mail_password)) {
+            unset($data['mail_password']);
+        }
+
         return Setting::updateOrCreate(
             ['tenant_id' => $tenantId],
             $data
