@@ -20,9 +20,7 @@ class RegisterMail extends Mailable implements ShouldQueue
      */
     public function build(): self
     {
-        $appName = tenant('name') ?? tenant()?->name ?? 'LMS';
-
-        return $this->subject("Welcome to {$appName} - Verify your email")
+        return $this->subject("Verify your email")
             ->view('user::emails.register')
             ->text('user::emails.register-text')
             ->with([
