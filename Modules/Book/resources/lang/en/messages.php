@@ -18,4 +18,5 @@ return [
     'code_redeemed_successfully' => 'Access code redeemed successfully',
     'delete_code_confirm' => 'Are you sure you want to delete this access code?',
     'no_codes_found' => 'No access codes found.',
+    'select_tenant_to_export' => 'Please select a tenant before exporting.',
 ];

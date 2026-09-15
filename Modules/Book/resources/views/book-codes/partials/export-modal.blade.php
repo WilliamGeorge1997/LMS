@@ -11,7 +11,9 @@
                 </div>
             </div>
             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                <form id="export-form" class="form" action="{{ url('/admin/book-codes/export') }}" method="GET">
+                <form id="export-form" class="form"
+                    action="{{ url('/admin/book-codes/export') }}"
+                    method="GET">
                     
                     <div class="fv-row mb-7">
                         <label class="fs-6 fw-semibold form-label mb-2">{{ __('book::attributes.type') }}</label>
@@ -45,7 +47,7 @@
                         <select name="school_id" class="form-select form-select-solid" data-control="select2" data-placeholder="{{ __('book::attributes.all') }}" data-allow-clear="true">
                             <option value=""></option>
                             @foreach ($viewModel->schoolsByTenant() as $school)
-                                <option value="{{ $school->id }}">{{ $school->name ?? $school->title ?? $school->id }}</option>
+                                <option value="{{ $school->id }}">{{ $school->title }}</option>
                             @endforeach
                         </select>
                     </div>

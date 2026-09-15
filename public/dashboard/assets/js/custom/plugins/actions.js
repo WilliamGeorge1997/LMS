@@ -37,6 +37,46 @@ window.Actions = {
         });
     },
 
+    // ── Export ────────────────────────────────────────────────────────────────
+
+    initExport: function (formSelector, submitSelector, modalSelector, filename) {
+        var modal = new bootstrap.Modal($(modalSelector)[0]);
+        var $form = $(formSelector);
+        var $submit = $form.find(submitSelector);
+
+        $form.on('submit', function (e) {
+            e.preventDefault();
+            $submit.attr('data-kt-indicator', 'on').prop('disabled', true);
+
+            var nativeXhr;
+
+            $.ajax({
+                url: $form.attr('action'),
+                method: 'GET',
+                data: $form.serialize(),
+                xhrFields: { responseType: 'blob' },
+                xhr: function () {
+                    return (nativeXhr = $.ajaxSettings.xhr());
+                },
+            })
+                .done(function (blob) {
+                    var url = URL.createObjectURL(blob);
+                    $('<a>').attr({ href: url, download: filename || 'export.xlsx' }).appendTo('body')[0].click();
+                    URL.revokeObjectURL(url);
+                    modal.hide();
+                })
+                .fail(function (jqXHR) {
+                    nativeXhr.response.text().then(function (text) {
+                        try { jqXHR.responseJSON = JSON.parse(text); } catch (e) {}
+                        Actions._handleFail(jqXHR, $form);
+                    });
+                })
+                .always(function () {
+                    $submit.removeAttr('data-kt-indicator').prop('disabled', false);
+                });
+        });
+    },
+
     // ── Single Form ───────────────────────────────────────────────────────────
 
     initForm: function (formSelector, submitSelector) {

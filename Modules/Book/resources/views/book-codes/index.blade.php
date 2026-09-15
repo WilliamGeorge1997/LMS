@@ -107,7 +107,6 @@
 @section('js')
     <script src="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/actions.js') }}"></script>
-    <script src="{{ asset('dashboard/assets/js/custom/book-codes/export.js') }}"></script>
     <script>
         "use strict";
 
@@ -314,5 +313,6 @@
         Actions.initDelete(dt, "{{ url('/admin/book-codes') }}/:id",
             "{{ __('book::messages.delete_code_confirm') }}");
         Actions.initToggle("{{ url('/admin/book-codes') }}/:id/toggle-activate");
+        Actions.initExport('#export-form', '[data-kt-export-modal-action="submit"]', '#export-modal', 'book-codes.xlsx');
     </script>
 @endsection
