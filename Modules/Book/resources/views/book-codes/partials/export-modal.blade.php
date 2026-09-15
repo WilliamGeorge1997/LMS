@@ -1,4 +1,4 @@
-<div class="modal fade" id="export-modal" tabindex="-1" aria-hidden="true" data-export-error="{{ $errors->any() ? implode('\n', $errors->all()) : '' }}">
+<div class="modal fade" id="export-modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-650px">
         <div class="modal-content">
             <div class="modal-header">
