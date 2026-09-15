@@ -18,11 +18,19 @@ class BookCodesExportFilters
 
     public static function fromRequest(Request $request): self
     {
+        $bookIds = $request->input('book_ids');
+        if (is_array($bookIds)) {
+            $bookIds = array_filter($bookIds);
+            $bookIds = empty($bookIds) ? null : $bookIds;
+        } else {
+            $bookIds = null;
+        }
+
         return new self(
             type: $request->input('type'),
             is_used: $request->input('is_used'),
             is_active: $request->input('is_active'),
-            book_ids: $request->input('book_ids'),
+            book_ids: $bookIds,
             from_date: $request->input('from_date'),
             to_date: $request->input('to_date'),
             school_id: $request->input('school_id') ? (int) $request->input('school_id') : null

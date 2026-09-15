@@ -16,7 +16,7 @@
                     <div class="fv-row mb-7">
                         <label class="fs-6 fw-semibold form-label mb-2">{{ __('book::attributes.type') }}</label>
                         <select name="type" class="form-select form-select-solid" data-control="select2" data-hide-search="true">
-                            <option value="all">{{ __('common::attributes.all') }}</option>
+                            <option value="all">{{ __('book::attributes.all') }}</option>
                             <option value="student">{{ __('book::attributes.student') }}</option>
                             <option value="teacher">{{ __('book::attributes.teacher') }}</option>
                         </select>
@@ -25,24 +25,24 @@
                     <div class="fv-row mb-7">
                         <label class="fs-6 fw-semibold form-label mb-2">{{ __('book::attributes.is_used') }}</label>
                         <select name="is_used" class="form-select form-select-solid" data-control="select2" data-hide-search="true">
-                            <option value="all">{{ __('common::attributes.all') }}</option>
-                            <option value="1">{{ __('common::attributes.yes') }}</option>
-                            <option value="0">{{ __('common::attributes.no') }}</option>
+                            <option value="all">{{ __('book::attributes.all') }}</option>
+                            <option value="1">{{ __('book::attributes.yes') }}</option>
+                            <option value="0">{{ __('book::attributes.no') }}</option>
                         </select>
                     </div>
 
                     <div class="fv-row mb-7">
                         <label class="fs-6 fw-semibold form-label mb-2">{{ __('book::attributes.is_active') }}</label>
                         <select name="is_active" class="form-select form-select-solid" data-control="select2" data-hide-search="true">
-                            <option value="all">{{ __('common::attributes.all') }}</option>
-                            <option value="1">{{ __('common::attributes.active') }}</option>
-                            <option value="0">{{ __('common::attributes.inactive') }}</option>
+                            <option value="all">{{ __('book::attributes.all') }}</option>
+                            <option value="1">{{ __('book::attributes.active') }}</option>
+                            <option value="0">{{ __('book::attributes.not_active') }}</option>
                         </select>
                     </div>
 
                     <div class="fv-row mb-7">
-                        <label class="fs-6 fw-semibold form-label mb-2">{{ __('school::attributes.school') }}</label>
-                        <select name="school_id" class="form-select form-select-solid" data-control="select2" data-placeholder="{{ __('common::attributes.all') }}" data-allow-clear="true">
+                        <label class="fs-6 fw-semibold form-label mb-2">{{ __('book::attributes.school') }}</label>
+                        <select name="school_id" class="form-select form-select-solid" data-control="select2" data-placeholder="{{ __('book::attributes.all') }}" data-allow-clear="true">
                             <option value=""></option>
                             @foreach ($viewModel->schoolsByTenant() as $school)
                                 <option value="{{ $school->id }}">{{ $school->name ?? $school->title ?? $school->id }}</option>
@@ -51,8 +51,8 @@
                     </div>
                     
                     <div class="fv-row mb-7">
-                        <label class="fs-6 fw-semibold form-label mb-2">{{ __('book::attributes.book') }} ({{ __('common::attributes.multiple') }})</label>
-                        <select name="book_ids[]" class="form-select form-select-solid" data-control="select2" data-placeholder="{{ __('common::attributes.all') }}" data-allow-clear="true" multiple="multiple">
+                        <label class="fs-6 fw-semibold form-label mb-2">{{ __('book::attributes.book') }} ({{ __('book::attributes.multiple') }})</label>
+                        <select name="book_ids[]" class="form-select form-select-solid" data-control="select2" data-placeholder="{{ __('book::attributes.all') }}" data-allow-clear="true" multiple="multiple">
                             <option value=""></option>
                             @foreach ($viewModel->booksByTenant() as $book)
                                 <option value="{{ $book->id }}">{{ $book->title }}</option>
