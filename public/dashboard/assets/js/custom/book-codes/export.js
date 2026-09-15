@@ -23,6 +23,19 @@ var KTCodesExport = function () {
                     modal.hide();
                 }, 3000);
             });
+
+            var errorMessage = document.querySelector('#export-modal').getAttribute('data-export-error');
+            if (errorMessage) {
+                Swal.fire({
+                    text: errorMessage,
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                });
+            }
         }
     };
 }();
