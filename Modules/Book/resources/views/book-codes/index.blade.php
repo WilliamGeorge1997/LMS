@@ -31,10 +31,10 @@
             </div>
 
             <div class="d-flex align-items-center gap-2 gap-lg-3">
-                <a href="{{ url('/admin/book-codes/export') }}" class="btn btn-sm fw-bold btn-success" onclick="this.classList.add('disabled'); setTimeout(() => this.classList.remove('disabled'), 5000);">
+                <button type="button" class="btn btn-sm fw-bold btn-success" data-bs-toggle="modal" data-bs-target="#export-modal">
                     <i class="ki-duotone ki-file-down fs-2"><span class="path1"></span><span class="path2"></span></i>
-                    Export Excel
-                </a>
+                    {{ __('book::buttons.export_excel') ?? 'Export Excel' }}
+                </button>
                 <a href="#create-collapse" class="btn btn-sm fw-bold btn-primary create-open-btn" data-bs-toggle="collapse"
                     data-bs-target="#create-collapse" aria-expanded="false" aria-controls="create-collapse">
                     {{ __('book::buttons.create_code') }}
@@ -51,6 +51,7 @@
             <div id="create-collapse" class="collapse">
                 @include('book::book-codes.partials.create')
             </div>
+            @include('book::book-codes.partials.export-modal')
         </div>
     </div>
 @endsection
@@ -106,6 +107,7 @@
 @section('js')
     <script src="{{ asset('dashboard/assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/custom/plugins/actions.js') }}"></script>
+    <script src="{{ asset('dashboard/assets/js/custom/book-codes/export.js') }}"></script>
     <script>
         "use strict";
 

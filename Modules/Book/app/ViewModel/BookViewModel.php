@@ -6,9 +6,14 @@ use Modules\Book\Services\BookService;
 use Modules\Category\Services\CategoryService;
 use Modules\Level\Services\LevelService;
 use Modules\Publisher\Services\PublisherService;
+use Modules\School\Services\SchoolService;
 
 class BookViewModel
 {
+    public function schoolsByTenant()
+    {
+        return (new SchoolService)->findByTenant(['id', 'name']);
+    }
     public function publishersByTenant()
     {
         return (new PublisherService)->findByTenant();

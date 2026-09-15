@@ -16,16 +16,45 @@ use Modules\Book\Models\BookCode;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
+use Modules\Book\DTOs\BookCodesExportFilters;
+
 class BookCodeSheetExport implements Export, FromQuery, WithColumns, WithCustomChunkSize, WithStyles, WithTitle
 {
     public function __construct(
         private readonly int $bookId,
-        private readonly string $bookTitle
+        private readonly string $bookTitle,
+        private readonly BookCodesExportFilters $filters
     ) {}
 
     public function query(): Builder|EloquentBuilder|Relation
     {
-        return BookCode::query()->select(['code'])->where('book_id', $this->bookId)->orderBy('id');
+        $query = BookCode::query()->select(['code'])->where('book_id', $this->bookId);
+
+        if ($this->filters->type && $this->filters->type !== 'all') {
+            $query->where('type', $this->filters->type);
+        }
+
+        if ($this->filters->is_used !== null && $this->filters->is_used !== 'all') {
+            $query->where('is_used', $this->filters->is_used === '1');
+        }
+
+        if ($this->filters->is_active !== null && $this->filters->is_active !== 'all') {
+            $query->where('is_active', $this->filters->is_active === '1');
+        }
+
+        if ($this->filters->school_id) {
+            $query->where('school_id', $this->filters->school_id);
+        }
+
+        if ($this->filters->from_date) {
+            $query->whereDate('created_at', '>=', $this->filters->from_date);
+        }
+
+        if ($this->filters->to_date) {
+            $query->whereDate('created_at', '<=', $this->filters->to_date);
+        }
+
+        return $query->orderBy('id');
     }
 
     public function columns(): array

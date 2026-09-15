@@ -9,6 +9,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Maatwebsite\Excel\Facades\Excel;
 use Modules\Admin\Enums\Role;
 use Modules\Book\DTOs\BookCodeDto;
+use Modules\Book\DTOs\BookCodesExportFilters;
 use Modules\Book\Exports\BookCodesExport;
 use Modules\Book\Http\Requests\BookCodeStoreRequest;
 use Modules\Book\Models\BookCode;
@@ -40,9 +41,11 @@ class BookCodeController extends Controller implements HasMiddleware
         return view('book::book-codes.index', compact('viewModel'));
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new BookCodesExport, 'book-codes.xlsx');
+        $filters = BookCodesExportFilters::fromRequest($request);
+
+        return Excel::download(new BookCodesExport($filters), 'book-codes.xlsx');
     }
 
     public function store(BookCodeStoreRequest $request): JsonResponse
