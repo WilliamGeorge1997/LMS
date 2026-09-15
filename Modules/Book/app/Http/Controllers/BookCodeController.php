@@ -11,6 +11,7 @@ use Modules\Admin\Enums\Role;
 use Modules\Book\DTOs\BookCodeDto;
 use Modules\Book\DTOs\BookCodesExportFilters;
 use Modules\Book\Exports\BookCodesExport;
+use Modules\Book\Http\Requests\BookCodeExportRequest;
 use Modules\Book\Http\Requests\BookCodeStoreRequest;
 use Modules\Book\Models\BookCode;
 use Modules\Book\Services\BookCodeService;
@@ -41,7 +42,7 @@ class BookCodeController extends Controller implements HasMiddleware
         return view('book::book-codes.index', compact('viewModel'));
     }
 
-    public function export(Request $request)
+    public function export(BookCodeExportRequest $request)
     {
         $filters = BookCodesExportFilters::fromRequest($request);
 

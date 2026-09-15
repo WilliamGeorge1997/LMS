@@ -28,7 +28,7 @@ class BookCodeSheetExport implements Export, FromQuery, WithColumns, WithCustomC
 
     public function query(): Builder|EloquentBuilder|Relation
     {
-        $query = BookCode::query()->select(['code'])->where('book_id', $this->bookId);
+        $query = BookCode::query()->byTenant()->select(['code'])->where('book_id', $this->bookId);
 
         if ($this->filters->type && $this->filters->type !== 'all') {
             $query->where('type', $this->filters->type);

@@ -22,7 +22,7 @@ class BookCodesExport implements Export, WithMultipleSheets
     {
         $sheets = [];
 
-        $booksQuery = Book::query()->whereHas('bookCodes', function ($query) {
+        $booksQuery = Book::query()->byTenant()->whereHas('bookCodes', function ($query) {
             $this->applyFilters($query);
         });
 
