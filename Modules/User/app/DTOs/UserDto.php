@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\Http\Requests\EditProfileRequest;
 use Modules\User\Http\Requests\UserRegisterRequest;
+use Modules\User\Http\Requests\Web\WebUserRegisterRequest;
 
 readonly class UserDto
 {
@@ -25,6 +26,11 @@ readonly class UserDto
     ) {}
 
     public static function fromRegisterRequest(UserRegisterRequest $request): self
+    {
+        return self::buildFromRequest($request, true);
+    }
+
+    public static function fromWebRegisterRequest(WebUserRegisterRequest $request): self
     {
         return self::buildFromRequest($request, true);
     }
