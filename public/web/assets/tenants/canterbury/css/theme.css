@@ -1,0 +1,16 @@
+:root {
+    --bs-primary: #630004;
+    --bs-primary-rgb: 99, 0, 4;
+    --bs-body-bg: #FAF7F2;
+    --bs-body-color: #2D2424;
+}
+
+.btn-primary {
+    --bs-btn-bg: #630004;
+    --bs-btn-border-color: #630004;
+    --bs-btn-hover-bg: #4e0003;
+    --bs-btn-hover-border-color: #4e0003;
+    --bs-btn-active-bg: #3d0002;
+    --bs-btn-active-border-color: #3d0002;
+    --bs-btn-focus-shadow-rgb: 99, 0, 4;
+}

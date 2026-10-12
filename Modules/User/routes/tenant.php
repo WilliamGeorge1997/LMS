@@ -12,12 +12,14 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
     ScopeSessions::class,
 ])->group(function () {
+    Route::get('/', [UserAuthController::class, 'showSelectType'])->name('welcome');
+
     // Auth Routes
-    Route::get('login', [UserAuthController::class, 'showLogin'])->name('web.login');
-    Route::post('login', [UserAuthController::class, 'login'])->name('web.login.submit');
+    Route::get('login', [UserAuthController::class, 'showLogin'])->name('login');
+    Route::post('login', [UserAuthController::class, 'login'])->name('login.submit');
 
-    Route::get('register', [UserAuthController::class, 'showRegister'])->name('web.register');
-    Route::post('register', [UserAuthController::class, 'register'])->name('web.register.submit');
+    Route::get('register', [UserAuthController::class, 'showRegister'])->name('register');
+    Route::post('register', [UserAuthController::class, 'register'])->name('register.submit');
 
-    Route::post('logout', [UserAuthController::class, 'logout'])->name('web.logout');
+    Route::post('logout', [UserAuthController::class, 'logout'])->name('logout');
 });

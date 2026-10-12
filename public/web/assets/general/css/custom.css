@@ -1,0 +1,26 @@
+:root {
+    --bs-body-bg: #FAF7F2;
+    --bs-body-color: #2D2424;
+}
+
+.auth-container {
+    max-width: 680px;
+}
+
+.auth-box-sm {
+    max-width: 540px;
+}
+
+.badge-icon-lg {
+    width: 4rem;
+    height: 4rem;
+}
+
+.card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+}

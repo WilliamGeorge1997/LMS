@@ -22,4 +22,9 @@ return [
     'valid_otp' => 'رمز صحيح',
     'password_changed' => 'تم تغيير كلمة المرور بنجاح',
     'authenticated' => 'مستخدم مسجل الدخول',
+    'select_type' => 'اختر نوع حسابك؟',
+    'student' => 'طالب',
+    'continue_student' => 'المتابعة كطالب',
+    'teacher' => 'معلم',
+    'continue_teacher' => 'المتابعة كمعلم',
 ];

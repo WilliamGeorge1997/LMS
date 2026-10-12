@@ -22,4 +22,9 @@ return [
     'valid_otp' => 'Valid OTP',
     'password_changed' => 'Password Changed Successfully',
     'authenticated' => 'Authenticated User',
+    'select_type' => 'Select your account type?',
+    'student' => 'Student',
+    'continue_student' => 'Continue as Student',
+    'teacher' => 'Teacher',
+    'continue_teacher' => 'Continue as Teacher',
 ];

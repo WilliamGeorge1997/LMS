@@ -7,7 +7,7 @@ use Illuminate\Validation\Rules\Enum;
 use Modules\User\Enums\UserType;
 use Override;
 
-class WebUserRegisterRequest extends FormRequest
+class UserRegisterRequest extends FormRequest
 {
     public function rules(): array
     {

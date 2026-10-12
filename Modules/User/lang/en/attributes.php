@@ -16,4 +16,6 @@ return [
     'verify_code' => 'Verification Code',
     'is_active' => 'Active Status',
     'code' => 'Access Code',
+    'login' => 'Email or Username',
+    'remember' => 'Remember Me',
 ];

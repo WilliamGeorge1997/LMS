@@ -13,8 +13,8 @@ use Illuminate\Validation\ValidationException;
 use Modules\Book\Services\BookCodeService;
 use Modules\Country\Services\CountryService;
 use Modules\User\DTOs\UserDto;
-use Modules\User\Http\Requests\Web\WebUserLoginRequest;
-use Modules\User\Http\Requests\Web\WebUserRegisterRequest;
+use Modules\User\Http\Requests\Web\UserLoginRequest;
+use Modules\User\Http\Requests\Web\UserRegisterRequest;
 use Modules\User\Models\User;
 use Override;
 
@@ -29,12 +29,17 @@ class UserAuthController extends Controller implements HasMiddleware
         ];
     }
 
-    public function showLogin()
+    public function showSelectType()
     {
-        return view('user::web.auth.login');
+        return view('user::auth.select-type');
     }
 
-    public function login(WebUserLoginRequest $request)
+    public function showLogin()
+    {
+        return view('user::auth.login');
+    }
+
+    public function login(UserLoginRequest $request)
     {
         $credentials = $request->validated();
 
@@ -54,7 +59,7 @@ class UserAuthController extends Controller implements HasMiddleware
             ]);
         }
 
-        Auth::guard('user_web')->login($user);
+        Auth::guard('user_web')->login($user, $request->boolean('remember'));
 
         $request->session()->regenerate();
 
@@ -63,30 +68,25 @@ class UserAuthController extends Controller implements HasMiddleware
 
     public function showRegister(CountryService $countryService)
     {
-        // Fetch the available countries to populate the first dropdown on page load
-        $countries = $countryService->active(); // or findByTenant() depending on requirements
-
-        return view('user::web.auth.register', compact('countries'));
+        $countries = $countryService->active();
+        return view('user::auth.register', compact('countries'));
     }
 
-    public function register(WebUserRegisterRequest $request, BookCodeService $bookCodeService)
+    public function register(UserRegisterRequest $request, BookCodeService $bookCodeService)
     {
         $dto = UserDto::fromWebRegisterRequest($request);
 
         try {
             $user = DB::transaction(function () use ($dto, $bookCodeService) {
-                // Check if the book code is valid for this user type
                 $bookCode = $bookCodeService->check($dto->code, $dto->type);
 
                 $user = User::create($dto->toArray());
 
-                // Redeem the book code for the new user
                 $bookCodeService->redeem($bookCode, $user);
 
                 return $user;
             });
 
-            // Log the user in
             Auth::guard('user_web')->login($user);
             $request->session()->regenerate();
 

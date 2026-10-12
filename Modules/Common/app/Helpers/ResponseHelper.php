@@ -98,3 +98,18 @@ if (! function_exists('getCaseCollection')) {
         return $builder->get();
     }
 }
+
+if (! function_exists('web_asset')) {
+    function web_asset(string $path, bool $fallback = true): ?string
+    {
+        $tenant = tenant('id');
+        $file = "web/assets/tenants/{$tenant}/" . ltrim($path, '/');
+
+        if ($tenant && file_exists(public_path($file))) {
+            return asset($file);
+        }
+
+        return $fallback ? asset('web/assets/general/' . ltrim($path, '/')) : null;
+    }
+}
+
