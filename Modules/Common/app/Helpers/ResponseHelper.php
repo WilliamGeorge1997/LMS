@@ -102,14 +102,17 @@ if (! function_exists('getCaseCollection')) {
 if (! function_exists('web_asset')) {
     function web_asset(string $path, bool $fallback = true): ?string
     {
-        $tenant = tenant('id');
-        $file = "web/assets/tenants/{$tenant}/" . ltrim($path, '/');
+        $subdomain = tenant()?->domains?->first()?->domain
+            ?? (tenant() ? explode('.', request()->getHost())[0] : null);
 
-        if ($tenant && file_exists(public_path($file))) {
+        $file = "web/assets/tenants/{$subdomain}/" . ltrim($path, '/');
+
+        if ($subdomain && file_exists(public_path($file))) {
             return asset($file);
         }
 
         return $fallback ? asset('web/assets/general/' . ltrim($path, '/')) : null;
     }
 }
+
 

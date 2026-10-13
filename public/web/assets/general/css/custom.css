@@ -1,26 +1,115 @@
+/* Base & Fallback Variables */
 :root {
-    --bs-body-bg: #FAF7F2;
-    --bs-body-color: #2D2424;
+    --bs-primary: #0d6efd;
+    --bs-primary-rgb: 13, 110, 253;
+    --bs-body-bg: #ffffff;
+    --bs-body-color: #212529;
+    --bs-focus-ring-color: rgba(var(--bs-primary-rgb), 0.25);
 }
 
+html, body {
+    height: 100%;
+}
+
+/* Tenant Dynamic Bindings for Bootstrap Components */
+.btn-primary {
+    --bs-btn-bg: var(--bs-primary);
+    --bs-btn-border-color: var(--bs-primary);
+    --bs-btn-hover-bg: var(--bs-primary);
+    --bs-btn-hover-border-color: var(--bs-primary);
+    --bs-btn-active-bg: var(--bs-primary);
+    --bs-btn-active-border-color: var(--bs-primary);
+    --bs-btn-focus-shadow-rgb: var(--bs-primary-rgb);
+}
+
+.btn-primary:hover {
+    filter: brightness(0.92);
+}
+
+.btn-primary:active {
+    filter: brightness(0.85);
+}
+
+/* Form Controls & Focus States */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.2);
+}
+
+.form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.form-check-input:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+/* Seamless Input Group Focus */
+.input-group {
+    border-radius: var(--bs-border-radius-lg, 0.5rem);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.input-group .input-group-text,
+.input-group .form-control {
+    transition: border-color 0.15s ease-in-out;
+}
+
+.input-group:focus-within {
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.15);
+}
+
+.input-group:focus-within .input-group-text,
+.input-group:focus-within .form-control {
+    border-color: var(--bs-primary);
+}
+
+.input-group:focus-within .input-group-text svg {
+    stroke: var(--bs-primary);
+}
+
+.input-group > .form-control:focus {
+    box-shadow: none;
+}
+
+/* Sizing Utilities (all in rem) */
 .auth-container {
-    max-width: 680px;
+    max-width: 42.5rem;
 }
 
-.auth-box-sm {
-    max-width: 540px;
+.auth-form-container {
+    max-width: 26rem;
 }
 
-.badge-icon-lg {
-    width: 4rem;
-    height: 4rem;
+.auth-logo {
+    max-width: 11.25rem;
+    max-height: 3.75rem;
+    object-fit: contain;
 }
 
+.back-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+}
+
+.ratio-4x5 {
+    --bs-aspect-ratio: 125%;
+}
+
+/* Card Hover Micro-Interaction */
 .card-hover {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card-hover:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+    transform: translateY(-0.25rem);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08) !important;
+}
+
+/* RTL Icon Flip */
+[dir="rtl"] .back-btn svg {
+    transform: scaleX(-1);
 }

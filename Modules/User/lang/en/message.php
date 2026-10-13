@@ -27,4 +27,12 @@ return [
     'continue_student' => 'Continue as Student',
     'teacher' => 'Teacher',
     'continue_teacher' => 'Continue as Teacher',
+    'sign_in' => 'Sign in',
+    'welcome_back' => 'Welcome back, :type!',
+    'sign_in_desc' => 'Sign in to continue learning.',
+    'forgot_password' => 'Forgot password?',
+
+    'new_to_platform' => 'New to :tenant?',
+    'create_account' => 'Create an account',
+    'enter_password' => 'Enter your password',
 ];

@@ -27,4 +27,12 @@ return [
     'continue_student' => 'المتابعة كطالب',
     'teacher' => 'معلم',
     'continue_teacher' => 'المتابعة كمعلم',
+    'sign_in' => 'تسجيل الدخول',
+    'welcome_back' => 'مرحباً بعودتك، :type!',
+    'sign_in_desc' => 'سجل الدخول لمتابعة التعلم.',
+    'forgot_password' => 'نسيت كلمة المرور؟',
+
+    'new_to_platform' => 'جديد في :tenant؟',
+    'create_account' => 'إنشاء حساب جديد',
+    'enter_password' => 'أدخل كلمة المرور',
 ];

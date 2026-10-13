@@ -1,12 +1,12 @@
 @extends('common::web.layouts.master')
 
-@section('title', config('app.name'))
+@section('title', $title ?? __('common::messages.not_found'))
 
 @section('content')
 <div class="container text-center my-auto auth-box-sm">
     <!-- Logo -->
     <div class="mb-4">
-        <img src="{{ web_asset('images/logo.svg') }}" alt="{{ config('app.name') }}" height="48" class="img-fluid mx-auto">
+        <img src="{{ web_asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="img-fluid mx-auto auth-logo">
     </div>
 
     <!-- Card Container -->
