@@ -45,4 +45,5 @@ return [
     'no' => 'No',
     'multiple' => 'Multiple',
     'school' => 'School',
+    'my_books' => 'My Books',
 ];

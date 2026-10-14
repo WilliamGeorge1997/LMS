@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Book\Http\Controllers\BookCodeController;
 use Modules\Book\Http\Controllers\BookController;
+use Modules\Book\Http\Controllers\Web\MyBooksController;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Stancl\Tenancy\Middleware\ScopeSessions;
@@ -27,3 +28,14 @@ Route::middleware([
         Route::patch('book-codes/{book_code}/toggle-activate', [BookCodeController::class, 'toggleActivate'])
             ->name('book-codes.toggle-activate');
     });
+
+Route::middleware([
+    'web',
+    InitializeTenancyBySubdomain::class,
+    PreventAccessFromCentralDomains::class,
+    ScopeSessions::class,
+    'auth:user_web',
+])->group(function () {
+    Route::get('my-books', [MyBooksController::class, 'index'])->name('my-books');
+    Route::post('my-books/claim-code', [MyBooksController::class, 'claimCode'])->name('my-books.claim-code');
+});

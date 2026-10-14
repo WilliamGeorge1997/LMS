@@ -21,5 +21,18 @@ Route::middleware([
     Route::get('register', [UserAuthController::class, 'showRegister'])->name('register');
     Route::post('register', [UserAuthController::class, 'register'])->name('register.submit');
 
+    Route::get('verify', [UserAuthController::class, 'showVerify'])->name('verify.show');
+    Route::post('verify', [UserAuthController::class, 'verify'])->name('verify.submit');
+    Route::post('verify/resend', [UserAuthController::class, 'resendVerifyCode'])->name('verify.resend');
+
+    // Forgot Password Routes
+    Route::get('forgot-password', [UserAuthController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('forgot-password', [UserAuthController::class, 'sendResetCode'])->name('password.email');
+    Route::get('forgot-password/verify', [UserAuthController::class, 'showVerifyReset'])->name('password.verify.show');
+    Route::post('forgot-password/verify', [UserAuthController::class, 'verifyResetCode'])->name('password.verify.submit');
+    Route::post('forgot-password/resend', [UserAuthController::class, 'resendResetCode'])->name('password.resend');
+    Route::get('reset-password', [UserAuthController::class, 'showResetPassword'])->name('password.reset');
+    Route::post('reset-password', [UserAuthController::class, 'updatePassword'])->name('password.update');
+
     Route::post('logout', [UserAuthController::class, 'logout'])->name('logout');
 });

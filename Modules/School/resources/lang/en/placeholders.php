@@ -9,4 +9,5 @@ return [
     'select_city' => 'Select city',
     'select_region' => 'Select region',
     'search_schools' => 'Search schools',
+    'select_school' => 'Select school',
 ];

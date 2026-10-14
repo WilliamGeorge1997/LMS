@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\School\Http\Controllers\SchoolController;
+use Modules\School\Http\Controllers\Web\SchoolController as WebSchoolController;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Stancl\Tenancy\Middleware\ScopeSessions;
@@ -25,3 +26,12 @@ Route::middleware([
         Route::post('schools/{school}', [SchoolController::class, 'update']);
         Route::patch('schools/{school}/toggle-activate', [SchoolController::class, 'toggleActivate']);
     });
+
+Route::middleware([
+    'web',
+    InitializeTenancyBySubdomain::class,
+    PreventAccessFromCentralDomains::class,
+    ScopeSessions::class,
+])->group(function () {
+    Route::get('/ajax/schools', [WebSchoolController::class, 'ajaxSchool'])->name('web.ajax.schools');
+});

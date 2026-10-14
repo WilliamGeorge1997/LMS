@@ -9,4 +9,8 @@ return [
     'cities' => 'Cities',
     'regions' => 'Regions',
     'settings' => 'Settings',
+    'home' => 'Home',
+    'my_books' => 'My Books',
+    'profile' => 'Profile',
+    'online' => 'Online',
 ];

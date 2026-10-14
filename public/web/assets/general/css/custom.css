@@ -1,17 +1,14 @@
-/* Base & Fallback Variables */
+/* Base Theme Fallback */
 :root {
     --bs-primary: #0d6efd;
     --bs-primary-rgb: 13, 110, 253;
-    --bs-body-bg: #ffffff;
-    --bs-body-color: #212529;
-    --bs-focus-ring-color: rgba(var(--bs-primary-rgb), 0.25);
 }
 
 html, body {
     height: 100%;
 }
 
-/* Tenant Dynamic Bindings for Bootstrap Components */
+/* Tenant Dynamic Theme Bindings for Bootstrap 5 */
 .btn-primary {
     --bs-btn-bg: var(--bs-primary);
     --bs-btn-border-color: var(--bs-primary);
@@ -22,17 +19,18 @@ html, body {
     --bs-btn-focus-shadow-rgb: var(--bs-primary-rgb);
 }
 
-.btn-primary:hover {
-    filter: brightness(0.92);
+.btn-outline-primary {
+    --bs-btn-color: var(--bs-primary);
+    --bs-btn-border-color: var(--bs-primary);
+    --bs-btn-hover-bg: var(--bs-primary);
+    --bs-btn-hover-border-color: var(--bs-primary);
+    --bs-btn-active-bg: var(--bs-primary);
+    --bs-btn-active-border-color: var(--bs-primary);
 }
 
-.btn-primary:active {
-    filter: brightness(0.85);
-}
-
-/* Form Controls & Focus States */
 .form-control:focus,
-.form-select:focus {
+.form-select:focus,
+.form-check-input:focus {
     border-color: var(--bs-primary);
     box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.2);
 }
@@ -42,22 +40,7 @@ html, body {
     border-color: var(--bs-primary);
 }
 
-.form-check-input:focus {
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
-}
-
-/* Seamless Input Group Focus */
-.input-group {
-    border-radius: var(--bs-border-radius-lg, 0.5rem);
-    transition: box-shadow 0.15s ease-in-out;
-}
-
-.input-group .input-group-text,
-.input-group .form-control {
-    transition: border-color 0.15s ease-in-out;
-}
-
+/* Unified Input Group Focus & Validation */
 .input-group:focus-within {
     box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.15);
 }
@@ -75,7 +58,37 @@ html, body {
     box-shadow: none;
 }
 
-/* Sizing Utilities (all in rem) */
+.toggle-pwd {
+    cursor: pointer;
+}
+
+.toggle-pwd:focus,
+.toggle-pwd:active {
+    box-shadow: none !important;
+}
+
+.input-group:has(.is-invalid),
+.input-group.is-invalid {
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb, 220, 53, 69), 0.15) !important;
+}
+
+.input-group:has(.is-invalid) .input-group-text,
+.input-group:has(.is-invalid) .form-control,
+.input-group.is-invalid .input-group-text,
+.input-group.is-invalid .form-control {
+    border-color: var(--bs-form-invalid-border-color, #dc3545) !important;
+}
+
+.input-group:has(.is-invalid) .input-group-text svg,
+.input-group.is-invalid .input-group-text svg {
+    stroke: var(--bs-form-invalid-border-color, #dc3545);
+}
+
+.input-group > .form-control:not(:last-child).is-invalid {
+    background-image: none;
+}
+
+/* Auth Containers & Utilities (rem-based) */
 .auth-container {
     max-width: 42.5rem;
 }
@@ -95,11 +108,6 @@ html, body {
     height: 2.75rem;
 }
 
-.ratio-4x5 {
-    --bs-aspect-ratio: 125%;
-}
-
-/* Card Hover Micro-Interaction */
 .card-hover {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -109,7 +117,96 @@ html, body {
     box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08) !important;
 }
 
+.ratio-4x5 {
+    --bs-aspect-ratio: 125%;
+}
+
+/* Wizard & OTP Specific Dimensions */
+.wizard-form-container {
+    max-width: 28rem;
+}
+
+.wizard-progress-bar {
+    height: 0.3rem;
+    border-radius: 0.15rem;
+    background-color: rgba(var(--bs-primary-rgb), 0.18);
+    transition: background-color 0.25s ease-in-out;
+}
+
+.wizard-progress-bar.active {
+    background-color: var(--bs-primary);
+}
+
+.otp-box {
+    width: 3.25rem;
+    height: 3.75rem;
+}
+
 /* RTL Icon Flip */
 [dir="rtl"] .back-btn svg {
     transform: scaleX(-1);
+}
+
+/* Sidebar */
+.app-sidebar {
+    width: 6.25rem;
+    min-height: 100vh;
+    flex-shrink: 0;
+}
+
+.sidebar-logo {
+    max-width: 4.5rem;
+    max-height: 2.5rem;
+    object-fit: contain;
+}
+
+.status-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+}
+
+.sidebar-nav-item {
+    width: 4.5rem;
+    height: 4.5rem;
+    font-size: 0.75rem;
+}
+
+.sidebar-nav-item.active,
+.sidebar-nav-link.active {
+    background-color: #f7eeee;
+    color: var(--bs-primary) !important;
+}
+
+.sidebar-nav-item.active svg,
+.sidebar-nav-link.active svg {
+    stroke: var(--bs-primary);
+}
+
+/* Books Carousel & Cards */
+.books-slider {
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.books-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.book-card-item {
+    width: 14rem;
+}
+
+.book-cover-placeholder {
+    background-color: #275a4e;
+}
+
+.carousel-nav-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+}
+
+/* PJAX Transition */
+.app-content-fade {
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
 }

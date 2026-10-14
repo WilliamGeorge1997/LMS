@@ -16,8 +16,21 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->redirectGuestsTo('/admin/login');
-        $middleware->redirectUsersTo('/admin/dashboard');
+        $middleware->redirectGuestsTo(function ($request) {
+            if ($request->is('admin') || $request->is('admin/*')) {
+                return '/admin/login';
+            }
+
+            return '/';
+        });
+
+        $middleware->redirectUsersTo(function ($request) {
+            if (auth('admin')->check()) {
+                return '/admin/dashboard';
+            }
+
+            return '/my-books';
+        });
         $middleware->alias([
             'set.locale' => SetLocale::class,
             'role' => RoleMiddleware::class,

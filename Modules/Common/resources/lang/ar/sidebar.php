@@ -9,4 +9,8 @@ return [
     'cities' => 'المدن',
     'regions' => 'المناطق',
     'settings' => 'الإعدادات',
+    'home' => 'الرئيسية',
+    'my_books' => 'كتبي',
+    'profile' => 'الملف الشخصي',
+    'online' => 'متصل',
 ];

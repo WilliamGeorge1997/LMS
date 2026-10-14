@@ -138,7 +138,7 @@ class UserAuthController extends Controller
         // Send email via queue
         Mail::to($email)->send((new ForgetPasswordMail($verifyCode))->onConnection('database'));
 
-        return apiResponse(true, __('user::message.password_reset_sent'));
+        return apiResponse(true, __('user::message.reset_sent'));
     }
 
     public function verifyForgetPassword(VerifyForgetPasswordRequest $request): JsonResponse

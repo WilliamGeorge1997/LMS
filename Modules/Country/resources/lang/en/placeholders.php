@@ -8,4 +8,5 @@ return [
     'search_countries' => 'Search countries',
     'search_cities' => 'Search cities',
     'search_regions' => 'Search regions',
+    'select_region' => 'Select zone / region',
 ];

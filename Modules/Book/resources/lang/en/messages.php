@@ -19,4 +19,7 @@ return [
     'delete_code_confirm' => 'Are you sure you want to delete this access code?',
     'no_codes_found' => 'No access codes found.',
     'select_tenant_to_export' => 'Please select a tenant before exporting.',
+    'welcome_back' => 'Welcome back to your library.',
+    'enter_code' => 'Enter your access code to unlock a book.',
+    'no_books' => 'No books found in your library.',
 ];

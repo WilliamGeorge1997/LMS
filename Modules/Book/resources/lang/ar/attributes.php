@@ -39,4 +39,5 @@ return [
     'not_active' => 'غير نشط',
     'show' => 'عرض',
     'entries' => 'سجلات',
+    'my_books' => 'كتبي',
 ];

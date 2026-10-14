@@ -8,4 +8,5 @@ return [
     'search_countries' => 'بحث في الدول',
     'search_cities' => 'بحث في المدن',
     'search_regions' => 'بحث في المناطق',
+    'select_region' => 'اختر المنطقة',
 ];

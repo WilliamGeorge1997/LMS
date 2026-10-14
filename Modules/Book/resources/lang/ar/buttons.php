@@ -7,4 +7,7 @@ return [
     'create_code' => 'إنشاء',
     'previous' => 'السابق',
     'next' => 'التالي',
+    'add_code' => 'إضافة كود وصول',
+    'download' => 'تحميل',
+    'unlock' => 'فتح الكتاب',
 ];

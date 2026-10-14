@@ -9,4 +9,5 @@ return [
     'select_city' => 'اختر المدينة',
     'select_region' => 'اختر المنطقة',
     'search_schools' => 'بحث في المدارس',
+    'select_school' => 'اختر المدرسة',
 ];
