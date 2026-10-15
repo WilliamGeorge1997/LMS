@@ -1,7 +1,7 @@
 @extends('common::web.layouts.master')
 
 @php
-    $type = request('type') === 'teacher' ? 'teacher' : 'student';
+    $type = session('user_type', 'student');
     $typeLabel = $type === 'teacher' ? __('user::message.teacher') : __('user::message.student');
     $tenantName = tenant()?->name ?? config('app.name');
     $defaultPlaceholder = $type === 'teacher' ? 'teacher@canterbury.edu' : 'student@canterbury.edu';
@@ -117,7 +117,7 @@
                     <!-- Register Link -->
                     <div class="text-center small text-secondary">
                         {{ __('user::message.new_user', ['tenant' => $tenantName]) }}
-                        <a href="{{ route('register', ['type' => $type]) }}" class="text-primary text-decoration-none fw-semibold">
+                        <a href="{{ route('register') }}" class="text-primary text-decoration-none fw-semibold">
                             {{ __('user::message.create_account') }}
                         </a>
                     </div>

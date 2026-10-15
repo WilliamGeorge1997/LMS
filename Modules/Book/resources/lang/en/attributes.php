@@ -39,11 +39,13 @@ return [
     'not_active' => 'Not Active',
     'show' => 'Show',
     'entries' => 'entries',
-    
+
     'all' => 'All',
     'yes' => 'Yes',
     'no' => 'No',
     'multiple' => 'Multiple',
     'school' => 'School',
     'my_books' => 'My Books',
+    'category' => 'Category',
+    'level' => 'Level',
 ];

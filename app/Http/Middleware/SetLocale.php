@@ -22,6 +22,11 @@ class SetLocale
 
         if (auth('admin')->check()) {
             $language = auth('admin')->user()?->language ?? $default;
+        } elseif (session()->has('locale')) {
+            $language = session('locale');
+        } elseif ($request->cookie('app_locale')) {
+            $language = $request->cookie('app_locale');
+            session(['locale' => $language]);
         }
 
         app()->setLocale($language);

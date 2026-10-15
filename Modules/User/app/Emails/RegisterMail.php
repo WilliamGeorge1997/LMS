@@ -20,7 +20,7 @@ class RegisterMail extends Mailable implements ShouldQueue
      */
     public function build(): self
     {
-        return $this->subject("Verify your email")
+        return $this->subject('Verify your email')
             ->view('user::emails.register')
             ->text('user::emails.register-text')
             ->with([

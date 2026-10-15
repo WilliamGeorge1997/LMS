@@ -5,18 +5,14 @@ namespace Modules\Book\Exports;
 use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Modules\Book\Models\Book;
-
 use Modules\Book\DTOs\BookCodesExportFilters;
-use Modules\Book\Models\BookCode;
+use Modules\Book\Models\Book;
 
 class BookCodesExport implements Export, WithMultipleSheets
 {
     use Exportable;
 
-    public function __construct(private readonly BookCodesExportFilters $filters)
-    {
-    }
+    public function __construct(private readonly BookCodesExportFilters $filters) {}
 
     public function sheets(): array
     {
@@ -26,7 +22,7 @@ class BookCodesExport implements Export, WithMultipleSheets
             $this->applyFilters($query);
         });
 
-        if (!empty($this->filters->book_ids)) {
+        if (! empty($this->filters->book_ids)) {
             $booksQuery->whereIn('id', $this->filters->book_ids);
         }
 

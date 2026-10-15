@@ -13,4 +13,5 @@ return [
     'select_book' => 'اختر الكتاب',
     'search_book_codes' => 'بحث في الكتب...',
     'access_code_type_hint' => 'اختر نوع كود الوصول المراد إنشاؤه',
+    'code' => 'مثال: XC9V2B',
 ];

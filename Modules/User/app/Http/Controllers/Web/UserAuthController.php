@@ -39,9 +39,31 @@ class UserAuthController extends Controller implements HasMiddleware
         return view('user::auth.select-type');
     }
 
-    public function showLogin()
+    public function selectType(Request $request, ?string $type = null)
     {
-        return view('user::auth.login');
+        $selectedType = $type ?? $request->input('type');
+
+        if (in_array($selectedType, ['student', 'teacher'], true)) {
+            session(['user_type' => $selectedType]);
+        }
+
+        return redirect()->route('login');
+    }
+
+    public function showLogin(Request $request)
+    {
+        if ($request->has('type')) {
+            $type = $request->query('type');
+            if (in_array($type, ['student', 'teacher'], true)) {
+                session(['user_type' => $type]);
+            }
+
+            return redirect()->route('login');
+        }
+
+        $type = session('user_type', 'student');
+
+        return view('user::auth.login', compact('type'));
     }
 
     public function login(UserLoginRequest $request)
@@ -83,10 +105,21 @@ class UserAuthController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function showRegister(CountryService $countryService)
+    public function showRegister(Request $request, CountryService $countryService)
     {
+        if ($request->has('type')) {
+            $type = $request->query('type');
+            if (in_array($type, ['student', 'teacher'], true)) {
+                session(['user_type' => $type]);
+            }
+
+            return redirect()->route('register');
+        }
+
+        $type = session('user_type', 'student');
         $countries = $countryService->active();
-        return view('user::auth.register', compact('countries'));
+
+        return view('user::auth.register', compact('countries', 'type'));
     }
 
     public function register(UserRegisterRequest $request, BookCodeService $bookCodeService)

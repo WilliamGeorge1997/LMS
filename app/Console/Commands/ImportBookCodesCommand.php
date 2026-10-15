@@ -18,8 +18,9 @@ class ImportBookCodesCommand extends Command
         $filename = $this->argument('filename');
         $path = storage_path("app/private/excel/{$filename}");
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             $this->error("File not found at path: {$path}");
+
             return Command::FAILURE;
         }
 
@@ -30,9 +31,9 @@ class ImportBookCodesCommand extends Command
         $import->withOutput($this->output);
         Excel::import($import, $path);
 
-        $this->info("Import completed!");
-        $this->info("Successfully Imported: " . $import->importedCount);
-        $this->warn("Skipped (Duplicates/Not Found): " . $import->skippedCount);
+        $this->info('Import completed!');
+        $this->info('Successfully Imported: '.$import->importedCount);
+        $this->warn('Skipped (Duplicates/Not Found): '.$import->skippedCount);
 
         return Command::SUCCESS;
     }

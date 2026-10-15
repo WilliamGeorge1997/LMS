@@ -9,6 +9,15 @@ use Override;
 
 class UserRegisterRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        if (! $this->has('type') && session()->has('user_type')) {
+            $this->merge([
+                'type' => session('user_type'),
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [

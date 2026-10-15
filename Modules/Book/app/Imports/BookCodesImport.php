@@ -3,19 +3,20 @@
 namespace Modules\Book\Imports;
 
 use Illuminate\Database\Eloquent\Model;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
-use Maatwebsite\Excel\Concerns\Importable;
+use Modules\Book\Enums\BookCodeType;
 use Modules\Book\Models\Book;
 use Modules\Book\Models\BookCode;
-use Modules\Book\Enums\BookCodeType;
 
-class BookCodesImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, WithProgressBar
+class BookCodesImport implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithProgressBar
 {
     use Importable;
+
     /**
      * Map of excel names to database names for dissimilar ones.
      */
@@ -33,7 +34,9 @@ class BookCodesImport implements ToModel, WithHeadingRow, WithBatchInserts, With
     protected array $bookIds = [];
 
     public int $importedCount = 0;
+
     public int $skippedCount = 0;
+
     public string $tenantId;
 
     public function __construct(string $tenantId)
@@ -47,6 +50,7 @@ class BookCodesImport implements ToModel, WithHeadingRow, WithBatchInserts, With
 
         if (empty($bookName)) {
             $this->skippedCount++;
+
             return null;
         }
 
@@ -57,8 +61,9 @@ class BookCodesImport implements ToModel, WithHeadingRow, WithBatchInserts, With
 
         $bookId = $this->getBookId($bookName);
 
-        if (!$bookId) {
+        if (! $bookId) {
             $this->skippedCount++;
+
             return null; // Skip if book not found
         }
 
@@ -69,6 +74,7 @@ class BookCodesImport implements ToModel, WithHeadingRow, WithBatchInserts, With
         // Skip if code already exists to prevent duplicates
         if (BookCode::where('code', $row['accesscode'])->exists()) {
             $this->skippedCount++;
+
             return null;
         }
 
@@ -94,15 +100,17 @@ class BookCodesImport implements ToModel, WithHeadingRow, WithBatchInserts, With
         // Search by Spatie Translatable title or basic like query
         $book = Book::where('title->en', $bookName)
             ->orWhere('title->ar', $bookName)
-            ->orWhere('title', 'LIKE', '%' . $bookName . '%')
+            ->orWhere('title', 'LIKE', '%'.$bookName.'%')
             ->first();
 
         if ($book) {
             $this->bookIds[$bookName] = $book->id;
+
             return $book->id;
         }
 
         $this->bookIds[$bookName] = null;
+
         return null;
     }
 

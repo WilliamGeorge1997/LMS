@@ -1,9 +1,25 @@
-:root {
+:root, [data-bs-theme="light"] {
     --bs-primary: #630004;
     --bs-primary-rgb: 99, 0, 4;
-    --bs-body-bg: #F4ECE1;
+    --bs-body-bg: #F8F4EE;
     --bs-body-color: #2D2424;
+    --tenant-card-bg: #EFE6D8;
+    --bs-card-bg: #EFE6D8;
     --bs-focus-ring-color: rgba(99, 0, 4, 0.25);
     --bs-link-color: #630004;
     --bs-link-hover-color: #4a0003;
 }
+
+[data-bs-theme="dark"] {
+    --bs-primary: #E07A80;
+    --bs-primary-rgb: 224, 122, 128;
+    --bs-body-bg: #151011;
+    --bs-body-color: #F5ECE2;
+    --tenant-card-bg: #251A1C;
+    --bs-card-bg: #251A1C;
+    --bs-focus-ring-color: rgba(224, 122, 128, 0.35);
+    --bs-link-color: #E07A80;
+    --bs-link-hover-color: #f09ea3;
+}
+
+

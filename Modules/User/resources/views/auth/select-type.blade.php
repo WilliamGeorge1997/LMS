@@ -21,7 +21,7 @@
                 :title="__('user::message.student')"
                 :image="web_asset('images/student.jpg')"
                 :button-text="__('user::message.continue_student')"
-                :button-url="route('login', ['type' => 'student'])"
+                type="student"
             />
         </div>
 
@@ -30,7 +30,7 @@
                 :title="__('user::message.teacher')"
                 :image="web_asset('images/teacher.jpg')"
                 :button-text="__('user::message.continue_teacher')"
-                :button-url="route('login', ['type' => 'teacher'])"
+                type="teacher"
             />
         </div>
     </div>

@@ -1,0 +1,54 @@
+---
+description: Web application development rules, tenant identity standards, and architecture conventions.
+alwaysApply: true
+---
+
+# Web Application & Tenant Guidelines
+
+## Architecture & Conventions
+- Reusable code, no duplication. Keep business logic modular and DRY.
+- Thin controllers and service layer: business logic belongs in Services (e.g. `MyBooksService`), not controllers.
+- Middlewares must be defined inside the controller's `middleware()` method, not in route files.
+- Dedicated form requests: always use Form Request classes for validation, without `Web` prefix if already in `Web` namespace (e.g., `UserRegisterRequest`).
+- Route names must not prefix `web.` (use `welcome`, `login`, `my-books`).
+- Views must not include redundant `web` folders when already under resources (e.g., `user::auth.login`).
+- Use centralized response helpers from `Common` module (`ResponseHelper`) for JSON responses.
+- Store multi-step flow data (email, OTP state, user type) in session, never exposed in URL query parameters.
+- Identify tenants by subdomain/slug (e.g. `canterbury`), never by database ID.
+- Do not create migrations, tables, or columns for static styling or tenant theme assets.
+
+## Styling & CSS
+- Bootstrap 5 First: always use native Bootstrap 5 utility classes and components as the primary foundation.
+- Minimum CSS: custom CSS in `custom.css` is only a fallback when Bootstrap lacks the utility.
+- Zero `overflow: hidden`: strictly prohibited across all web application views.
+- Zero inline styles: never use `style="..."` on HTML elements; use classes or native HTML attributes.
+- Use `rem`, never `px`: in CSS files, always use `rem` for measurements and sizing.
+- Asset directory structure:
+  - `public/web/assets/general/`: shared styles, generic scripts, common assets.
+  - `public/web/assets/tenants/{tenant}/`: dynamic tenant-specific theme tokens (`css/theme.css`) and assets (`images/`).
+- Dynamic tenant identity:
+  - Colors and backgrounds must follow the active tenant's theme tokens (`--bs-primary`, `--bs-primary-rgb`, `--bs-body-bg`, `--bs-body-color`).
+  - Never allow Bootstrap default blue (`#0d6efd`, `#cfe2ff`) to show in buttons, badges, or input focus rings.
+  - Modals and cards must follow the tenant identity (surface background, tenant logo, auth-style inputs and buttons).
+
+## JavaScript & UX
+- jQuery-first and unified helpers: use jQuery where present; do not introduce extra frontend packages (no HTMX, no Livewire).
+- Simple, readable, and minimized JS.
+- AJAX-first UX: form submissions use `[data-ajax]` to prevent page reloads.
+- Submit buttons show a spinner/loader while preserving their brand identity color on submit.
+- Inline form feedback: show error messages as small red text paragraphs below the input, never top alert banners.
+- Synchronized focus: input groups and prepended icons must highlight focus borders simultaneously without delay.
+
+## Localization & Content
+- 100% translated: all user-facing text must be translated in both English and Arabic.
+- No hardcoded defaults in views: use translation keys `__()` and dynamic tenant bindings (`tenant()?->name`).
+- Concise keys: translation keys must be strictly 1 or 2 words maximum.
+
+## Media, Assets & Layout
+- Tenant logos: always use `logo.png` (never SVG).
+- Tenant favicons: always use `favicon.ico`.
+- Page title format: `{Tenant Name} - {Page Title}`.
+- Do not generate AI images; use official Stitch design assets.
+- Shared layouts and master Blade files live in `Modules/Common/resources/views/web/`.
+- Sidebar structure and styling must remain protected without changes.
+- Books: open in new tab directly via file path (`target="_blank"`), paginated (12 per page), no carousel sliders/arrows, dark-to-light gradient fallback covers, and full-width tenant primary action buttons.

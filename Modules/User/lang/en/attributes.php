@@ -18,4 +18,11 @@ return [
     'code' => 'Access Code',
     'login' => 'Email or Username',
     'remember' => 'Remember Me',
+    'student' => 'Student',
+    'teacher' => 'Teacher',
+    'school' => 'School',
+    'country' => 'Country',
+    'city' => 'City',
+    'region' => 'Zone',
+    'new_password_confirmation' => 'Confirm New Password',
 ];

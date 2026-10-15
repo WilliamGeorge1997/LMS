@@ -105,14 +105,12 @@ if (! function_exists('web_asset')) {
         $subdomain = tenant()?->domains?->first()?->domain
             ?? (tenant() ? explode('.', request()->getHost())[0] : null);
 
-        $file = "web/assets/tenants/{$subdomain}/" . ltrim($path, '/');
+        $file = "web/assets/tenants/{$subdomain}/".ltrim($path, '/');
 
         if ($subdomain && file_exists(public_path($file))) {
             return asset($file);
         }
 
-        return $fallback ? asset('web/assets/general/' . ltrim($path, '/')) : null;
+        return $fallback ? asset('web/assets/general/'.ltrim($path, '/')) : null;
     }
 }
-
-

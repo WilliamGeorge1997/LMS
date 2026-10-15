@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\User\Http\Controllers\Web\ProfileController;
 use Modules\User\Http\Controllers\Web\UserAuthController;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -13,6 +14,7 @@ Route::middleware([
     ScopeSessions::class,
 ])->group(function () {
     Route::get('/', [UserAuthController::class, 'showSelectType'])->name('welcome');
+    Route::match(['get', 'post'], 'select-type/{type?}', [UserAuthController::class, 'selectType'])->name('select-type');
 
     // Auth Routes
     Route::get('login', [UserAuthController::class, 'showLogin'])->name('login');
@@ -35,4 +37,10 @@ Route::middleware([
     Route::post('reset-password', [UserAuthController::class, 'updatePassword'])->name('password.update');
 
     Route::post('logout', [UserAuthController::class, 'logout'])->name('logout');
+
+    // Profile Routes
+    Route::get('profile', [ProfileController::class, 'show'])->name('profile');
+    Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('profile/language', [ProfileController::class, 'switchLanguage'])->name('profile.language');
+    Route::post('profile/theme', [ProfileController::class, 'switchTheme'])->name('profile.theme');
 });

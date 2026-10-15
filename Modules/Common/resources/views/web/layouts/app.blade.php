@@ -1,6 +1,6 @@
 @extends('common::web.layouts.master')
 
-@section('main_class', 'min-vh-100 d-flex flex-column flex-lg-row p-0 bg-light')
+@section('main_class', 'min-vh-100 d-flex flex-column flex-lg-row p-0')
 
 @section('content')
     @include('common::web.includes.sidebar')

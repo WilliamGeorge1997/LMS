@@ -14,6 +14,7 @@ class BookViewModel
     {
         return (new SchoolService)->findByTenant(['id', 'title']);
     }
+
     public function publishersByTenant()
     {
         return (new PublisherService)->findByTenant();

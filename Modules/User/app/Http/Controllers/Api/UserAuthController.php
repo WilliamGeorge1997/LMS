@@ -23,6 +23,7 @@ use Modules\User\Http\Requests\UserRegisterRequest;
 use Modules\User\Http\Requests\VerifyForgetPasswordRequest;
 use Modules\User\Http\Requests\VerifyRequest;
 use Modules\User\Models\User;
+use Modules\User\Services\UserService;
 
 #[Middleware('auth:user', only: ['logout', 'editProfile'])]
 class UserAuthController extends Controller
@@ -99,7 +100,7 @@ class UserAuthController extends Controller
     public function resendCode(ResendCodeRequest $request): JsonResponse
     {
         $email = $request->validated('email');
-        /**@var User $user */
+        /** @var User $user */
         $user = User::where('email', $email)->first();
 
         if ($user->is_active) {
@@ -167,16 +168,16 @@ class UserAuthController extends Controller
         return apiResponse(true, __('user::message.password_changed'));
     }
 
-    public function editProfile(EditProfileRequest $request): JsonResponse
+    public function editProfile(EditProfileRequest $request, UserService $userService): JsonResponse
     {
         $dto = UserDto::fromEditProfileRequest($request);
 
         /** @var User $user */
         $user = auth('user')->user();
 
-        $user->update($dto->toArray());
+        $user = $userService->updateProfile($user, $dto);
 
-        return apiResponse(true, __('user::message.profile_updated'), $user->fresh());
+        return apiResponse(true, __('user::message.profile_updated'), $user);
     }
 
     // Helper

@@ -11,4 +11,5 @@ return [
     'add_code' => 'Add Access Code',
     'download' => 'Download',
     'unlock' => 'Unlock Book',
+    'open' => 'Open',
 ];

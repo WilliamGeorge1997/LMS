@@ -19,7 +19,7 @@ class ApiExceptionHandler
     {
         $exceptions->render(function (Throwable $e, Request $request) {
             if ($request->is('api/*') || $request->wantsJson()) {
-                
+
                 if ($e instanceof AuthenticationException) {
                     return apiResponse(false, 'Unauthenticated.', null, 'unauthorized');
                 }
@@ -43,6 +43,7 @@ class ApiExceptionHandler
                 // Default fallback for any other unhandled exception in API
                 // Depending on the APP_DEBUG setting, we might not want to hide the real error message locally
                 $message = config('app.debug') ? $e->getMessage() : 'Server Error.';
+
                 return apiResponse(false, $message, config('app.debug') ? ['trace' => $e->getTrace()] : null, 'server_error');
             }
         });

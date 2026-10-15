@@ -443,57 +443,79 @@ $(function () {
         navigateToPage(targetHref, true);
     });
 
-    // Handle browser navigation buttons (Back and Forward)
-    window.addEventListener('popstate', function (event) {
-        var historicalUrl = (event.state && event.state.url)
-            ? event.state.url
-            : window.location.href;
+    // 9. Language Switch Handler
+    $(document).on('click', '#languageSwitchBtn', function (e) {
+        e.preventDefault();
+        var $btn = $(this);
+        $btn.blur();
+        var targetLocale = $btn.data('locale') || ($('html').attr('lang') === 'ar' ? 'en' : 'ar');
+        var switchUrl = $btn.data('url') || '/profile/language';
 
-        navigateToPage(historicalUrl, false);
+        document.cookie = "app_locale=" + targetLocale + ";path=/;max-age=" + (60 * 60 * 24 * 365);
+
+        $.ajax({
+            url: switchUrl,
+            type: 'POST',
+            data: {
+                locale: targetLocale,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function () {
+                window.location.reload();
+            },
+            error: function () {
+                window.location.reload();
+            }
+        });
     });
 
-    /* ==========================================================================
-       9. My Books Horizontal Carousel Controls
-       Enables smooth left/right scrolling with RTL language support.
-       ========================================================================== */
-
-    /**
-     * Scrolls the books horizontal carousel track.
-     *
-     * @param {'next'|'prev'} direction - The direction to scroll ('next' or 'prev').
-     */
-    function scrollBooksSlider(direction) {
-        var sliderElement = document.getElementById('booksSlider');
-
-        // Exit safely if the carousel slider is not present on the current page
-        if (!sliderElement) {
-            return;
+    // 10. Theme Switch Handler (Dark / Light Mode)
+    function syncThemeUI(theme) {
+        var isDark = theme === 'dark';
+        $('html').attr('data-bs-theme', theme);
+        localStorage.setItem('theme', theme);
+        document.cookie = "app_theme=" + theme + ";path=/;max-age=" + (60 * 60 * 24 * 365);
+        var $label = $('#themeLabelText');
+        if ($label.length) {
+            var isArabic = $('html').attr('lang') === 'ar';
+            if (isArabic) {
+                $label.text(isDark ? 'داكن' : 'فاتح');
+            } else {
+                $label.text(isDark ? 'Dark' : 'Light');
+            }
         }
-
-        var scrollAmountPerClick = 280; // Approximate card width + gap
-        var isRtlDirection = (document.documentElement.getAttribute('dir') === 'rtl');
-
-        // Calculate scroll offset based on direction and page reading direction
-        var scrollOffset = (direction === 'next') ? scrollAmountPerClick : -scrollAmountPerClick;
-
-        if (isRtlDirection) {
-            scrollOffset = -scrollOffset;
+        if (isDark) {
+            $('#themeIconSun').addClass('d-none');
+            $('#themeIconMoon').removeClass('d-none');
+        } else {
+            $('#themeIconSun').removeClass('d-none');
+            $('#themeIconMoon').addClass('d-none');
         }
-
-        sliderElement.scrollBy({
-            left: scrollOffset,
-            behavior: 'smooth'
-        });
     }
 
-    // Previous button click handler
-    $(document).on('click', '#booksPrevBtn', function () {
-        scrollBooksSlider('prev');
-    });
+    // Initialize theme on page load
+    var initialTheme = localStorage.getItem('theme') || $('html').attr('data-bs-theme') || 'light';
+    syncThemeUI(initialTheme);
 
-    // Next button click handler
-    $(document).on('click', '#booksNextBtn', function () {
-        scrollBooksSlider('next');
+    $(document).on('click', '#themeSwitchBtn', function (e) {
+        e.preventDefault();
+        $(this).blur();
+        var currentTheme = $('html').attr('data-bs-theme') || 'light';
+        var nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        var themeUrl = $(this).data('url') || '/profile/theme';
+
+        syncThemeUI(nextTheme);
+
+        $.ajax({
+            url: themeUrl,
+            type: 'POST',
+            data: {
+                theme: nextTheme,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            }
+        });
     });
 });
+
+
 

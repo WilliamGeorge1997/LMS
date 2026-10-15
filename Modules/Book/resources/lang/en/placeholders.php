@@ -13,4 +13,5 @@ return [
     'select_book' => 'Select book',
     'search_book_codes' => 'Search books...',
     'access_code_type_hint' => 'Choose one to specify Access Code generation type',
+    'code' => 'e.g. XC9V2B',
 ];

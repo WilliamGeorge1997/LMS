@@ -37,20 +37,15 @@ class ExceptionHandler
             // 2. API Exceptions
             if ($isApi) {
                 return match (true) {
-                    $e instanceof AuthenticationException =>
-                        apiResponse(false, 'Unauthenticated.', null, 'unauthorized'),
+                    $e instanceof AuthenticationException => apiResponse(false, 'Unauthenticated.', null, 'unauthorized'),
 
-                    $e instanceof NotFoundHttpException, $e instanceof ModelNotFoundException =>
-                        apiResponse(false, 'Resource not found.', null, 'not_found'),
+                    $e instanceof NotFoundHttpException, $e instanceof ModelNotFoundException => apiResponse(false, 'Resource not found.', null, 'not_found'),
 
-                    $e instanceof AccessDeniedHttpException, $e instanceof AuthorizationException =>
-                        apiResponse(false, 'Action unauthorized.', null, 'forbidden'),
+                    $e instanceof AccessDeniedHttpException, $e instanceof AuthorizationException => apiResponse(false, 'Action unauthorized.', null, 'forbidden'),
 
-                    $e instanceof MethodNotAllowedHttpException =>
-                        apiResponse(false, 'Method not allowed.', null, 'method_not_allowed'),
+                    $e instanceof MethodNotAllowedHttpException => apiResponse(false, 'Method not allowed.', null, 'method_not_allowed'),
 
-                    $e instanceof ValidationException =>
-                        apiResponse(false, 'Validation errors', $e->errors(), 'validation_error'),
+                    $e instanceof ValidationException => apiResponse(false, 'Validation errors', $e->errors(), 'validation_error'),
 
                     default => apiResponse(
                         false,

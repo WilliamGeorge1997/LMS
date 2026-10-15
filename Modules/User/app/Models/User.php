@@ -166,7 +166,11 @@ class User extends Authenticatable
 
     public function activeBooks(): BelongsToMany
     {
-        return $this->books()->wherePivot('is_active', true)
+        return $this->books()
+            ->where('books.is_active', true)
+            ->wherePivot('is_used', true)
+            ->wherePivot('is_active', true)
+            ->wherePivot('from', '<=', now()->toDateString())
             ->wherePivot('to', '>=', now()->toDateString());
     }
 }

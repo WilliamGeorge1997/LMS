@@ -40,4 +40,6 @@ return [
     'show' => 'عرض',
     'entries' => 'سجلات',
     'my_books' => 'كتبي',
+    'category' => 'القسم',
+    'level' => 'المستوى',
 ];
