@@ -2,6 +2,8 @@
 
 namespace Modules\Book\Services;
 
+use DateTimeInterface;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Modules\Book\DTOs\BookCodeDto;
@@ -94,6 +96,17 @@ class BookCodeService
         return $query->first();
     }
 
+    public function findByMulti(array $conditions, bool $lock = false): ?BookCode
+    {
+        $query = BookCode::where($conditions);
+
+        if ($lock) {
+            $query->lockForUpdate();
+        }
+
+        return $query->first();
+    }
+
     public function check(string $code, string $userType): BookCode
     {
         $bookCode = $this->findBy('code', $code, lock: true);
@@ -125,16 +138,44 @@ class BookCodeService
         return $bookCode;
     }
 
-    public function redeem(BookCode $bookCode, User $user): BookCode
+    public function reserve(BookCode $bookCode, User $user): BookCode
     {
-        $now = now();
+        $bookCode->update([
+            'reserved_user_id' => $user->id,
+            'reserved_at' => now(),
+        ]);
+
+        return $bookCode->fresh();
+    }
+
+    public function redeemReserved(User $user): ?BookCode
+    {
+        $bookCode = $this->findByMulti([
+            'reserved_user_id' => $user->id,
+            'from' => null,
+            'to' => null,
+            'is_used' => false,
+            'school_id' => null,
+            'user_id' => null,
+        ]);
+
+        if (! $bookCode) {
+            return null;
+        }
+
+        return $this->redeem($bookCode, $user, $bookCode->reserved_at);
+    }
+
+    public function redeem(BookCode $bookCode, User $user, ?DateTimeInterface $startDate = null): BookCode
+    {
+        $start = $startDate ? Carbon::parse($startDate) : now();
 
         $bookCode->update([
             'user_id' => $user->id,
             'school_id' => $user->school_id,
             'is_used' => true,
-            'from' => $now->toDateString(),
-            'to' => $now->copy()->addMonths((int) $bookCode->duration)->toDateString(),
+            'from' => $start->toDateString(),
+            'to' => $start->copy()->addMonths((int) $bookCode->duration)->toDateString(),
         ]);
 
         return $bookCode->fresh();

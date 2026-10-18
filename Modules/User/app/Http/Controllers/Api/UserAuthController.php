@@ -38,7 +38,7 @@ class UserAuthController extends Controller
 
                 $user = User::create($dto->toArray());
 
-                $bookCodeService->redeem($bookCode, $user);
+                $bookCodeService->reserve($bookCode, $user);
 
                 return $user;
             });
@@ -80,7 +80,7 @@ class UserAuthController extends Controller
         return $this->respondWithToken($token, $user);
     }
 
-    public function verify(VerifyRequest $request): JsonResponse
+    public function verify(VerifyRequest $request, BookCodeService $bookCodeService): JsonResponse
     {
         $data = $request->validated();
         /** @var User $user */
@@ -89,7 +89,10 @@ class UserAuthController extends Controller
         if ($user && $user->verify_code == $data['otp']) {
             $user->update([
                 'is_active' => true,
+                'verify_code' => null,
             ]);
+
+            $bookCodeService->redeemReserved($user);
 
             return apiResponse(true, __('user::message.account_activated'));
         }

@@ -132,7 +132,7 @@ class UserAuthController extends Controller implements HasMiddleware
 
                 $user = User::create($dto->toArray());
 
-                $bookCodeService->redeem($bookCode, $user);
+                $bookCodeService->reserve($bookCode, $user);
 
                 return $user;
             });
@@ -165,7 +165,7 @@ class UserAuthController extends Controller implements HasMiddleware
         return view('user::auth.verify', compact('email', 'type'));
     }
 
-    public function verify(UserVerifyRequest $request)
+    public function verify(UserVerifyRequest $request, BookCodeService $bookCodeService)
     {
         $validated = $request->validated();
         $email = session('verify_email');
@@ -200,6 +200,8 @@ class UserAuthController extends Controller implements HasMiddleware
                 'is_active' => true,
                 'verify_code' => null,
             ]);
+
+            $bookCodeService->redeemReserved($user);
 
             Auth::guard('user_web')->login($user);
             $request->session()->regenerate();

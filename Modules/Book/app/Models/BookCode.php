@@ -20,6 +20,8 @@ class BookCode extends Model
         'book_id',
         'tenant_id',
         'user_id',
+        'reserved_user_id',
+        'reserved_at',
         'school_id',
         'code',
         'duration',
@@ -38,6 +40,7 @@ class BookCode extends Model
             'is_used' => 'boolean',
             'from' => 'date',
             'to' => 'date',
+            'reserved_at' => 'datetime',
         ];
     }
 
@@ -61,6 +64,11 @@ class BookCode extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function reservedUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'reserved_user_id');
     }
 
     public function school(): BelongsTo
