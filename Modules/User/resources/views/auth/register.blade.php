@@ -421,7 +421,7 @@
         <!-- Right: Illustration Banner -->
         <div class="col-12 col-lg-7 col-xl-7 d-none d-lg-block h-100 py-2 py-xl-3 pe-xl-2">
             <div class="h-100 position-relative w-100">
-                <img src="{{ web_asset('images/register.webp') ?: web_asset('images/login.png') }}" alt="{{ $tenantName }}" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover rounded-5 shadow-sm" loading="eager">
+                <img src="{{ web_asset('images/register.webp') ?: web_asset('images/login.webp') }}" alt="{{ $tenantName }}" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover rounded-5 shadow-sm" loading="eager">
             </div>
         </div>
     </div>

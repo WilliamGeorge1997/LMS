@@ -25,7 +25,7 @@
             <div class="w-100 auth-form-container mx-auto my-auto py-2">
                 <!-- Logo -->
                 <div class="mb-3 text-start">
-                    <img src="{{ web_asset('images/logo.png') }}" alt="{{ $tenantName }}" class="img-fluid auth-logo">
+                    <img src="{{ web_asset('images/logo.webp') }}" alt="{{ $tenantName }}" class="img-fluid auth-logo">
                 </div>
 
                 <!-- Headline -->

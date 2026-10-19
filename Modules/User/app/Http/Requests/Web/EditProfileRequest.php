@@ -19,13 +19,9 @@ class EditProfileRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
             'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($userId)],
             'old_password' => ['nullable', 'required_with:new_password', 'current_password:user_web'],
             'new_password' => ['nullable', 'string', 'min:8', 'confirmed'],
-            'country_id' => ['nullable', 'exists:countries,id'],
-            'city_id' => ['nullable', 'exists:cities,id'],
-            'region_id' => ['nullable', 'exists:regions,id'],
         ];
     }
 
@@ -34,13 +30,9 @@ class EditProfileRequest extends FormRequest
     {
         return [
             'name' => __('user::attributes.name'),
-            'email' => __('user::attributes.email'),
             'username' => __('user::attributes.username'),
             'old_password' => __('user::attributes.old_password'),
             'new_password' => __('user::attributes.new_password'),
-            'country_id' => __('user::attributes.country_id'),
-            'city_id' => __('user::attributes.city_id'),
-            'region_id' => __('user::attributes.region_id'),
         ];
     }
 
@@ -48,7 +40,6 @@ class EditProfileRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.unique' => __('user::message.email_taken'),
             'username.unique' => __('user::message.username_taken'),
         ];
     }

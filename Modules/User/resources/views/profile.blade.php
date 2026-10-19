@@ -210,7 +210,7 @@
             <div class="modal-header border-0 pb-0 d-flex align-items-start justify-content-between">
                 <div class="d-flex align-items-center gap-3">
                     <div class="rounded-4 bg-white p-2 d-inline-flex align-items-center justify-content-center shadow-sm border">
-                        <img src="{{ web_asset('images/logo.png') }}" alt="{{ tenant()?->name ?? config('app.name') }}" class="sidebar-logo">
+                        <img src="{{ web_asset('images/logo.webp') }}" alt="{{ tenant()?->name ?? config('app.name') }}" class="sidebar-logo">
                     </div>
                     <div>
                         <h5 class="modal-title fw-bold text-body mb-1" id="editProfileModalLabel">
@@ -267,21 +267,20 @@
                             <div class="text-danger small mt-1 step-error d-none" id="username-error"></div>
                         </div>
 
-                        <!-- Email -->
+                        <!-- Email (Disabled & Read-only) -->
                         <div class="col-12">
                             <label for="profile_email" class="form-label small text-secondary fw-semibold mb-2">
                                 {{ __('user::attributes.email') }}
                             </label>
-                            <div class="input-group rounded-3">
-                                <span class="input-group-text bg-white border-end-0 rounded-start-3 text-secondary ps-3">
+                            <div class="input-group rounded-3 opacity-75">
+                                <span class="input-group-text bg-light border-end-0 rounded-start-3 text-secondary ps-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                         <polyline points="22,6 12,13 2,6"></polyline>
                                     </svg>
                                 </span>
-                                <input type="email" id="profile_email" name="email" class="form-control bg-white border-start-0 rounded-end-3 py-2 pe-3" value="{{ $user->email }}" required>
+                                <input type="email" id="profile_email" class="form-control bg-light border-start-0 rounded-end-3 py-2 pe-3 text-secondary" value="{{ $user->email }}" disabled readonly tabindex="-1">
                             </div>
-                            <div class="text-danger small mt-1 step-error d-none" id="email-error"></div>
                         </div>
 
                         <!-- Password Change Section (Optional) -->

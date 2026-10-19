@@ -8,7 +8,7 @@
     <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mb-4 mb-md-5">
         <div>
             <h1 class="h2 fw-bold text-dark mb-1">
-                Welcome, {{ $user->isTeacher() ? 'Teacher' : ($user->isStudent() ? 'Student' : $user->name) }}!
+                {{ __('book::messages.welcome_user', ['name' => $user->name]) }}
             </h1>
             <p class="text-secondary mb-0">
                 {{ __('book::messages.welcome_back') }}
@@ -26,6 +26,21 @@
         </div>
     </div>
 
+    <!-- Session Alerts -->
+    @if(session('success'))
+        <div id="sessionSuccessAlert" class="alert alert-success fade show rounded-4 border-0 shadow-sm d-flex align-items-center gap-3 p-3 mb-4" role="alert">
+            <div class="rounded-circle bg-success bg-opacity-10 text-success p-2 d-inline-flex flex-shrink-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <div class="fw-medium text-success-emphasis">
+                {{ session('success') }}
+            </div>
+            <button type="button" class="btn-close position-static p-2 my-auto ms-auto shadow-none" data-bs-dismiss="alert" aria-label="{{ __('book::buttons.cancel') }}"></button>
+        </div>
+    @endif
+
     <!-- My Books Section -->
     <section class="mb-4">
         <h2 class="h4 fw-bold text-dark mb-4">{{ __('book::attributes.my_books') }}</h2>
@@ -34,7 +49,7 @@
             <!-- Books Grid -->
             <div class="d-flex flex-wrap gap-4 mb-4">
                 @foreach($books as $book)
-                    <div class="card book-card border-0 rounded-4 shadow-sm p-3 bg-white">
+                    <div class="card book-card border-0 rounded-4 shadow-sm p-3">
                         <!-- Book Cover -->
                         <div class="rounded-3 mb-3 position-relative ratio ratio-4x5 book-cover-placeholder">
                             @if($book->cover)
@@ -59,7 +74,7 @@
                         <div class="d-flex flex-column flex-grow-1 justify-content-between">
                             <div>
                                 <!-- Title -->
-                                <h3 class="h6 fw-bold text-dark mb-2 text-truncate" title="{{ $book->title }}">
+                                <h3 class="h6 fw-bold mb-2 text-truncate book-title" title="{{ $book->title }}">
                                     {{ $book->title }}
                                 </h3>
 
@@ -105,15 +120,9 @@
                 @endforeach
             </div>
 
-            <!-- Pagination (if paginator) -->
-            @if(method_exists($books, 'hasPages') && $books->hasPages())
-                <div class="d-flex justify-content-center mt-3 mb-4">
-                    {{ $books->links('pagination::bootstrap-5') }}
-                </div>
-            @endif
         @else
             <!-- Empty State -->
-            <div class="card border-0 rounded-4 shadow-sm p-5 text-center my-4 bg-white">
+            <div class="card border-0 rounded-4 shadow-sm p-5 text-center my-4">
                 <div class="mb-3 text-secondary opacity-50">
                     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-0-5H20"></path>
@@ -144,7 +153,7 @@
             <div class="modal-header border-0 pb-0 d-flex align-items-start justify-content-between">
                 <div class="d-flex align-items-center gap-3">
                     <div class="rounded-4 bg-white p-2 d-inline-flex align-items-center justify-content-center shadow-sm border">
-                        <img src="{{ web_asset('images/logo.png') }}" alt="{{ tenant()?->name ?? config('app.name') }}" class="sidebar-logo">
+                        <img src="{{ web_asset('images/logo.webp') }}" alt="{{ tenant()?->name ?? config('app.name') }}" class="sidebar-logo">
                     </div>
                     <div>
                         <h5 class="modal-title fw-bold text-dark mb-1" id="addAccessCodeModalLabel">

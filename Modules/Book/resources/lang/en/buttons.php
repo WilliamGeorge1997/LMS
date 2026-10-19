@@ -8,8 +8,8 @@ return [
     'export_excel' => 'Export Excel',
     'previous' => 'Previous',
     'next' => 'Next',
-    'add_code' => 'Add Access Code',
+    'add_code' => 'Add Book',
     'download' => 'Download',
-    'unlock' => 'Unlock Book',
+    'unlock' => 'Activate Book',
     'open' => 'Open',
 ];

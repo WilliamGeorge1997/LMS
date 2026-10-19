@@ -180,7 +180,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - Concise keys: translation keys must be strictly 1 or 2 words maximum.
 
 ## Media, Assets & Layout
-- Tenant logos: always use `logo.png` (never SVG).
+- Tenant logos: always use `logo.webp` (never SVG).
 - Tenant favicons: always use `favicon.ico`.
 - Page title format: `{Tenant Name} - {Page Title}`.
 - Do not generate AI images; use official Stitch design assets.

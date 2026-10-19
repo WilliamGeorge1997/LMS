@@ -10,7 +10,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Common\Helpers\AjaxResponse;
 use Modules\Country\Services\CountryService;
-use Modules\User\DTOs\UserDto;
+use Modules\User\DTOs\EditProfileDto;
 use Modules\User\Http\Requests\Web\EditProfileRequest;
 use Modules\User\Models\User;
 use Modules\User\Services\UserService;
@@ -39,7 +39,7 @@ class ProfileController extends Controller implements HasMiddleware
 
     public function update(EditProfileRequest $request): JsonResponse
     {
-        $dto = UserDto::fromEditProfileRequest($request);
+        $dto = EditProfileDto::fromRequest($request);
 
         /** @var User $user */
         $user = $this->userService->updateProfile($request->user(), $dto);

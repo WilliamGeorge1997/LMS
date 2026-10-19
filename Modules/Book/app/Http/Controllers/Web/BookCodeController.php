@@ -34,7 +34,10 @@ class BookCodeController extends Controller implements HasMiddleware
             return $this->bookCodeService->redeem($bookCode, $user);
         });
 
-        return AjaxResponse::success(__('book::messages.code_redeemed_successfully'), [
+        $message = __('book::messages.code_redeemed_successfully');
+        session()->flash('success', $message);
+
+        return AjaxResponse::success($message, [
             'redirect' => route('my-books'),
             'book' => $bookCode->load('book'),
         ]);

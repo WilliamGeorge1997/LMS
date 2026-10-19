@@ -10,10 +10,11 @@ return [
     'code_deleted_successfully' => 'تم حذف كود الوصول بنجاح',
     'code_activated_successfully' => 'تم تفعيل كود الوصول بنجاح',
     'code_deactivated_successfully' => 'تم إلغاء تفعيل كود الوصول بنجاح',
-    'code_redeemed_successfully' => 'تم تفعيل كود الوصول بنجاح',
+    'code_redeemed_successfully' => 'تم تفعيل الكتاب وإضافته إلى مكتبتك بنجاح!',
     'delete_code_confirm' => 'هل أنت متأكد من حذف كود الوصول هذا؟',
     'no_codes_found' => 'لا توجد أكواد وصول.',
+    'welcome_user' => 'مرحباً، :name!',
     'welcome_back' => 'مرحباً بك مجدداً في مكتبتك.',
-    'enter_code' => 'أدخل كود الوصول لفتح كتاب جديد.',
+    'enter_code' => 'أدخل كود الوصول لإضافة الكتاب إلى مكتبتك.',
     'no_books' => 'لا توجد كتب متاحة في مكتبتك حالياً.',
 ];

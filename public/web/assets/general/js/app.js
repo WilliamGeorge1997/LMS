@@ -73,14 +73,15 @@ $(function () {
             data: $form.serialize(),
             success: function (response) {
                 if ($alert && response.message) {
-                    $alert.removeClass('d-none alert-danger').addClass('alert-success').text(response.message);
+                    $alert.removeClass('d-none alert-danger text-danger').addClass('alert-success text-success').text(response.message);
                 }
 
                 var redirectUrl = response.redirect || (response.data && response.data.redirect);
                 if (redirectUrl) {
+                    var redirectDelay = ($alert && response.message) ? 600 : 300;
                     setTimeout(function () {
                         window.location.href = redirectUrl;
-                    }, 300);
+                    }, redirectDelay);
                 }
             },
             error: function (xhr) {
@@ -254,14 +255,26 @@ $(function () {
             type: 'POST',
             data: { email: email },
             success: function (response) {
+                var redirectUrl = response.redirect || (response.data && response.data.redirect);
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                    return;
+                }
+
                 if ($alert) {
                     $alert.removeClass('d-none alert-danger text-danger').addClass('text-success').text(response.message || 'Code resent.');
                 }
                 runResendCountdown($button, cooldown);
             },
             error: function (xhr) {
-                if (xhr.status === 419) {
+                if (xhr.status === 401 || xhr.status === 419) {
                     window.location.reload();
+                    return;
+                }
+
+                var redirectUrl = xhr.responseJSON && (xhr.responseJSON.redirect || (xhr.responseJSON.data && xhr.responseJSON.data.redirect));
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
                     return;
                 }
 
@@ -399,6 +412,7 @@ $(function () {
 
                 // 4. Inject the new page content
                 $contentContainer.html(newContentElement.innerHTML);
+                initFlashAlertAutoDismiss();
 
                 // 5. Update active state across all sidebar navigation links
                 updateSidebarActiveState(destinationUrl);
@@ -515,6 +529,34 @@ $(function () {
             }
         });
     });
+
+    // 11. Modal Clean-up on Dismiss
+    $(document).on('hidden.bs.modal', '.modal', function () {
+        var $form = $(this).find('form');
+        if ($form.length) {
+            $form.trigger('reset');
+            $form.find('.is-invalid').removeClass('is-invalid');
+            $form.find('.step-error').addClass('d-none').text('');
+            var alertId = $form.data('ajax-alert');
+            if (alertId) {
+                $('#' + alertId).addClass('d-none').removeClass('alert-danger alert-success text-danger text-success').text('');
+            }
+        }
+    });
+
+    // 12. Auto-dismiss Flash Alerts
+    function initFlashAlertAutoDismiss() {
+        var $flashAlert = $('#sessionSuccessAlert');
+        if ($flashAlert.length) {
+            setTimeout(function () {
+                $flashAlert.fadeOut(500, function () {
+                    $(this).remove();
+                });
+            }, 4000);
+        }
+    }
+
+    initFlashAlertAutoDismiss();
 });
 
 

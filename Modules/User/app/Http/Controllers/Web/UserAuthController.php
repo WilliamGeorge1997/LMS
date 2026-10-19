@@ -17,6 +17,7 @@ use Modules\Country\Services\CountryService;
 use Modules\User\DTOs\UserDto;
 use Modules\User\Emails\ForgetPasswordMail;
 use Modules\User\Emails\RegisterMail;
+use Modules\User\Enums\UserType;
 use Modules\User\Http\Requests\Web\UserLoginRequest;
 use Modules\User\Http\Requests\Web\UserRegisterRequest;
 use Modules\User\Http\Requests\Web\UserVerifyRequest;
@@ -69,7 +70,6 @@ class UserAuthController extends Controller implements HasMiddleware
     public function login(UserLoginRequest $request)
     {
         $credentials = $request->validated();
-
         $field = filter_var($credentials['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
         $user = User::where($field, $credentials['login'])->first();
@@ -80,16 +80,21 @@ class UserAuthController extends Controller implements HasMiddleware
             ]);
         }
 
+        if ($user->type->value !== $credentials['type']) {
+            return AjaxResponse::validationError([
+                'login' => [__('user::message.invalid_type', [
+                    'type' => __('user::message.' . $credentials['type']),
+                ])],
+            ]);
+        }
+
         if (! $user->is_active) {
             $newCode = (string) rand(100000, 999999);
             $user->update(['verify_code' => $newCode]);
 
             Mail::to($user->email)->send((new RegisterMail($newCode))->onConnection('database'));
 
-            session([
-                'verify_email' => $user->email,
-                'verify_type' => $user->type,
-            ]);
+            session(['verify_email' => $user->email]);
 
             return AjaxResponse::success(__('user::message.code_resent'), [
                 'redirect' => route('verify.show'),
@@ -100,7 +105,7 @@ class UserAuthController extends Controller implements HasMiddleware
 
         $request->session()->regenerate();
 
-        return AjaxResponse::success(__('user::message.welcome_back', ['type' => $user->type]), [
+        return AjaxResponse::success(__('user::message.login'), [
             'redirect' => session()->pull('url.intended', url('/my-books')),
         ]);
     }
@@ -141,10 +146,7 @@ class UserAuthController extends Controller implements HasMiddleware
                 Mail::to($user->email)->send((new RegisterMail($user->verify_code))->onConnection('database'));
             }
 
-            session([
-                'verify_email' => $user->email,
-                'verify_type' => $user->type,
-            ]);
+            session(['verify_email' => $user->email]);
 
             return redirect()->route('verify.show')->with('success', __('user::message.registered'));
         } catch (ValidationException $e) {
@@ -160,9 +162,7 @@ class UserAuthController extends Controller implements HasMiddleware
             return redirect()->route('welcome');
         }
 
-        $type = session('verify_type', 'student');
-
-        return view('user::auth.verify', compact('email', 'type'));
+        return view('user::auth.verify', compact('email'));
     }
 
     public function verify(UserVerifyRequest $request, BookCodeService $bookCodeService)
@@ -188,7 +188,7 @@ class UserAuthController extends Controller implements HasMiddleware
         if ($user->is_active) {
             Auth::guard('user_web')->login($user);
             $request->session()->regenerate();
-            session()->forget(['verify_email', 'verify_type']);
+            session()->forget('verify_email');
 
             return AjaxResponse::success(__('user::message.already_verified'), [
                 'redirect' => url('/my-books'),
@@ -205,7 +205,7 @@ class UserAuthController extends Controller implements HasMiddleware
 
             Auth::guard('user_web')->login($user);
             $request->session()->regenerate();
-            session()->forget(['verify_email', 'verify_type']);
+            session()->forget('verify_email');
 
             return AjaxResponse::success(__('user::message.account_activated'), [
                 'redirect' => url('/my-books'),
@@ -222,9 +222,7 @@ class UserAuthController extends Controller implements HasMiddleware
         $email = session('verify_email');
 
         if (! $email) {
-            return AjaxResponse::validationError([
-                'email' => [__('user::message.credentials')],
-            ]);
+            return AjaxResponse::error(__('user::message.credentials'), 'unauthorized');
         }
 
         $user = User::where('email', $email)->first();
@@ -321,9 +319,7 @@ class UserAuthController extends Controller implements HasMiddleware
         $email = session('reset_password_email');
 
         if (! $email) {
-            return AjaxResponse::validationError([
-                'email' => [__('user::message.credentials')],
-            ]);
+            return AjaxResponse::error(__('user::message.credentials'), 'unauthorized');
         }
 
         $user = User::where('email', $email)->first();

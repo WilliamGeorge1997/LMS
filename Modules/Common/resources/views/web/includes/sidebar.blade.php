@@ -1,5 +1,5 @@
 @php
-    $logo = web_asset('images/logo.png');
+    $logo = web_asset('images/logo.webp');
     $currentRoute = request()->route()?->getName();
     $isHome = $currentRoute === 'welcome' || request()->is('/');
     $isMyBooks = $currentRoute === 'my-books' || request()->is('my-books*');

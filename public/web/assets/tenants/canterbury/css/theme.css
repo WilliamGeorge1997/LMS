@@ -11,15 +11,15 @@
 }
 
 [data-bs-theme="dark"] {
-    --bs-primary: #E07A80;
-    --bs-primary-rgb: 224, 122, 128;
-    --bs-body-bg: #151011;
-    --bs-body-color: #F5ECE2;
-    --tenant-card-bg: #251A1C;
-    --bs-card-bg: #251A1C;
-    --bs-focus-ring-color: rgba(224, 122, 128, 0.35);
-    --bs-link-color: #E07A80;
-    --bs-link-hover-color: #f09ea3;
+    --bs-primary: #D32F42;
+    --bs-primary-rgb: 211, 47, 66;
+    --bs-body-bg: #0E0E12;
+    --bs-body-color: #F3F4F6;
+    --tenant-card-bg: #18181F;
+    --bs-card-bg: #18181F;
+    --bs-focus-ring-color: rgba(211, 47, 66, 0.35);
+    --bs-link-color: #E04356;
+    --bs-link-hover-color: #F45E70;
 }
 
 

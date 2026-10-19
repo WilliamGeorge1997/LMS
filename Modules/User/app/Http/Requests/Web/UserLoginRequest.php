@@ -3,6 +3,8 @@
 namespace Modules\User\Http\Requests\Web;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
+use Modules\User\Enums\UserType;
 use Override;
 
 class UserLoginRequest extends FormRequest
@@ -12,6 +14,7 @@ class UserLoginRequest extends FormRequest
         return [
             'login' => ['required', 'string'],
             'password' => ['required', 'string'],
+            'type' => ['required', new Enum(UserType::class)],
             'remember' => ['nullable', 'boolean'],
         ];
     }
@@ -27,6 +30,7 @@ class UserLoginRequest extends FormRequest
         return [
             'login' => __('user::attributes.login'),
             'password' => __('user::attributes.password'),
+            'type' => __('user::attributes.type'),
             'remember' => __('user::attributes.remember'),
         ];
     }
@@ -37,6 +41,7 @@ class UserLoginRequest extends FormRequest
         return [
             'login.required' => __('validation.required', ['attribute' => __('user::attributes.login')]),
             'password.required' => __('validation.required', ['attribute' => __('user::attributes.password')]),
+            'type.required' => __('validation.required', ['attribute' => __('user::attributes.type')]),
         ];
     }
 }

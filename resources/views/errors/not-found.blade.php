@@ -6,7 +6,7 @@
 <div class="container text-center my-auto auth-box-sm">
     <!-- Logo -->
     <div class="mb-4">
-        <img src="{{ web_asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="img-fluid mx-auto auth-logo">
+        <img src="{{ web_asset('images/logo.webp') }}" alt="{{ config('app.name') }}" class="img-fluid mx-auto auth-logo">
     </div>
 
     <!-- Card Container -->

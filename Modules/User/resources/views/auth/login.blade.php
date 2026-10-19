@@ -13,7 +13,7 @@
 @section('content')
 <!-- Back Button -->
 <div class="position-absolute top-0 start-0 m-3 m-lg-4 z-3">
-    <a href="{{ route('welcome') }}" class="btn btn-white bg-white text-dark rounded-circle shadow-sm p-0 d-inline-flex align-items-center justify-content-center back-btn" aria-label="Back">
+    <a href="{{ route('welcome') }}" class="btn btn-white bg-white text-dark rounded-circle shadow-sm p-0 d-inline-flex align-items-center justify-content-center back-btn" aria-label="{{ __('user::message.back') }}">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
@@ -28,12 +28,12 @@
             <div class="w-100 auth-form-container mx-auto my-auto py-2">
                 <!-- Logo -->
                 <div class="mb-3 text-start">
-                    <img src="{{ web_asset('images/logo.png') }}" alt="{{ $tenantName }}" class="img-fluid auth-logo">
+                    <img src="{{ web_asset('images/logo.webp') }}" alt="{{ $tenantName }}" class="img-fluid auth-logo">
                 </div>
 
                 <!-- Headline -->
                 <h1 class="fw-bold fs-2 text-dark mb-1">
-                    {{ __('user::message.welcome_back', ['type' => strtolower($typeLabel)]) }}
+                    {{ __('user::message.welcome_back', ['type' => mb_strtolower($typeLabel, 'UTF-8')]) }}
                 </h1>
                 <p class="text-secondary small mb-4">
                     {{ __('user::message.signin_desc') }}

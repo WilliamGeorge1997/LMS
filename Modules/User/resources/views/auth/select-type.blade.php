@@ -6,7 +6,7 @@
 <div class="container auth-container">
     <!-- Logo -->
     <div class="text-center mb-4">
-        <img src="{{ web_asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="img-fluid mx-auto auth-logo">
+        <img src="{{ web_asset('images/logo.webp') }}" alt="{{ config('app.name') }}" class="img-fluid mx-auto auth-logo">
     </div>
 
     <!-- Headline -->
