@@ -13,8 +13,9 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
     ScopeSessions::class,
 ])->group(function () {
-    Route::get('/', [UserAuthController::class, 'showSelectType'])->name('welcome');
-    Route::match(['get', 'post'], 'select-type/{type?}', [UserAuthController::class, 'selectType'])->name('select-type');
+    Route::get('select-type', [UserAuthController::class, 'showSelectType'])->name('select-type');
+    Route::post('select-type', [UserAuthController::class, 'selectType'])->name('select-type.post');
+    Route::get('select-type/{type}', [UserAuthController::class, 'selectType'])->name('select-type.with-type');
 
     // Auth Routes
     Route::get('login', [UserAuthController::class, 'showLogin'])->name('login');
