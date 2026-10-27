@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Modules\Notification\Services\NotificationService;
 use Stancl\Tenancy\Contracts\TenantCouldNotBeIdentifiedException;
 use Stancl\Tenancy\Exceptions\NotASubdomainException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -19,6 +20,13 @@ class ExceptionHandler
 {
     public static function handle(Exceptions $exceptions): void
     {
+        $exceptions->report(function (Throwable $e) {
+            NotificationService::sendTelegram(
+                '💥 [500 Server Error]',
+                $e->getMessage()."\n".$e->getFile().':'.$e->getLine()
+            );
+        });
+
         $exceptions->render(function (Throwable $e, Request $request) {
             $isApi = $request->is('api/*') || $request->wantsJson();
 

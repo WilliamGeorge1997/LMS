@@ -35,4 +35,19 @@ return [
         ],
     ],
 
+    'telegram' => [
+        'token' => env('TELEGRAM_BOT_TOKEN'),
+        'chat_id' => env('TELEGRAM_CHAT_ID' ),
+        // Optional bridge / self-hosted Bot API server
+        // 'base_uri' => env('TELEGRAM_API_BASE_URI'),
+
+        // Optional Guzzle HTTP client options.
+        // Defaults: 30s request timeout, 10s connection timeout.
+        // 'http' => [
+        //     'timeout' => 30,
+        //     'connect_timeout' => 10,
+        //     'proxy' => env('TELEGRAM_HTTP_PROXY'),
+        // ],
+    ],
+
 ];

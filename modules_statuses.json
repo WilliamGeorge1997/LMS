@@ -8,5 +8,6 @@
     "Level": true,
     "Book": true,
     "School": true,
-    "User": true
+    "User": true,
+    "Notification": true
 }
