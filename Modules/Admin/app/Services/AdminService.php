@@ -4,6 +4,7 @@ namespace Modules\Admin\Services;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
 use Modules\Admin\DTOs\AdminDto;
 use Modules\Admin\Enums\Role;
 use Modules\Admin\Models\Admin;
@@ -20,14 +21,12 @@ class AdminService
     public function findAll(array $data)
     {
         $query = Admin::query()->latest('id');
-
         return getCaseCollection($query, $data);
     }
 
     public function findActiveManagers(array $data = [])
     {
         $query = Admin::query()->active()->role(Role::MANAGER);
-
         return getCaseCollection($query, $data);
     }
 
@@ -56,10 +55,8 @@ class AdminService
         if ($image) {
             $data['image'] = $this->uploadImage($image, $this->uploadFolder, tenantId: $dto->tenant_id);
         }
-
         $admin = Admin::create($data);
         $admin->assignRole($dto->role);
-
         return $admin;
     }
 
@@ -70,13 +67,10 @@ class AdminService
             if ($admin->image) {
                 $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'), tenantId: $admin->tenant_id);
             }
-
             $data['image'] = $this->uploadImage($image, $this->uploadFolder, tenantId: $dto->tenant_id);
         }
-
         $admin->update($data);
         $admin->syncRoles($dto->role);
-
         return $admin->fresh();
     }
 
@@ -85,14 +79,34 @@ class AdminService
         if ($admin->image) {
             $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'), tenantId: $admin->tenant_id);
         }
-
         return (bool) $admin->delete();
     }
 
     public function toggleActivate(Admin $admin): Admin
     {
         $admin->update(['is_active' => ! $admin->is_active]);
+        return $admin->fresh();
+    }
 
+    public function updateProfile(Admin $admin, array $data): Admin
+    {
+        if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
+            if ($admin->getRawOriginal('image')) {
+                $this->deleteFile($this->uploadFolder, $admin->getRawOriginal('image'), tenantId: $admin->tenant_id);
+            }
+            $data['image'] = $this->uploadImage($data['image'], $this->uploadFolder, tenantId: $admin->tenant_id);
+        } else {
+            unset($data['image']);
+        }
+
+        if (! empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+        
+        unset($data['password_confirmation']);
+        $admin->update($data);
         return $admin->fresh();
     }
 }

@@ -164,7 +164,7 @@
                             <div class="menu-content d-flex align-items-center px-3">
                                 <!--begin::Avatar-->
                                 <div class="symbol symbol-50px me-5">
-                                    {{-- <img alt="Logo" src="assets/media/avatars/300-3.jpg" /> --}}
+                                    <img alt="user" src="{{ $admin?->image ?? asset('dashboard/assets/media/avatars/blank.png') }}" class="rounded-3" />
                                 </div>
                                 <!--end::Avatar-->
                                 <!--begin::Username-->
@@ -172,7 +172,7 @@
                                     <div class="fw-bold d-flex align-items-center fs-5">
                                         {{ $admin?->name ?? 'Admin' }}
                                     </div>
-                                    <a href="#"
+                                    <a href="{{ url('/admin/profile') }}"
                                         class="fw-semibold text-muted text-hover-primary fs-7">{{ $admin?->email ?? 'email@email.com' }}</a>
                                 </div>
                                 <!--end::Username-->
@@ -184,7 +184,7 @@
                         <!--end::Menu separator-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="account/overview.html" class="menu-link px-5">My Profile</a>
+                            <a href="{{ url('/admin/profile') }}" class="menu-link px-5">{{ __('admin::attributes.edit_profile') }}</a>
                         </div>
                         <!--end::Menu item-->
                         <!--begin::Menu separator-->

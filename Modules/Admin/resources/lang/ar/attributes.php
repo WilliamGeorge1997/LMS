@@ -32,4 +32,10 @@ return [
 
     // Messages
     'admin_created_successfully' => 'تم انشاء المدير بنجاح.',
+    'profile_updated_successfully' => 'تم تحديث الملف الشخصي بنجاح.',
+
+    // Profile
+    'edit_profile' => 'تعديل الملف',
+    'confirm_password' => 'تأكيد المرور',
+    'enter_confirm_password' => 'تأكيد المرور',
 ];

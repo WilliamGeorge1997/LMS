@@ -32,4 +32,10 @@ return [
 
     // Messages
     'admin_created_successfully' => 'Admin created successfully.',
+    'profile_updated_successfully' => 'Profile updated successfully.',
+
+    // Profile
+    'edit_profile' => 'Edit Profile',
+    'confirm_password' => 'Confirm Password',
+    'enter_confirm_password' => 'Confirm Password',
 ];

@@ -4,11 +4,13 @@ namespace Modules\Admin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Modules\Admin\DTOs\AdminDto;
 use Modules\Admin\Enums\Role;
+use Modules\Admin\Http\Requests\AdminProfileRequest;
 use Modules\Admin\Http\Requests\AdminStoreRequest;
 use Modules\Admin\Http\Requests\AdminUpdateRequest;
 use Modules\Admin\Models\Admin;
@@ -21,8 +23,8 @@ class AdminController extends Controller implements HasMiddleware
     {
         return [
             'auth:admin',
-            new Middleware('role:'.Role::SUPER_ADMIN->value, except: ['dashboard']),
-            new Middleware('role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value, only: ['dashboard']),
+            new Middleware('role:'.Role::SUPER_ADMIN->value, except: ['dashboard', 'editProfile', 'updateProfile']),
+            new Middleware('role:'.Role::SUPER_ADMIN->value.'|'.Role::MANAGER->value, only: ['dashboard', 'editProfile', 'updateProfile']),
             'set.locale',
         ];
     }
@@ -44,6 +46,21 @@ class AdminController extends Controller implements HasMiddleware
     public function dashboard(Request $request)
     {
         return view('admin::dashboard');
+    }
+
+    public function editProfile()
+    {
+        return view('admin::edit-profile', [
+            'admin' => auth('admin')->user(),
+        ]);
+    }
+
+    public function updateProfile(AdminProfileRequest $request): RedirectResponse
+    {
+        $admin = auth('admin')->user();
+        $this->adminService->updateProfile($admin, $request->validated());
+
+        return back()->with('success', __('admin::attributes.profile_updated_successfully'));
     }
 
     /**
