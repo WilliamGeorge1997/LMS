@@ -8,17 +8,22 @@ class NotificationService
 {
     public static function sendTelegram(string $title, string $details): void
     {
-        $chatId = config('services.telegram.chat_id');
+        try {
+            $chatId = config('services.telegram.chat_id');
 
-        if (! $chatId) {
-            return;
+            if (! $chatId) {
+                return;
+            }
+
+            TelegramMessage::create()
+                ->to($chatId)
+                ->parseMode('')
+                ->line($title)
+                ->line($details)
+                ->line('Time: '.now()->toDateTimeString())
+                ->send();
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Telegram notification error: '.$e->getMessage());
         }
-
-        TelegramMessage::create()
-            ->to($chatId)
-            ->line($title)
-            ->line($details)
-            ->line('Time: '.now()->toDateTimeString())
-            ->send();
     }
 }
