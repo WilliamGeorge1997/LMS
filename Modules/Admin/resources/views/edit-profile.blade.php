@@ -62,7 +62,7 @@
                         <label for="profile-name" class="required form-label">{{ __('admin::attributes.name') }}</label>
                         <input id="profile-name" type="text" name="name"
                             class="form-control form-control-solid @error('name') is-invalid @enderror"
-                            value="{{ old('name', $admin->name) }}" placeholder="{{ __('admin::attributes.enter_name') }}" autocomplete="off" />
+                            value="{{ old('name') ?: $admin->name }}" placeholder="{{ __('admin::attributes.enter_name') }}" autocomplete="off" />
                         @error('name')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -72,7 +72,7 @@
                         <label for="profile-email" class="required form-label">{{ __('admin::attributes.email') }}</label>
                         <input id="profile-email" type="email" name="email"
                             class="form-control form-control-solid @error('email') is-invalid @enderror"
-                            value="{{ old('email', $admin->email) }}" placeholder="{{ __('admin::attributes.enter_email') }}" autocomplete="off" />
+                            value="{{ old('email') ?: $admin->email }}" placeholder="{{ __('admin::attributes.enter_email') }}" autocomplete="off" />
                         @error('email')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

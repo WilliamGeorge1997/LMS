@@ -13,4 +13,5 @@ return [
     'my_books' => 'My Books',
     'profile' => 'Profile',
     'online' => 'Online',
+    'dashboard' => 'Dashboard',
 ];

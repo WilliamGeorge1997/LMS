@@ -54,7 +54,7 @@
                                 <i class="ki-duotone ki-home fs-2">
                                 </i>
                             </span>
-                            <span class="menu-title">Dashboard</span>
+                            <span class="menu-title">{{ __('common::sidebar.dashboard') }}</span>
                         </a>
                         <!--end:Menu link-->
                     </div>

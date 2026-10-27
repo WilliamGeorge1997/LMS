@@ -13,4 +13,5 @@ return [
     'my_books' => 'كتبي',
     'profile' => 'الملف الشخصي',
     'online' => 'متصل',
+    'dashboard' => 'لوحة التحكم',
 ];
