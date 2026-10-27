@@ -117,6 +117,14 @@ class TenancyServiceProvider extends ServiceProvider
         $this->makeTenancyMiddlewareHighestPriority();
 
         Event::listen(Events\TenancyInitialized::class, function (Events\TenancyInitialized $event) {
+            // Set dynamic tenant name for email branding while using SMTP credentials from .env
+            config([
+                'mail.from.name' => $event->tenancy->tenant->name ?? config('mail.from.name'),
+            ]);
+
+            app()->forgetInstance('mail.manager');
+
+            /*
             $setting = Setting::where('tenant_id', $event->tenancy->tenant->id)->first();
 
             if ($setting && $setting->mail_email && $setting->mail_password) {
@@ -129,6 +137,7 @@ class TenancyServiceProvider extends ServiceProvider
 
                 app()->forgetInstance('mail.manager');
             }
+            */
         });
     }
 
