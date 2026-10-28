@@ -21,9 +21,15 @@ class ExceptionHandler
     public static function handle(Exceptions $exceptions): void
     {
         $exceptions->report(function (Throwable $e) {
+            if ($e instanceof TenantCouldNotBeIdentifiedException && str_starts_with(request()->getHost(), 'srv')) {
+                return;
+            }
+
+            $title = $e instanceof TenantCouldNotBeIdentifiedException ? '⚠️ [Tenant Not Found / 404]' : '💥 [500 Server Error]';
+
             NotificationService::sendTelegram(
-                '💥 [500 Server Error]',
-                $e->getMessage()."\n".$e->getFile().':'.$e->getLine()
+                $title,
+                $e->getMessage()."\n".$e->getFile().':'.$e->getLine()."\nURL: ".request()->fullUrl()
             );
         });
 
